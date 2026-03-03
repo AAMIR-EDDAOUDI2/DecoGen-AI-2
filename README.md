@@ -3,10 +3,9 @@
 # DecoGen AI
 **Transform your room with AI-powered interior design using the FLUX API**
 
-[![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)](https://github.com/tonykipkemboi/room-decorator-ai)
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![FLUX API](https://img.shields.io/badge/FLUX_API-000000?style=for-the-badge&logo=artificial-intelligence&logoColor=white)](https://docs.bfl.ai/)
-[![MIT License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
 
 ![Room Decorator AI Screenshot](assets/image.png)
 
@@ -32,9 +31,6 @@
 ### 1. Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/tonykipkemboi/room-decorator-ai.git
-cd room-decorator-ai
 
 # Install dependencies
 pip install -r requirements.txt
