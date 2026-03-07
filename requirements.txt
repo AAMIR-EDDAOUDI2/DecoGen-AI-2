@@ -1,6 +1,6 @@
 streamlit
+flask
 requests
 Pillow
 python-dotenv
-pytest
-pytest-mock
+gunicorn
