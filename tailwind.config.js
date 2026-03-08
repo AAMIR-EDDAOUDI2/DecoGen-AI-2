@@ -18,6 +18,11 @@ export default {
     },
     extend: {
       colors: {
+        // We added your custom template colors here!
+        saas: {
+          orange: "#f97316",    // orange-500 equivalent
+          darkGray: "#1f2937",  // gray-800 equivalent
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
