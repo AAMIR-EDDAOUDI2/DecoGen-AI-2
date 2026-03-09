@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify, send_file, send_from_directory
 from werkzeug.utils import secure_filename
 from room_decorator import RoomDecoratorApp
 
+# Ensure Windows/Linux servers don't mess up the file types
 mimetypes.add_type('application/javascript', '.js')
 mimetypes.add_type('text/css', '.css')
 
@@ -32,14 +33,30 @@ def allowed_file(filename):
 @app.route('/assets/<path:filename>')
 def serve_assets(filename):
     assets_dir = os.path.join(app.static_folder, 'assets')
-    return send_from_directory(assets_dir, filename)
+    response = send_from_directory(assets_dir, filename)
+    
+    # Force the correct MIME type for javascript and css
+    if filename.endswith('.js'):
+        response.headers['Content-Type'] = 'application/javascript'
+    elif filename.endswith('.css'):
+        response.headers['Content-Type'] = 'text/css'
+        
+    return response
 
 # Catch-all route for the React app
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve_react(path):
     if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, path)
+        response = send_from_directory(app.static_folder, path)
+        
+        # Force the correct MIME type for javascript and css outside assets folder
+        if path.endswith('.js'):
+            response.headers['Content-Type'] = 'application/javascript'
+        elif path.endswith('.css'):
+            response.headers['Content-Type'] = 'text/css'
+            
+        return response
     else:
         return send_from_directory(app.static_folder, 'index.html')
 
