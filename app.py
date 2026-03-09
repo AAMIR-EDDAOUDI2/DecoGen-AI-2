@@ -9,7 +9,7 @@ from room_decorator import RoomDecoratorApp
 mimetypes.add_type('application/javascript', '.js')
 mimetypes.add_type('text/css', '.css')
 
-app = Flask(__name__, static_folder='dist')
+app = Flask(__name__, static_folder='static')
 app.secret_key = 'your-secret-key-change-this' # Change this in production
 
 # Configuration
