@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DecoGen AI - Transform Your Space</title>
+    <link rel="stylesheet" href="/assets/templatemo-noir-fashion.css">
+    <!-- Using Google Fonts from the original template -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar">
+        <div class="logo">DecoGen<span>AI</span></div>
+        <div class="nav-links">
+            <a href="#home" class="nav-link active">Home</a>
+            <a href="#generate" class="nav-link">Design Room</a>
+            <a href="#about" class="nav-link">About</a>
+        </div>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- Mobile Nav -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-links">
+            <a href="#home">Home</a>
+            <a href="#generate">Design Room</a>
+            <a href="#about">About</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-carousel">
+        <div class="carousel-slide active" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+            <div class="hero-content">
+                <h1>Design Your Dream Space</h1>
+                <p>Upload a photo of your room and let our AI reimagine it in seconds.</p>
+                <a href="#generate" class="btn btn-outline" style="color: white; border-color: white; padding: 15px 30px; text-decoration: none; display: inline-block; margin-top: 20px;">Start Designing</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Generate Section (Replaces Collection) -->
+    <section id="generate" style="padding: 100px 5%;">
+        <div class="section-header text-center">
+            <h2>Transform Your Room</h2>
+            <p>Upload your space and specify your dream style.</p>
+        </div>
+        
+        <div class="contact-content" style="max-width: 800px; margin: 0 auto; background: #f9f9f9; padding: 40px; border-radius: 8px;">
+            <form id="aiDesignForm">
+                <div class="form-group">
+                    <label style="display:block; margin-bottom:10px; font-family: 'Jost', sans-serif;">1. Upload Room Photo</label>
+                    <input type="file" id="room_image" name="room_image" accept="image/*" required style="width: 100%; padding: 15px; border: 1px solid #ddd;">
+                </div>
+                
+                <div class="form-group" style="margin-top: 20px;">
+                    <label style="display:block; margin-bottom:10px; font-family: 'Jost', sans-serif;">2. Describe the Style</label>
+                    <textarea id="decoration_prompt" name="decoration_prompt" rows="3" placeholder="e.g., A cozy modern living room with wooden furniture and warm lighting" required style="width: 100%; padding: 15px; border: 1px solid #ddd;"></textarea>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label style="display:block; margin-bottom:10px; font-family: 'Jost', sans-serif;">3. Aspect Ratio</label>
+                    <select name="aspect_ratio" style="width: 100%; padding: 15px; border: 1px solid #ddd;">
+                        <option value="16:9">16:9 (Landscape)</option>
+                        <option value="1:1">1:1 (Square)</option>
+                        <option value="9:16">9:16 (Portrait)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="form-submit" style="width: 100%; padding: 15px; background: #000; color: #fff; border: none; margin-top: 30px; cursor: pointer; font-size: 16px;">Generate 3D Design</button>
+            </form>
+
+            <!-- Loading & Result Area -->
+            <div id="loadingStatus" style="display: none; text-align: center; margin-top: 20px; font-family: 'Jost', sans-serif;">
+                <p>AI is generating your room... Please wait (about 10-20 seconds).</p>
+            </div>
+            <div id="resultArea" style="display: none; margin-top: 30px; text-align: center;">
+                <h3 style="margin-bottom: 15px;">Your New Room:</h3>
+                <img id="resultImage" src="" alt="Decorated Room" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <br>
+                <a id="downloadBtn" href="" download="my_new_room.jpg" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #000; color: #fff; text-decoration: none;">Download Image</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" style="padding: 100px 5%; background: #000; color: #fff; text-align: center;">
+        <h2 style="color: #fff;">Where AI Meets Interior Design</h2>
+        <p style="max-width: 600px; margin: 20px auto; opacity: 0.8; line-height: 1.8;">
+            DecoGen AI utilizes advanced deep learning models to reinvent your living spaces. 
+            By blending your existing layout with cutting-edge architectural design, we provide 
+            instant, realistic 3D renderings of what your home could become.
+        </p>
+    </section>
+
+    <!-- Footer -->
+    <footer style="padding: 40px 5%; text-align: center; border-top: 1px solid #eee;">
+        <p>© 2026 DecoGen AI. Project PFE by Aamir Eddaoudi.</p>
+    </footer>
+
+    <script src="/assets/templatemo-noir-scripts.js"></script>
+</body>
+</html>
