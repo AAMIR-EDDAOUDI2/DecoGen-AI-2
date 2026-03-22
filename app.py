@@ -1,4 +1,5 @@
 #import libs
+#fixing previous errors
 import os
 import uuid
 import mimetypes
