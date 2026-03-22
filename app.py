@@ -1,9 +1,11 @@
+#import libs
 import os
 import uuid
 import mimetypes
 from flask import Flask, request, jsonify, send_file, send_from_directory
 from werkzeug.utils import secure_filename
 from room_decorator import RoomDecoratorApp
+
 
 # Ensure Windows/Linux servers don't mess up the file types
 mimetypes.add_type('application/javascript', '.js')
