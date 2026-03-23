@@ -9,7 +9,7 @@ from room_decorator import RoomDecoratorApp
 mimetypes.add_type('application/javascript', '.js')
 mimetypes.add_type('text/css', '.css')
 
-app = Flask(__name__, static_folder='.', static_url_path='')  # Serve from root folder!
+app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.secret_key = 'decogen-ai-secret-key-2026'
 
 # Configuration
@@ -32,21 +32,15 @@ def allowed_file(filename):
 # === SERVE FRONTEND ===
 @app.route('/')
 def index():
-    return send_from_directory('.', 'index.html')
+    return send_from_directory('static', 'index.html')
 
 @app.route('/<path:filename>')
 def serve_static(filename):
-    """Serve CSS, JS, images from root folder"""
+    """Serve CSS, JS, images from static/ folder"""
     try:
-        response = send_from_directory('.', filename)
-        # Fix MIME types
-        if filename.endswith('.js'):
-            response.headers['Content-Type'] = 'application/javascript'
-        elif filename.endswith('.css'):
-            response.headers['Content-Type'] = 'text/css'
-        return response
+        return send_from_directory('static', filename)
     except FileNotFoundError:
-        return send_from_directory('.', 'index.html')
+        return send_from_directory('static', 'index.html')
 
 # === AI ROOM GENERATION API ===
 @app.route('/decorate-room', methods=['POST'])
@@ -95,7 +89,12 @@ def decorate_room():
         decorator_app.download_result(result_url, output_path)
 
         print(f"✅ Generated room saved: {output_path}")
-        return send_file(output_path, mimetype='image/jpeg', as_attachment=False, download_name='my_new_room.jpg')
+        return send_file(
+            output_path,
+            mimetype='image/jpeg',
+            as_attachment=False,
+            download_name='my_new_room.jpg'
+        )
 
     except Exception as e:
         print(f"❌ Error: {str(e)}")
@@ -110,4 +109,5 @@ def too_large(e):
     return jsonify({"error": "File too large"}), 413
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)
