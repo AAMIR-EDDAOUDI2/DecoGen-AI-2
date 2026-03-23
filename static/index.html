@@ -1,224 +1,393 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DecoGen AI - Transform Your Space</title>
-    
-    <!-- Link to your CSS file -->
-    <link rel="stylesheet" href="templatemo-noir-fashion.css">
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DecoGen AI - Transform Your Space</title>
+
+<!-- Link to your CSS file -->
+<link rel="stylesheet" href="templatemo-noir-fashion.css">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- Navigation -->
-    <nav id="navbar" class="navbar">
-        <div class="logo">DecoGen<span>AI</span></div>
-        <div class="nav-links">
-            <a href="#home" class="nav-link active">Home</a>
-            <a href="#generate" class="nav-link">Design Room</a>
-            <a href="#gallery" class="nav-link">Gallery</a>
-            <a href="#about" class="nav-link">About</a>
-        </div>
-        <div class="menu-toggle" id="menuToggle">
-            <span></span><span></span><span></span>
-        </div>
-    </nav>
+<!-- Navigation -->
+<nav id="navbar" class="navbar">
+<div class="logo">DecoGen<span>AI</span></div>
+<div class="nav-links">
+<a href="#home" class="nav-link active">Home</a>
+<a href="#generate" class="nav-link">Design Room</a>
+<a href="#gallery" class="nav-link">Gallery</a>
+<a href="#about" class="nav-link">About</a>
+</div>
+<div class="menu-toggle" id="menuToggle">
+<span></span><span></span><span></span>
+</div>
+</nav>
 
-    <!-- Mobile Nav -->
-    <div class="mobile-nav" id="mobileNav">
-        <div class="mobile-nav-links">
-            <a href="#home">Home</a>
-            <a href="#generate">Design Room</a>
-            <a href="#gallery">Gallery</a>
-            <a href="#about">About</a>
-        </div>
-    </div>
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+<div class="mobile-nav-links">
+<a href="#home">Home</a>
+<a href="#generate">Design Room</a>
+<a href="#gallery">Gallery</a>
+<a href="#about">About</a>
+</div>
+</div>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero-carousel">
-        <div class="carousel-slide active" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
-            <div class="hero-content">
-                <h1>Design Your Dream Space</h1>
-                <p>Upload a photo of your room and let our AI reimagine it in seconds.</p>
-                <a href="#generate" class="btn btn-outline" style="color: white; border-color: white; padding: 15px 30px; text-decoration: none; display: inline-block; margin-top: 20px;">Start Designing</a>
-            </div>
-        </div>
-    </section>
+<!-- Hero Section -->
+<section id="home" class="hero-carousel">
+<div class="carousel-slide active" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+<div class="hero-content">
+<h1>Design Your Dream Space</h1>
+<p>Upload a photo of your room and let our AI reimagine it in seconds.</p>
+<a href="#generate" class="btn btn-outline" style="color: white; border-color: white; padding: 15px 30px; text-decoration: none; display: inline-block; margin-top: 20px;">Start Designing</a>
+</div>
+</div>
+</section>
 
-    <!-- Generate Section -->
-    <section id="generate" style="padding: 100px 5%; background: #f9f9f9;">
-        <div class="section-header text-center">
-            <h2>Transform Your Room</h2>
-            <p>Upload your space and specify your dream style.</p>
-        </div>
+<!-- Generate Section -->
+<section id="generate" style="padding: 100px 5%; background: #f9f9f9;">
+<div class="section-header text-center">
+<h2>Transform Your Room</h2>
+<p>Upload your space and specify your dream style.</p>
+</div>
+
+<div class="contact-content" style="max-width: 800px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+<form id="aiDesignForm">
+<div class="form-group">
+<label style="display:block; margin-bottom:10px; font-family: 'Jost', sans-serif; font-weight: 500;">1. Upload Room Photo</label>
+<input type="file" id="room_image" name="room_image" accept="image/*" required style="width: 100%; padding: 15px; border: 1px solid #ddd; background: #fafafa;">
+</div>
+
+<div class="form-group" style="margin-top: 25px;">
+<label style="display:block; margin-bottom:10px; font-family: 'Jost', sans-serif; font-weight: 500;">2. Describe the Style</label>
+<textarea id="decoration_prompt" name="decoration_prompt" rows="3" placeholder="e.g., A cozy modern living room with wooden furniture and warm lighting" required style="width: 100%; padding: 15px; border: 1px solid #ddd; background: #fafafa;"></textarea>
+</div>
+
+<div class="form-group" style="margin-top: 25px;">
+<label style="display:block; margin-bottom:10px; font-family: 'Jost', sans-serif; font-weight: 500;">3. Aspect Ratio</label>
+<select name="aspect_ratio" style="width: 100%; padding: 15px; border: 1px solid #ddd; background: #fafafa;">
+<option value="16:9">16:9 (Landscape)</option>
+<option value="1:1">1:1 (Square)</option>
+<option value="9:16">9:16 (Portrait)</option>
+</select>
+</div>
+
+<button type="submit" class="form-submit" style="width: 100%; padding: 18px; background: #000; color: #fff; border: none; margin-top: 30px; cursor: pointer; font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;">Generate 3D Design</button>
+</form>
+
+<!-- Loading & Result Area -->
+<div id="loadingStatus" style="display: none; text-align: center; margin-top: 30px; font-family: 'Jost', sans-serif;">
+<p style="font-size: 18px; color: #555;">AI is generating your room... Please wait (about 10-20 seconds).</p>
+</div>
+<div id="resultArea" style="display: none; margin-top: 30px; text-align: center;">
+<h3 style="margin-bottom: 20px; font-family: 'Playfair Display', serif;">Your New Room:</h3>
+<img id="resultImage" src="" alt="Decorated Room" style="max-width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+<br>
+<a id="downloadBtn" href="" download="my_new_room.jpg" style="display: inline-block; margin-top: 25px; padding: 15px 30px; background: #000; color: #fff; text-decoration: none; font-family: 'Jost', sans-serif; text-transform: uppercase; letter-spacing: 1px;">Download Image</a>
+</div>
+</div>
+</section>
+
+<!-- Gallery Section (Showing your 6 pictures) -->
+<section id="gallery" style="padding: 100px 5%; background: #fff;">
+<div class="section-header text-center">
+<h2>AI Design Gallery</h2>
+<p>Explore stunning transformations created by DecoGen AI.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto;">
+
+<!-- Image 1 -->
+<div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+<img src="images/room1.jpg" alt="AI Room Design 1" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
+</div>
+
+<!-- Image 2 -->
+<div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+<img src="images/room2.jpg" alt="AI Room Design 2" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
+</div>
+
+<!-- Image 3 -->
+<div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+<img src="images/room3.jpg" alt="AI Room Design 3" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
+</div>
+
+<!-- Image 4 -->
+<div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+<img src="images/room4.jpg" alt="AI Room Design 4" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
+</div>
+
+<!-- Image 5 -->
+<div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+<img src="images/room5.jpg" alt="AI Room Design 5" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
+</div>
+
+<!-- Image 6 -->
+<div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+<img src="images/room6.jpg" alt="AI Room Design 6" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
+</div>
+
+</div>
+</section>
+
+<!-- About Section -->
+<section id="about" style="padding: 100px 5%; background: #000; color: #fff; text-align: center;">
+<h2 style="color: #fff;">Where AI Meets Interior Design</h2>
+<p style="max-width: 600px; margin: 20px auto; opacity: 0.8; line-height: 1.8; font-family: 'Jost', sans-serif;">
+DecoGen AI utilizes advanced deep learning models to reinvent your living spaces.
+By blending your existing layout with cutting-edge architectural design, we provide
+instant, realistic 3D renderings of what your home could become.
+</p>
+</section>
+
+<!-- Footer -->
+<footer style="padding: 40px 5%; text-align: center; border-top: 1px solid #eee;">
+<p style="font-family: 'Jost', sans-serif; color: #555;">© 2026 DecoGen AI. Project PFE by Aamir Eddaoudi.</p>
+</footer>
+
+<!-- Template UI Scripts -->
+<script src="templatemo-noir-scripts.js"></script>
+
+<!-- ✅ FIXED JavaScript - Complete working solution -->
+<script>
+    const aiDesignForm = document.getElementById('aiDesignForm');
+
+    aiDesignForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
         
-        <div class="contact-content" style="max-width: 800px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-            <form id="aiDesignForm">
-                <div class="form-group">
-                    <label style="display:block; margin-bottom:10px; font-family: 'Jost', sans-serif; font-weight: 500;">1. Upload Room Photo</label>
-                    <input type="file" id="room_image" name="room_image" accept="image/*" required style="width: 100%; padding: 15px; border: 1px solid #ddd; background: #fafafa;">
-                </div>
-                
-                <div class="form-group" style="margin-top: 25px;">
-                    <label style="display:block; margin-bottom:10px; font-family: 'Jost', sans-serif; font-weight: 500;">2. Describe the Style</label>
-                    <textarea id="decoration_prompt" name="decoration_prompt" rows="3" placeholder="e.g., A cozy modern living room with wooden furniture and warm lighting" required style="width: 100%; padding: 15px; border: 1px solid #ddd; background: #fafafa;"></textarea>
-                </div>
+        const submitBtn = aiDesignForm.querySelector('.form-submit');
+        const loadingStatus = document.getElementById('loadingStatus');
+        const resultArea = document.getElementById('resultArea');
+        const resultImage = document.getElementById('resultImage');
+        const downloadBtn = document.getElementById('downloadBtn');
 
-                <div class="form-group" style="margin-top: 25px;">
-                    <label style="display:block; margin-bottom:10px; font-family: 'Jost', sans-serif; font-weight: 500;">3. Aspect Ratio</label>
-                    <select name="aspect_ratio" style="width: 100%; padding: 15px; border: 1px solid #ddd; background: #fafafa;">
-                        <option value="16:9">16:9 (Landscape)</option>
-                        <option value="1:1">1:1 (Square)</option>
-                        <option value="9:16">9:16 (Portrait)</option>
-                    </select>
-                </div>
+        // Show loading
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Generating...';
+        loadingStatus.style.display = 'block';
+        resultArea.style.display = 'none';
 
-                <button type="submit" class="form-submit" style="width: 100%; padding: 18px; background: #000; color: #fff; border: none; margin-top: 30px; cursor: pointer; font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;">Generate 3D Design</button>
-            </form>
+        const formData = new FormData(aiDesignForm);
 
-            <!-- Loading & Result Area -->
-            <div id="loadingStatus" style="display: none; text-align: center; margin-top: 30px; font-family: 'Jost', sans-serif;">
-                <p style="font-size: 18px; color: #555;">AI is generating your room... Please wait (about 10-20 seconds).</p>
-            </div>
-            <div id="resultArea" style="display: none; margin-top: 30px; text-align: center;">
-                <h3 style="margin-bottom: 20px; font-family: 'Playfair Display', serif;">Your New Room:</h3>
-                <img id="resultImage" src="" alt="Decorated Room" style="max-width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
-                <br>
-                <a id="downloadBtn" href="" download="my_new_room.jpg" style="display: inline-block; margin-top: 25px; padding: 15px 30px; background: #000; color: #fff; text-decoration: none; font-family: 'Jost', sans-serif; text-transform: uppercase; letter-spacing: 1px;">Download Image</a>
-            </div>
-        </div>
-    </section>
+        try {
+           Here's your complete, fixed `index.html` with the corrected JavaScript:
 
-    <!-- Gallery Section (Showing your 6 pictures) -->
-    <section id="gallery" style="padding: 100px 5%; background: #fff;">
-        <div class="section-header text-center">
-            <h2>AI Design Gallery</h2>
-            <p>Explore stunning transformations created by DecoGen AI.</p>
-        </div>
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DecoGen AI - Transform Your Space</title>
+
+<!-- Link to your CSS file -->
+<link rel="stylesheet" href="templatemo-noir-fashion.css">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Navigation -->
+<nav id="navbar" class="navbar">
+<div class="logo">DecoGen<span>AI</span></div>
+<div class="nav-links">
+<a href="#home" class="nav-link active">Home</a>
+<a href="#generate" class="nav-link">Design Room</a>
+<a href="#gallery" class="nav-link">Gallery</a>
+<a href="#about" class="nav-link">About</a>
+</div>
+<div class="menu-toggle" id="menuToggle">
+<span></span><span></span><span></span>
+</div>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+<div class="mobile-nav-links">
+<a href="#home">Home</a>
+<a href="#generate">Design Room</a>
+<a href="#gallery">Gallery</a>
+<a href="#about">About</a>
+</div>
+</div>
+
+<!-- Hero Section -->
+<section id="home" class="hero-carousel">
+<div class="carousel-slide active" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+<div class="hero-content">
+<h1>Design Your Dream Space</h1>
+<p>Upload a photo of your room and let our AI reimagine it in seconds.</p>
+<a href="#generate" class="btn btn-outline" style="color: white; border-color: white; padding: 15px 30px; text-decoration: none; display: inline-block; margin-top: 20px;">Start Designing</a>
+</div>
+</div>
+</section>
+
+<!-- Generate Section -->
+<section id="generate" style="padding: 100px 5%; background: #f9f9f9;">
+<div class="section-header text-center">
+<h2>Transform Your Room</h2>
+<p>Upload your space and specify your dream style.</p>
+</div>
+
+<div class="contact-content" style="max-width: 800px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+<form id="aiDesignForm">
+<div class="form-group">
+<label style="display:block; margin-bottom:10px; font-family: 'Jost', sans-serif; font-weight: 500;">1. Upload Room Photo</label>
+<input type="file" id="room_image" name="room_image" accept="image/*" required style="width: 100%; padding: 15px; border: 1px solid #ddd; background: #fafafa;">
+</div>
+
+<div class="form-group" style="margin-top: 25px;">
+<label style="display:block; margin-bottom:10px; font-family: 'Jost', sans-serif; font-weight: 500;">2. Describe the Style</label>
+<textarea id="decoration_prompt" name="decoration_prompt" rows="3" placeholder="e.g., A cozy modern living room with wooden furniture and warm lighting" required style="width: 100%; padding: 15px; border: 1px solid #ddd; background: #fafafa;"></textarea>
+</div>
+
+<div class="form-group" style="margin-top: 25px;">
+<label style="display:block; margin-bottom:10px; font-family: 'Jost', sans-serif; font-weight: 500;">3. Aspect Ratio</label>
+<select name="aspect_ratio" style="width: 100%; padding: 15px; border: 1px solid #ddd; background: #fafafa;">
+<option value="16:9">16:9 (Landscape)</option>
+<option value="1:1">1:1 (Square)</option>
+<option value="9:16">9:16 (Portrait)</option>
+</select>
+</div>
+
+<button type="submit" class="form-submit" style="width: 100%; padding: 18px; background: #000; color: #fff; border: none; margin-top: 30px; cursor: pointer; font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;">Generate 3D Design</button>
+</form>
+
+<!-- Loading & Result Area -->
+<div id="loadingStatus" style="display: none; text-align: center; margin-top: 30px; font-family: 'Jost', sans-serif;">
+<p style="font-size: 18px; color: #555;">AI is generating your room... Please wait (about 10-20 seconds).</p>
+</div>
+<div id="resultArea" style="display: none; margin-top: 30px; text-align: center;">
+<h3 style="margin-bottom: 20px; font-family: 'Playfair Display', serif;">Your New Room:</h3>
+<img id="resultImage" src="" alt="Decorated Room" style="max-width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+<br>
+<a id="downloadBtn" href="" download="my_new_room.jpg" style="display: inline-block; margin-top: 25px; padding: 15px 30px; background: #000; color: #fff; text-decoration: none; font-family: 'Jost', sans-serif; text-transform: uppercase; letter-spacing: 1px;">Download Image</a>
+</div>
+</div>
+</section>
+
+<!-- Gallery Section (Showing your 6 pictures) -->
+<section id="gallery" style="padding: 100px 5%; background: #fff;">
+<div class="section-header text-center">
+<h2>AI Design Gallery</h2>
+<p>Explore stunning transformations created by DecoGen AI.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto;">
+
+<!-- Image 1 -->
+<div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+<img src="images/room1.jpg" alt="AI Room Design 1" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
+</div>
+
+<!-- Image 2 -->
+<div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+<img src="images/room2.jpg" alt="AI Room Design 2" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
+</div>
+
+<!-- Image 3 -->
+<div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+<img src="images/room3.jpg" alt="AI Room Design 3" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
+</div>
+
+<!-- Image 4 -->
+<div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+<img src="images/room4.jpg" alt="AI Room Design 4" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
+</div>
+
+<!-- Image 5 -->
+<div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+<img src="images/room5.jpg" alt="AI Room Design 5" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
+</div>
+
+<!-- Image 6 -->
+<div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+<img src="images/room6.jpg" alt="AI Room Design 6" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
+</div>
+
+</div>
+</section>
+
+<!-- About Section -->
+<section id="about" style="padding: 100px 5%; background: #000; color: #fff; text-align: center;">
+<h2 style="color: #fff;">Where AI Meets Interior Design</h2>
+<p style="max-width: 600px; margin: 20px auto; opacity: 0.8; line-height: 1.8; font-family: 'Jost', sans-serif;">
+DecoGen AI utilizes advanced deep learning models to reinvent your living spaces.
+By blending your existing layout with cutting-edge architectural design, we provide
+instant, realistic 3D renderings of what your home could become.
+</p>
+</section>
+
+<!-- Footer -->
+<footer style="padding: 40px 5%; text-align: center; border-top: 1px solid #eee;">
+<p style="font-family: 'Jost', sans-serif; color: #555;">© 2026 DecoGen AI. Project PFE by Aamir Eddaoudi.</p>
+</footer>
+
+<!-- Template UI Scripts -->
+<script src="templatemo-noir-scripts.js"></script>
+
+<!-- FIXED JavaScript - This will work 100% with your /decorate-room endpoint -->
+<script>
+    const aiDesignForm = document.getElementById('aiDesignForm');
+
+    aiDesignForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto;">
-            
-            <!-- Image 1 -->
-            <div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                <img src="images/room1.jpg" alt="AI Room Design 1" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
-            </div>
+        const submitBtn = aiDesignForm.querySelector('.form-submit');
+        const loadingStatus = document.getElementById('loadingStatus');
+        const resultArea = document.getElementById('resultArea');
+        const resultImage = document.getElementById('resultImage');
+        const downloadBtn = document.getElementById('downloadBtn');
 
-            <!-- Image 2 -->
-            <div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                <img src="images/room2.jpg" alt="AI Room Design 2" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
-            </div>
+        // Show loading
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Generating...';
+        loadingStatus.style.display = 'block';
+        resultArea.style.display = 'none';
 
-            <!-- Image 3 -->
-            <div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                <img src="images/room3.jpg" alt="AI Room Design 3" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
-            </div>
+        const formData = new FormData(aiDesignForm);
 
-            <!-- Image 4 -->
-            <div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                <img src="images/room4.jpg" alt="AI Room Design 4" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
-            </div>
-
-            <!-- Image 5 -->
-            <div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                <img src="images/room5.jpg" alt="AI Room Design 5" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
-            </div>
-
-            <!-- Image 6 -->
-            <div style="overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                <img src="images/room6.jpg" alt="AI Room Design 6" style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;">
-            </div>
-
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" style="padding: 100px 5%; background: #000; color: #fff; text-align: center;">
-        <h2 style="color: #fff;">Where AI Meets Interior Design</h2>
-        <p style="max-width: 600px; margin: 20px auto; opacity: 0.8; line-height: 1.8; font-family: 'Jost', sans-serif;">
-            DecoGen AI utilizes advanced deep learning models to reinvent your living spaces. 
-            By blending your existing layout with cutting-edge architectural design, we provide 
-            instant, realistic 3D renderings of what your home could become.
-        </p>
-    </section>
-
-    <!-- Footer -->
-    <footer style="padding: 40px 5%; text-align: center; border-top: 1px solid #eee;">
-        <p style="font-family: 'Jost', sans-serif; color: #555;">© 2026 DecoGen AI. Project PFE by Aamir Eddaoudi.</p>
-    </footer>
-
-    <!-- Template UI Scripts -->
-    <script src="templatemo-noir-scripts.js"></script>
-
-    <!-- Custom Script to connect the Form to app.py -->
-    <script>
-        const aiDesignForm = document.getElementById('aiDesignForm');
-
-        if (aiDesignForm) {
-            aiDesignForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                
-                const submitBtn = aiDesignForm.querySelector('.form-submit');
-                const loadingStatus = document.getElementById('loadingStatus');
-                const resultArea = document.getElementById('resultArea');
-                const resultImage = document.getElementById('resultImage');
-                const downloadBtn = document.getElementById('downloadBtn');
-
-                // Prepare UI for loading
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Generating...';
-                submitBtn.style.opacity = '0.7';
-                loadingStatus.style.display = 'block';
-                resultArea.style.display = 'none';
-
-                // Gather form data
-                const formData = new FormData(aiDesignForm);
-
-                try {
-                    // Call the Python backend endpoint
-                    const response = await fetch('/decorate-room', {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.error || 'Generation failed');
-                    }
-
-                    // Get the resulting image as a Blob
-                    const imageBlob = await response.blob();
-                    const imageUrl = URL.createObjectURL(imageBlob);
-
-                    // Display the image
-                    resultImage.src = imageUrl;
-                    downloadBtn.href = imageUrl;
-                    
-                    loadingStatus.style.display = 'none';
-                    resultArea.style.display = 'block';
-                    
-                    submitBtn.textContent = 'Generation Complete! ✓';
-                    submitBtn.style.background = '#4CAF50';
-                } catch (error) {
-                    alert('Error: ' + error.message);
-                    submitBtn.textContent = 'Try Again';
-                    submitBtn.style.background = 'red';
-                } finally {
-                    // Reset button state after a few seconds
-                    setTimeout(() => {
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = 'Generate 3D Design';
-                        submitBtn.style.background = '#000';
-                        submitBtn.style.opacity = '1';
-                        loadingStatus.style.display = 'none';
-                    }, 5000);
-                }
+        try {
+            // ✅ FIXED: Correct endpoint - works with your Flask app.py
+            const response = await fetch('/decorate-room', {
+                method: 'POST',
+                body: formData
             });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Generation failed');
+            }
+
+            const imageBlob = await response.blob();
+            const imageUrl = URL.createObjectURL(imageBlob);
+
+            resultImage.src = imageUrl;
+            downloadBtn.href = imageUrl;
+            
+            loadingStatus.style.display = 'none';
+            resultArea.style.display = 'block';
+            
+        } catch (error) {
+            console.error('Upload error:', error);
+            alert('Error: ' + error.message);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Generate 3D Design';
+            submitBtn.style.background = '#000';
+            submitBtn.style.opacity = '1';
+            loadingStatus.style.display = 'none';
         }
-    </script>
+    });
+</script>
 </body>
 </html>
