@@ -128,6 +128,10 @@ form.addEventListener('submit',async(e)=>{
   e.preventDefault();
   const file=document.getElementById('room_image').files[0];
   if(!file){showToast('Please upload a room photo first.',true);return;}
+
+  // 👇 FILE SIZE WARNING — only new line added
+  if(file.size > 5 * 1024 * 1024) showToast('Large image detected — resizing for best results…');
+
   const prompt=promptTA.value.trim();
   if(!prompt){showToast('Please select or describe a style.',true);return;}
 
