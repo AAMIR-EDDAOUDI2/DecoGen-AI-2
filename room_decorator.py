@@ -11,33 +11,34 @@ class RoomDecoratorApp:
         self.base_url = "https://api.bfl.ai/v1/flux-kontext-pro"
         
     def encode_image(self, image_path):
-        """Convert image to base64 string"""
         image = Image.open(image_path)
         image = image.convert("RGB")
+        
+        max_size = 1920
+        w, h = image.size
+        if w > max_size or h > max_size:
+            ratio = min(max_size / w, max_size / h)
+            image = image.resize((int(w * ratio), int(h * ratio)), Image.LANCZOS)
+        
         buffered = BytesIO()
-        image.save(buffered, format="JPEG", quality=95)
+        image.save(buffered, format="JPEG", quality=90)
         return base64.b64encode(buffered.getvalue()).decode()
     
     def encode_image_from_bytes(self, image_bytes):
-        """Convert image bytes to base64 string"""
         image = Image.open(BytesIO(image_bytes))
         image = image.convert("RGB")
+        
+        max_size = 1920
+        w, h = image.size
+        if w > max_size or h > max_size:
+            ratio = min(max_size / w, max_size / h)
+            image = image.resize((int(w * ratio), int(h * ratio)), Image.LANCZOS)
+        
         buffered = BytesIO()
-        image.save(buffered, format="JPEG", quality=95)
+        image.save(buffered, format="JPEG", quality=90)
         return base64.b64encode(buffered.getvalue()).decode()
     
     def decorate_room(self, room_image_path=None, room_image_bytes=None, decoration_prompt="", aspect_ratio="16:9"):
-        """
-        Edit a room image with decoration instructions
-        
-        Args:
-            room_image_path: Path to the room image (optional if room_image_bytes provided)
-            room_image_bytes: Image bytes (optional if room_image_path provided)
-            decoration_prompt: Text describing the decoration changes
-            aspect_ratio: Desired aspect ratio for output
-        """
-        
-        # Encode the room image
         if room_image_path:
             encoded_image = self.encode_image(room_image_path)
         elif room_image_bytes:
@@ -45,14 +46,13 @@ class RoomDecoratorApp:
         else:
             raise ValueError("Either room_image_path or room_image_bytes must be provided")
         
-        # Submit decoration request
         request_data = {
-    'prompt': decoration_prompt,
-    'input_image': encoded_image,
-    'aspect_ratio': aspect_ratio,
-    'output_format': 'jpeg',
-    'safety_tolerance': 2
-}
+            'prompt': decoration_prompt,
+            'input_image': encoded_image,
+            'aspect_ratio': aspect_ratio,
+            'output_format': 'jpeg',
+            'safety_tolerance': 2
+        }
         
         response = requests.post(
             self.base_url,
@@ -71,11 +71,9 @@ class RoomDecoratorApp:
         request_id = result["id"]
         polling_url = result["polling_url"]
         
-        # Poll for results
         return self._poll_for_result(polling_url, request_id)
     
     def _poll_for_result(self, polling_url, request_id):
-        """Poll the API until the result is ready"""
         max_attempts = 120
         attempt = 0
         
@@ -109,7 +107,6 @@ class RoomDecoratorApp:
         raise Exception(f"Generation timed out after {max_attempts} seconds")
     
     def download_result(self, image_url, save_path):
-        """Download the generated image"""
         response = requests.get(image_url)
         response.raise_for_status()
         
