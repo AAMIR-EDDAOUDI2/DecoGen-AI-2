@@ -3,13 +3,13 @@ import io
 import uuid
 import threading
 import requests
-from flask import Flask, request, send_from_directory, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, render_template
 from room_decorator import RoomDecoratorApp
 from dotenv import load_dotenv
 
 load_dotenv()
 
-app = Flask(__name__, static_folder="static", static_url_path="")
+app = Flask(__name__, static_folder="static", static_url_path="/static")
 
 # In-memory job store: { job_id: { status, result_bytes, error } }
 jobs = {}
@@ -49,7 +49,7 @@ def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio):
 
 @app.route("/")
 def index():
-    return send_from_directory("static", "index.html")
+    return render_template("index.html")  # ← only change here
 
 
 @app.route("/decorate-room", methods=["POST"])
