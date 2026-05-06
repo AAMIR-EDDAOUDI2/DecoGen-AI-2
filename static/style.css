@@ -160,7 +160,6 @@ textarea.form-input{resize:vertical;min-height:90px}
   align-items:center;
   justify-content:center;
   gap:var(--space-6);
-  overflow:hidden;
 }
 .loader-subtext{
   font-size:var(--text-sm);
@@ -168,58 +167,31 @@ textarea.form-input{resize:vertical;min-height:90px}
   text-align:center;
   letter-spacing:.04em;
 }
-.loader-wrapper{
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:2px;
-  height:60px;
-  font-family:var(--font-display);
-  font-size:2em;
-  font-weight:600;
-  user-select:none;
-  color:var(--color-text);
+.loader{
+  width:8em;
+  height:8em;
 }
-.loader-letter{
-  display:inline-block;
-  opacity:0;
-  position:relative;
-  z-index:2;
-  will-change:transform,opacity;
-  animation:loader-letter-anim 4s infinite linear;
+.loader path{
+  stroke:var(--color-accent);
+  stroke-width:0.6px;
+  animation:
+    dashArray 4s ease-in-out infinite,
+    dashOffset 4s linear infinite;
 }
-.loader-letter:nth-child(1){animation-delay:0.0s}
-.loader-letter:nth-child(2){animation-delay:0.1s}
-.loader-letter:nth-child(3){animation-delay:0.2s}
-.loader-letter:nth-child(4){animation-delay:0.3s}
-.loader-letter:nth-child(5){animation-delay:0.4s}
-.loader-letter:nth-child(6){animation-delay:0.5s}
-.loader-letter:nth-child(7){animation-delay:0.6s}
-.loader-letter:nth-child(8){animation-delay:0.7s}
-.loader-letter:nth-child(9){animation-delay:0.8s}
-.loader-letter:nth-child(10){animation-delay:0.9s}
-
-@keyframes loader-letter-anim{
-  0%{
-    opacity:0;
-    transform:translateY(6px);
-  }
-  10%{
-    opacity:1;
-    transform:translateY(0);
-    text-shadow:0 0 16px var(--color-accent);
-    color:var(--color-accent);
-  }
-  30%{
-    opacity:0.4;
-    color:var(--color-text);
-    text-shadow:none;
-  }
-  100%{
-    opacity:0;
-    transform:translateY(-4px);
-  }
+[data-theme="dark"] .loader path{
+  stroke:var(--color-accent);
+}
+[data-theme="light"] .loader path{
+  stroke:var(--color-primary);
+}
+@keyframes dashArray{
+  0%{stroke-dasharray:0 1 359 0}
+  50%{stroke-dasharray:0 359 1 0}
+  100%{stroke-dasharray:359 1 0 0}
+}
+@keyframes dashOffset{
+  0%{stroke-dashoffset:365}
+  100%{stroke-dashoffset:5}
 }
 /* ============================================
    GALLERY
