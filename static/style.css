@@ -159,58 +159,39 @@ textarea.form-input{resize:vertical;min-height:90px}
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:var(--space-8);
+  gap:var(--space-6);
 }
 .loader-subtext{
   font-size:var(--text-sm);
   color:var(--color-text-muted);
   text-align:center;
-  letter-spacing:.06em;
+  letter-spacing:.04em;
 }
-.spinner-ring{
-  width:64px;
-  height:64px;
-  border-radius:var(--radius-full);
-  border:2px solid var(--color-border);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
-  animation:spin-outer 3s linear infinite;
+.loader{
+  width:8em;
+  height:8em;
+  transform:translateZ(0);
   will-change:transform;
 }
-.spinner-ring::before{
-  content:'';
-  position:absolute;
-  inset:-2px;
-  border-radius:var(--radius-full);
-  border:2px solid transparent;
-  border-top-color:var(--color-accent);
-  border-right-color:var(--color-accent);
-  animation:spin 1.4s cubic-bezier(0.5,0,0.5,1) infinite;
-  will-change:transform;
+.loader path{
+  stroke-width:0.6px;
+  fill:none;
+  will-change:stroke-dasharray,stroke-dashoffset;
+  animation:
+    dashArray 4s ease-in-out infinite,
+    dashOffset 4s linear infinite;
 }
-.spinner-ring-inner{
-  width:40px;
-  height:40px;
-  border-radius:var(--radius-full);
-  border:2px solid var(--color-border);
-  position:relative;
+[data-theme="light"] .loader path{ stroke:var(--color-primary); }
+[data-theme="dark"]  .loader path{ stroke:var(--color-accent);  }
+
+@keyframes dashArray{
+  0%  { stroke-dasharray: 0 1 359 0;   }
+  50% { stroke-dasharray: 0 359 1 0;   }
+  100%{ stroke-dasharray: 359 1 0 0;   }
 }
-.spinner-ring-inner::before{
-  content:'';
-  position:absolute;
-  inset:-2px;
-  border-radius:var(--radius-full);
-  border:2px solid transparent;
-  border-bottom-color:var(--color-accent);
-  border-left-color:var(--color-accent);
-  animation:spin 1s cubic-bezier(0.5,0,0.5,1) infinite reverse;
-  will-change:transform;
-}
-@keyframes spin{
-  0%  { transform:rotate(0deg)   }
-  100%{ transform:rotate(360deg) }
+@keyframes dashOffset{
+  0%  { stroke-dashoffset: 365; }
+  100%{ stroke-dashoffset: 5;   }
 }
 /* ============================================
    GALLERY
