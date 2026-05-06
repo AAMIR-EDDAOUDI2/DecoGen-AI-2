@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DecoGen AI — Transform Your Space</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<a href="#generate" style="position:absolute;top:-40px;left:0;padding:8px 16px;background:var(--color-accent);color:#fff;font-size:var(--text-sm);z-index:999;border-radius:0 0 var(--radius-md) 0;transition:top .2s" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to main content</a>
+
+<!-- NAVBAR -->
+<nav id="navbar" class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="logo" aria-label="DecoGen AI">DecoGen<span>AI</span></div>
+  <div class="nav-links">
+    <a href="#home"     class="nav-link active">Home</a>
+    <a href="#generate" class="nav-link">Design Room</a>
+    <a href="#gallery"  class="nav-link">Gallery</a>
+    <a href="#about"    class="nav-link">About</a>
+  </div>
+  <div class="nav-right">
+    <button class="theme-toggle" data-theme-toggle aria-label="Switch theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-nav" id="mobileNav" role="navigation" aria-label="Mobile navigation">
+  <a href="#home">Home</a>
+  <a href="#generate">Design Room</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#about">About</a>
+</div>
+
+<!-- HERO -->
+<section id="home" class="hero" aria-label="Hero section">
+  <div class="hero-bg" role="img" aria-label="Modern living room"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">AI-Powered Interior Design</p>
+    <h1>Design Your <em>Dream</em> Space</h1>
+    <p class="hero-desc">Upload a photo of your room and let our AI reimagine it in seconds — any style, any mood.</p>
+    <div class="hero-cta">
+      <a href="#generate" class="btn-hero">
+        Start Designing
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- GENERATE -->
+<section id="generate" aria-labelledby="generate-heading">
+  <div class="generate-inner">
+    <!-- Left: form -->
+    <div>
+      <div class="section-header">
+        <p class="eyebrow">Transform</p>
+        <h2 id="generate-heading">Design Your Room</h2>
+        <p>Upload a photo and describe the style — our AI handles the rest.</p>
+      </div>
+      <div class="form-card">
+        <form id="aiDesignForm" novalidate>
+          <div class="form-step">
+            <label class="form-label" for="room_image">
+              <span class="step-num">1</span> Upload Room Photo
+            </label>
+            <input class="form-input" type="file" id="room_image" name="room_image" accept="image/*" required>
+          </div>
+          <div class="form-step" style="margin-top:var(--space-6)">
+            <label class="form-label"><span class="step-num">2</span> Choose a Style</label>
+            <div class="style-pills" role="group" aria-label="Style presets">
+              <button type="button" class="style-pill" data-prompt="Add modern minimalist furniture with clean lines and neutral colors">Modern</button>
+              <button type="button" class="style-pill" data-prompt="Create a warm cozy living space with soft textures and warm lighting">Cozy</button>
+              <button type="button" class="style-pill" data-prompt="Transform into a professional workspace with desk and smart storage">Office</button>
+              <button type="button" class="style-pill" data-prompt="Add natural elements with indoor plants rattan and light wood furniture">Natural</button>
+              <button type="button" class="style-pill" data-prompt="Design an artistic space with bold colors eclectic art and unique furniture">Creative</button>
+            </div>
+            <textarea class="form-input" id="decoration_prompt" name="decoration_prompt" rows="3"
+              placeholder="Or describe your own style… e.g. Scandinavian with warm oak and linen."
+              style="margin-top:var(--space-3)" required></textarea>
+          </div>
+          <div class="form-step" style="margin-top:var(--space-6)">
+            <label class="form-label" for="aspect_ratio"><span class="step-num">3</span> Aspect Ratio</label>
+            <select class="form-input" id="aspect_ratio" name="aspect_ratio">
+              <option value="16:9">16:9 — Landscape</option>
+              <option value="1:1">1:1 — Square</option>
+              <option value="9:16">9:16 — Portrait</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Generate Design
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Right: result -->
+    <div class="result-panel">
+      <div id="resultPlaceholder" class="result-placeholder" aria-live="polite">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <p>Your transformed room appears here</p>
+      </div>
+      <div id="loadingPanel" style="display:none" aria-live="polite">
+        <div class="loading-bar"><div class="loading-bar-fill" id="loadingBar"></div></div>
+        <p style="font-size:var(--text-sm);color:var(--color-text-muted);text-align:center;margin-bottom:var(--space-4)">AI is reimagining your room — usually 10–25 seconds…</p>
+        <div style="aspect-ratio:16/9;background:var(--color-surface-offset);border-radius:var(--radius-xl);overflow:hidden"><div class="shimmer-box"></div></div>
+      </div>
+      <div id="resultArea" style="display:none" aria-live="polite">
+        <div class="result-image-wrap">
+          <img id="resultImage" src="" alt="AI-generated room design" loading="lazy">
+        </div>
+        <div class="result-actions">
+          <a id="downloadBtn" href="" download="decogen-room.jpg" class="btn-download">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Save Image
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" aria-labelledby="gallery-heading">
+  <div class="gallery-inner">
+    <div class="section-header">
+      <p class="eyebrow">Showcase</p>
+      <h2 id="gallery-heading">AI Design Gallery</h2>
+      <p>Rooms reimagined by DecoGen AI.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="images/room1.jpg" alt="AI Room Design — Modern Living Room" width="640" height="480" loading="lazy" onerror="this.parentElement.style.background='var(--color-surface-offset)'">
+        <div class="gallery-overlay"><span>Modern Minimal</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="images/room2.jpg" alt="AI Room Design — Cozy Bedroom" width="640" height="480" loading="lazy" onerror="this.parentElement.style.background='var(--color-surface-offset)'">
+        <div class="gallery-overlay"><span>Cozy Retreat</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="images/room3.jpg" alt="AI Room Design — Home Office" width="640" height="480" loading="lazy" onerror="this.parentElement.style.background='var(--color-surface-offset)'">
+        <div class="gallery-overlay"><span>Home Office</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="images/room4.jpg" alt="AI Room Design — Natural Style" width="640" height="480" loading="lazy" onerror="this.parentElement.style.background='var(--color-surface-offset)'">
+        <div class="gallery-overlay"><span>Natural Warmth</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="images/room5.jpg" alt="AI Room Design — Creative Space" width="640" height="480" loading="lazy" onerror="this.parentElement.style.background='var(--color-surface-offset)'">
+        <div class="gallery-overlay"><span>Creative Studio</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="images/room6.jpg" alt="AI Room Design — Luxury Interior" width="640" height="480" loading="lazy" onerror="this.parentElement.style.background='var(--color-surface-offset)'">
+        <div class="gallery-overlay"><span>Luxury Interior</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" aria-labelledby="about-heading">
+  <div class="about-inner">
+    <div class="about-text">
+      <div class="eyebrow" style="color:var(--color-accent)">About the Project</div>
+      <h2 id="about-heading">Where AI Meets <em>Interior Design</em></h2>
+      <p>DecoGen AI uses advanced deep learning to reimagine living spaces. Upload a photo, choose a style, and receive a realistic concept render in seconds — powered by FLUX Kontext image models from Black Forest Labs.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card"><span class="stat-num">FLUX</span><span class="stat-label">Model Engine</span></div>
+      <div class="stat-card"><span class="stat-num">5+</span><span class="stat-label">Design Styles</span></div>
+      <div class="stat-card"><span class="stat-num">&lt;30s</span><span class="stat-label">Generation Time</span></div>
+      <div class="stat-card"><span class="stat-num">BTS</span><span class="stat-label">PFE Project 2026</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">DecoGen<span>AI</span></div>
+  <p>© 2026 DecoGen AI — PFE by <a href="https://www.linkedin.com/in/aamir-eddaoudi-975222332" target="_blank" rel="noopener noreferrer">Aamir Eddaoudi</a></p>
+</footer>
+
+<div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
