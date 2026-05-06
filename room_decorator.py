@@ -13,15 +13,17 @@ class RoomDecoratorApp:
     def encode_image(self, image_path):
         """Convert image to base64 string"""
         image = Image.open(image_path)
+        image = image.convert("RGB")
         buffered = BytesIO()
-        image.save(buffered, format="JPEG")
+        image.save(buffered, format="JPEG", quality=95)
         return base64.b64encode(buffered.getvalue()).decode()
     
     def encode_image_from_bytes(self, image_bytes):
         """Convert image bytes to base64 string"""
         image = Image.open(BytesIO(image_bytes))
+        image = image.convert("RGB")
         buffered = BytesIO()
-        image.save(buffered, format="JPEG")
+        image.save(buffered, format="JPEG", quality=95)
         return base64.b64encode(buffered.getvalue()).decode()
     
     def decorate_room(self, room_image_path=None, room_image_bytes=None, decoration_prompt="", aspect_ratio="16:9"):
@@ -48,7 +50,9 @@ class RoomDecoratorApp:
             'prompt': decoration_prompt,
             'input_image': encoded_image,
             'aspect_ratio': aspect_ratio,
-            'output_format': 'jpeg'
+            'output_format': 'jpeg',
+            'safety_tolerance': 6,
+            'prompt_upsampling': True
         }
         
         response = requests.post(
@@ -73,11 +77,11 @@ class RoomDecoratorApp:
     
     def _poll_for_result(self, polling_url, request_id):
         """Poll the API until the result is ready"""
-        max_attempts = 60  # Maximum 60 seconds
+        max_attempts = 120
         attempt = 0
         
         while attempt < max_attempts:
-            time.sleep(1)  # Wait 1 second between polls
+            time.sleep(1)
             attempt += 1
             
             try:
@@ -94,7 +98,7 @@ class RoomDecoratorApp:
                 print(f"Status: {status} (attempt {attempt})")
                 
                 if status == 'Ready':
-                    return result['result']['sample']  # Returns the image URL
+                    return result['result']['sample']
                 elif status in ['Error', 'Failed']:
                     raise Exception(f"Generation failed: {result}")
                     
