@@ -173,3 +173,18 @@ form.addEventListener('submit',async(e)=>{
     setTimeout(resetBtn,5000);
   }
 });
+
+/* ============================================
+   KEEP ANIMATIONS ALIVE (prevents browser throttling)
+   ============================================ */
+(function keepAnimationsAlive(){
+  let id;
+  function tick(){
+    id = requestAnimationFrame(tick);
+  }
+  tick();
+  document.addEventListener('visibilitychange', () => {
+    if(document.hidden){ cancelAnimationFrame(id); }
+    else { tick(); }
+  });
+})();
