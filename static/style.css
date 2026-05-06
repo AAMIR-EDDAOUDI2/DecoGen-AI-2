@@ -170,28 +170,28 @@ textarea.form-input{resize:vertical;min-height:90px}
 .loader{
   width:8em;
   height:8em;
+  transform:translateZ(0);
+  will-change:transform;
 }
 .loader path{
-  stroke:var(--color-accent);
   stroke-width:0.6px;
+  fill:none;
+  will-change:stroke-dasharray,stroke-dashoffset;
   animation:
     dashArray 4s ease-in-out infinite,
     dashOffset 4s linear infinite;
 }
-[data-theme="dark"] .loader path{
-  stroke:var(--color-accent);
-}
-[data-theme="light"] .loader path{
-  stroke:var(--color-primary);
-}
+[data-theme="light"] .loader path{ stroke:var(--color-primary); }
+[data-theme="dark"]  .loader path{ stroke:var(--color-accent);  }
+
 @keyframes dashArray{
-  0%{stroke-dasharray:0 1 359 0}
-  50%{stroke-dasharray:0 359 1 0}
-  100%{stroke-dasharray:359 1 0 0}
+  0%  { stroke-dasharray: 0 1 359 0;   }
+  50% { stroke-dasharray: 0 359 1 0;   }
+  100%{ stroke-dasharray: 359 1 0 0;   }
 }
 @keyframes dashOffset{
-  0%{stroke-dashoffset:365}
-  100%{stroke-dashoffset:5}
+  0%  { stroke-dashoffset: 365; }
+  100%{ stroke-dashoffset: 5;   }
 }
 /* ============================================
    GALLERY
