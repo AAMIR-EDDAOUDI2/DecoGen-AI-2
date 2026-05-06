@@ -47,13 +47,12 @@ class RoomDecoratorApp:
         
         # Submit decoration request
         request_data = {
-            'prompt': decoration_prompt,
-            'input_image': encoded_image,
-            'aspect_ratio': aspect_ratio,
-            'output_format': 'jpeg',
-            'safety_tolerance': 6,
-            'prompt_upsampling': True
-        }
+    'prompt': decoration_prompt,
+    'input_image': encoded_image,
+    'aspect_ratio': aspect_ratio,
+    'output_format': 'jpeg',
+    'safety_tolerance': 2
+}
         
         response = requests.post(
             self.base_url,
