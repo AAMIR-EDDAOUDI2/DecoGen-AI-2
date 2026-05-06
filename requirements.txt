@@ -1,4 +1,5 @@
-streamlit
+flask
+gunicorn
 requests
 Pillow
 python-dotenv
