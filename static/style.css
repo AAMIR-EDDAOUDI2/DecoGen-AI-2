@@ -394,5 +394,36 @@ footer a:hover{opacity:.75}
 [data-lang="ar"] .nav-links { flex-direction: row-reverse; }
 [data-lang="ar"] .nav-right { flex-direction: row-reverse; }
 [data-lang="ar"] .generate-inner { direction: rtl; }
+
+
 [data-lang="ar"] .form-label { flex-direction: row-reverse; justify-content: flex-end; }
 [data-lang="ar"] .mobile-nav { text-align: right; }
+
+/* Fix lang switcher vertical alignment */
+
+.nav-right {
+  align-items: center;
+}
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--color-surface-offset);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 3px;
+  height: 36px; /* same height as the theme-toggle button */
+}
+.lang-btn {
+  padding: 4px 8px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: var(--color-text-muted);
+  transition: color var(--transition), background var(--transition);
+  line-height: 1;
+  height: 28px;
+  display: flex;
+  align-items: center;
+}
