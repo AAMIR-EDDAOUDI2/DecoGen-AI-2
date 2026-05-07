@@ -79,22 +79,19 @@ function showToast(msg, type = '') {
 let capturedBeforeURL = '';
 
 function showBeforeAfter(afterURL) {
-  const resultArea      = document.getElementById('resultArea');
+  const resultArea        = document.getElementById('resultArea');
   const resultPlaceholder = document.getElementById('resultPlaceholder');
-  const loadingPanel    = document.getElementById('loadingPanel');
+  const loadingPanel      = document.getElementById('loadingPanel');
 
-  // populate images
   document.getElementById('resultImage').src  = afterURL;
   document.getElementById('beforeImage').src  = capturedBeforeURL;
   document.getElementById('sliderAfter').src  = afterURL;
   document.getElementById('sliderBefore').src = capturedBeforeURL;
 
-  // hide loader / placeholder, show result
-  loadingPanel.style.display    = 'none';
+  loadingPanel.style.display      = 'none';
   resultPlaceholder.style.display = 'none';
-  resultArea.style.display      = 'block';
+  resultArea.style.display        = 'block';
 
-  // activate After tab by default
   switchTab('after');
 }
 
@@ -135,25 +132,24 @@ function initSlider() {
     let pct = (clientX - rect.left) / rect.width;
     pct = Math.min(1, Math.max(0, pct));
     const perc = pct * 100;
-    clip.style.width    = perc + '%';
-    divider.style.left  = perc + '%';
+    clip.style.width   = perc + '%';
+    divider.style.left = perc + '%';
     divider.setAttribute('aria-valuenow', Math.round(perc));
   }
 
-  wrap.addEventListener('mousedown',  e => { dragging = true; setPos(e.clientX); });
+  wrap.addEventListener('mousedown',   e => { dragging = true; setPos(e.clientX); });
   window.addEventListener('mousemove', e => { if (dragging) setPos(e.clientX); });
   window.addEventListener('mouseup',   () => { dragging = false; });
 
-  wrap.addEventListener('touchstart', e => { dragging = true; setPos(e.touches[0].clientX); }, { passive: true });
-  window.addEventListener('touchmove', e => { if (dragging) setPos(e.touches[0].clientX); }, { passive: true });
+  wrap.addEventListener('touchstart',  e => { dragging = true; setPos(e.touches[0].clientX); }, { passive: true });
+  window.addEventListener('touchmove', e => { if (dragging) setPos(e.touches[0].clientX); },   { passive: true });
   window.addEventListener('touchend',  () => { dragging = false; });
 
-  // keyboard support
   divider.addEventListener('keydown', e => {
     const rect = wrap.getBoundingClientRect();
     const cur  = parseFloat(clip.style.width) || 50;
-    if (e.key === 'ArrowLeft')  setPos(rect.left + (cur - 5)  / 100 * rect.width);
-    if (e.key === 'ArrowRight') setPos(rect.left + (cur + 5)  / 100 * rect.width);
+    if (e.key === 'ArrowLeft')  setPos(rect.left + (cur - 5) / 100 * rect.width);
+    if (e.key === 'ArrowRight') setPos(rect.left + (cur + 5) / 100 * rect.width);
   });
 }
 
@@ -176,10 +172,11 @@ downloadCheck && downloadCheck.addEventListener('change', function () {
 });
 
 // ── MIC / VOICE INPUT ─────────────────────────────────────────
-const micBtn        = document.getElementById('micBtn');
-const voiceOverlay  = document.getElementById('voiceOverlay');
-const voiceCancel   = document.getElementById('voiceCancel');
-const voiceLabel    = document.getElementById('voiceLabel');
+const micBtn          = document.getElementById('micBtn');
+const voiceOverlay    = document.getElementById('voiceOverlay');
+const voiceCancel     = document.getElementById('voiceCancel');
+const voiceConfirm    = document.getElementById('voiceConfirm');
+const voiceLabel      = document.getElementById('voiceLabel');
 const voiceTranscript = document.getElementById('voiceTranscript');
 
 let recognition = null;
@@ -195,7 +192,7 @@ if (SpeechRecognition && micBtn) {
     micBtn.classList.add('listening');
     voiceOverlay.classList.add('active');
     voiceLabel.textContent = 'Listening…';
-    voiceTranscript.textContent = 'Say your room style…';
+    voiceTranscript.textContent = '';
   };
 
   recognition.onresult = e => {
@@ -231,12 +228,53 @@ function stopVoice() {
   voiceOverlay && voiceOverlay.classList.remove('active');
 }
 
-voiceCancel && voiceCancel.addEventListener('click', stopVoice);
+voiceCancel  && voiceCancel.addEventListener('click', stopVoice);
+voiceConfirm && voiceConfirm.addEventListener('click', () => {
+  if (promptTA && voiceTranscript.textContent) {
+    promptTA.value = voiceTranscript.textContent;
+  }
+  stopVoice();
+});
+
+// ── POLL JOB STATUS ───────────────────────────────────────────
+function pollStatus(jobId, beforeURL) {
+  return new Promise((resolve, reject) => {
+    const MAX_WAIT = 120000; // 2 minutes max
+    const INTERVAL = 2500;   // poll every 2.5s
+    let elapsed = 0;
+
+    const timer = setInterval(async () => {
+      elapsed += INTERVAL;
+      if (elapsed > MAX_WAIT) {
+        clearInterval(timer);
+        reject(new Error('Generation timed out. Please try again.'));
+        return;
+      }
+
+      try {
+        const res  = await fetch(`/status/${jobId}`);
+        const data = await res.json();
+
+        if (data.status === 'done') {
+          clearInterval(timer);
+          resolve(`/result/${jobId}`);
+        } else if (data.status === 'error') {
+          clearInterval(timer);
+          reject(new Error(data.error || 'Generation failed'));
+        }
+        // still 'processing' → keep polling
+      } catch (err) {
+        clearInterval(timer);
+        reject(err);
+      }
+    }, INTERVAL);
+  });
+}
 
 // ── FORM SUBMIT ───────────────────────────────────────────────
-const form      = document.getElementById('aiDesignForm');
-const submitBtn = document.getElementById('submitBtn');
-const loadingPanel    = document.getElementById('loadingPanel');
+const form              = document.getElementById('aiDesignForm');
+const submitBtn         = document.getElementById('submitBtn');
+const loadingPanel      = document.getElementById('loadingPanel');
 const resultPlaceholder = document.getElementById('resultPlaceholder');
 
 form && form.addEventListener('submit', async e => {
@@ -248,32 +286,50 @@ form && form.addEventListener('submit', async e => {
   if (!fileInput?.files[0]) { showToast('Please upload a room photo.', 'error'); return; }
   if (!prompt)              { showToast('Please enter or choose a style.', 'error'); return; }
 
-  // capture before-image URL for before/after
+  // capture original image locally for the Before tab
   capturedBeforeURL = URL.createObjectURL(fileInput.files[0]);
 
   // UI: loading state
   submitBtn.disabled = true;
   submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Generating…`;
 
-  document.getElementById('resultArea').style.display    = 'none';
+  document.getElementById('resultArea').style.display = 'none';
   resultPlaceholder.style.display = 'none';
   loadingPanel.style.display      = 'block';
 
-  // reset loading bar
+  // reset loading bar animation
   const bar = document.getElementById('loadingBar');
   bar.style.animation = 'none';
-  bar.offsetHeight; // reflow
+  bar.offsetHeight;
   bar.style.animation = 'loadProgress 20s ease forwards';
 
   const formData = new FormData(form);
 
   try {
-    const res  = await fetch('/generate', { method: 'POST', body: formData });
+    // ✅ FIX: correct route + no manual Content-Type header
+    const res = await fetch('/decorate-room', {
+      method: 'POST',
+      body: formData
+    });
+
+    // ✅ FIX: always check content-type before .json()
+    const contentType = res.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+      const text = await res.text();
+      console.error('Non-JSON response:', text);
+      throw new Error('Server error — check deployment logs');
+    }
+
     const data = await res.json();
+    if (!res.ok || data.error) throw new Error(data.error || 'Request failed');
 
-    if (!res.ok || data.error) throw new Error(data.error || 'Generation failed');
+    const jobId = data.job_id;
+    if (!jobId) throw new Error('No job ID returned from server');
 
-    showBeforeAfter(data.result_url || data.result || data.image_url);
+    // ✅ FIX: poll until done instead of expecting immediate result
+    const resultURL = await pollStatus(jobId);
+
+    showBeforeAfter(resultURL);
     submitBtn.classList.add('success');
     submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Design Ready!`;
     showToast('Your room has been redesigned ✨');
@@ -284,17 +340,18 @@ form && form.addEventListener('submit', async e => {
     submitBtn.classList.add('error');
     submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Try Again`;
     showToast(err.message || 'Something went wrong', 'error');
+    console.error('[DecoGen Error]', err);
 
   } finally {
     submitBtn.disabled = false;
     setTimeout(() => {
-      submitBtn.classList.remove('success','error');
+      submitBtn.classList.remove('success', 'error');
       submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Generate Design`;
     }, 4000);
   }
 });
 
-// spin keyframe (inline injection)
+// spin keyframe injection
 const styleTag = document.createElement('style');
 styleTag.textContent = `@keyframes spin{to{transform:rotate(360deg)}}`;
 document.head.appendChild(styleTag);
