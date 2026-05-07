@@ -80,6 +80,14 @@ h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;text-wrap:balance}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes loadProgress{0%{width:0%}60%{width:75%}90%{width:90%}100%{width:95%}}
 @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes transform-animation{0%{transform:translate(-55%)}100%{transform:translate(55%)}}
+@keyframes opacity-animation{0%,100%{opacity:0}15%{opacity:1}65%{opacity:0}}
+@keyframes loader-letter-anim{
+  0%{opacity:0}
+  5%{opacity:1;text-shadow:0 0 8px var(--color-accent);transform:scale(1.1) translateY(-2px)}
+  20%{opacity:0.2}
+  100%{opacity:0}
+}
 
 /* ============================================
    HERO
@@ -138,6 +146,51 @@ textarea.form-input{resize:vertical;min-height:90px}
 .result-image-wrap{border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-lg);width:100%;aspect-ratio:16/9;background:var(--color-surface-offset)}
 .result-image-wrap img{width:100%;height:100%;object-fit:cover;display:block}
 .result-actions{display:flex;justify-content:center;margin-top:var(--space-4)}
+
+/* ============================================
+   LOADER — GENERATING ANIMATION
+   ============================================ */
+.loader-container{
+  aspect-ratio:16/9;
+  background:var(--color-surface-offset);
+  border-radius:var(--radius-xl);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:var(--space-6);
+}
+.loader-subtext{
+  font-size:var(--text-sm);
+  color:var(--color-text-muted);
+  text-align:center;
+  letter-spacing:.04em;
+}
+.loader{
+  width:8em;
+  height:8em;
+  transform:translateZ(0);
+  will-change:transform;
+}
+.loader path{
+  stroke-width:0.6px;
+  fill:none;
+  will-change:stroke-dasharray,stroke-dashoffset;
+  animation:
+    dashArray 4s ease-in-out infinite,
+    dashOffset 4s linear infinite;
+}
+[data-theme="light"] .loader path{stroke:var(--color-primary)}
+[data-theme="dark"]  .loader path{stroke:var(--color-accent)}
+@keyframes dashArray{
+  0%  {stroke-dasharray:0 1 359 0}
+  50% {stroke-dasharray:0 359 1 0}
+  100%{stroke-dasharray:359 1 0 0}
+}
+@keyframes dashOffset{
+  0%  {stroke-dashoffset:365}
+  100%{stroke-dashoffset:5}
+}
 
 /* ============================================
    DOWNLOAD BUTTON
@@ -219,38 +272,6 @@ textarea.form-input{resize:vertical;min-height:90px}
 @keyframes dl-installed{100%{width:150px;border-color:var(--color-success)}}
 @keyframes dl-circleDelete{100%{opacity:0;visibility:hidden}}
 @keyframes dl-showMsg{100%{opacity:1;visibility:visible;right:56px}}
-
-/* ============================================
-   LOADER — SPINNER
-   ============================================ */
-.loader-container{
-  aspect-ratio:16/9;background:var(--color-surface-offset);
-  border-radius:var(--radius-xl);display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:var(--space-8);
-}
-.loader-subtext{font-size:var(--text-sm);color:var(--color-text-muted);text-align:center;letter-spacing:.06em}
-.spinner-ring{
-  width:64px;height:64px;border-radius:var(--radius-full);
-  border:2px solid var(--color-border);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;will-change:transform;
-}
-.spinner-ring::before{
-  content:'';position:absolute;inset:-2px;border-radius:var(--radius-full);
-  border:2px solid transparent;
-  border-top-color:var(--color-accent);border-right-color:var(--color-accent);
-  animation:spin 1.4s cubic-bezier(0.5,0,0.5,1) infinite;will-change:transform;
-}
-.spinner-ring-inner{
-  width:40px;height:40px;border-radius:var(--radius-full);
-  border:2px solid var(--color-border);position:relative;
-}
-.spinner-ring-inner::before{
-  content:'';position:absolute;inset:-2px;border-radius:var(--radius-full);
-  border:2px solid transparent;
-  border-bottom-color:var(--color-accent);border-left-color:var(--color-accent);
-  animation:spin 1s cubic-bezier(0.5,0,0.5,1) infinite reverse;will-change:transform;
-}
 
 /* ============================================
    GALLERY
