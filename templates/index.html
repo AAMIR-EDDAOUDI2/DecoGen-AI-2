@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -17,10 +18,10 @@
 <nav id="navbar" class="navbar" role="navigation" aria-label="Main navigation">
   <div class="logo" aria-label="DecoGen AI">DecoGen<span>AI</span></div>
   <div class="nav-links">
-    <a href="#home"     class="nav-link active">Home</a>
-    <a href="#generate" class="nav-link">Design Room</a>
-    <a href="#gallery"  class="nav-link">Gallery</a>
-    <a href="#about"    class="nav-link">About</a>
+    <a href="#home"     class="nav-link active" data-i18n="nav.home">Home</a>
+    <a href="#generate" class="nav-link" data-i18n="nav.design">Design Room</a>
+    <a href="#gallery"  class="nav-link" data-i18n="nav.gallery">Gallery</a>
+    <a href="#about"    class="nav-link" data-i18n="nav.about">About</a>
   </div>
   <div class="nav-right">
     <button class="theme-toggle" data-theme-toggle aria-label="Switch theme">
@@ -29,6 +30,11 @@
         <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
       </svg>
     </button>
+    <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language selector">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="fr">FR</button>
+      <button class="lang-btn" data-lang="ar">AR</button>
+    </div>
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -36,21 +42,21 @@
 </nav>
 
 <div class="mobile-nav" id="mobileNav" role="navigation" aria-label="Mobile navigation">
-  <a href="#home">Home</a>
-  <a href="#generate">Design Room</a>
-  <a href="#gallery">Gallery</a>
-  <a href="#about">About</a>
+  <a href="#home" data-i18n="nav.home">Home</a>
+  <a href="#generate" data-i18n="nav.design">Design Room</a>
+  <a href="#gallery" data-i18n="nav.gallery">Gallery</a>
+  <a href="#about" data-i18n="nav.about">About</a>
 </div>
 
 <!-- HERO -->
 <section id="home" class="hero" aria-label="Hero section">
   <div class="hero-bg" role="img" aria-label="Modern living room"></div>
   <div class="hero-content">
-    <p class="hero-eyebrow">AI-Powered Interior Design</p>
-    <h1>Design Your <em>Dream</em> Space</h1>
-    <p class="hero-desc">Upload a photo of your room and let our AI reimagine it in seconds — any style, any mood.</p>
+    <p class="hero-eyebrow" data-i18n="hero.eyebrow">AI-Powered Interior Design</p>
+    <h1 data-i18n-html="hero.h1">Design Your <em>Dream</em> Space</h1>
+    <p class="hero-desc" data-i18n="hero.desc">Upload a photo of your room and let our AI reimagine it in seconds — any style, any mood.</p>
     <div class="hero-cta">
-      <a href="#generate" class="btn-hero">
+      <a href="#generate" class="btn-hero" data-i18n="hero.cta">
         Start Designing
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
@@ -65,9 +71,9 @@
     <!-- LEFT: Form -->
     <div>
       <div class="section-header">
-        <p class="eyebrow">Transform</p>
-        <h2 id="generate-heading">Design Your Room</h2>
-        <p>Upload a photo and describe the style — our AI handles the rest.</p>
+        <p class="eyebrow" data-i18n="generate.eyebrow">Transform</p>
+        <h2 id="generate-heading" data-i18n="generate.heading">Design Your Room</h2>
+        <p data-i18n="generate.subhead">Upload a photo and describe the style — our AI handles the rest.</p>
       </div>
       <div class="form-card">
         <form id="aiDesignForm" novalidate>
@@ -75,23 +81,24 @@
           <!-- Step 1 -->
           <div class="form-step">
             <label class="form-label" for="room_image">
-              <span class="step-num">1</span> Upload Room Photo
+              <span class="step-num">1</span> <span data-i18n="generate.step1">Upload Room Photo</span>
             </label>
             <input class="form-input" type="file" id="room_image" name="room_image" accept="image/*" required>
           </div>
 
           <!-- Step 2 -->
           <div class="form-step" style="margin-top:var(--space-6)">
-            <label class="form-label"><span class="step-num">2</span> Choose a Style</label>
+            <label class="form-label"><span class="step-num">2</span> <span data-i18n="generate.step2">Choose a Style</span></label>
             <div class="style-pills" role="group" aria-label="Style presets">
-              <button type="button" class="style-pill" data-prompt="Add modern minimalist furniture with clean lines and neutral colors">Modern</button>
-              <button type="button" class="style-pill" data-prompt="Create a warm cozy living space with soft textures and warm lighting">Cozy</button>
-              <button type="button" class="style-pill" data-prompt="Transform into a professional workspace with desk and smart storage">Office</button>
-              <button type="button" class="style-pill" data-prompt="Add natural elements with indoor plants rattan and light wood furniture">Natural</button>
-              <button type="button" class="style-pill" data-prompt="Design an artistic space with bold colors eclectic art and unique furniture">Creative</button>
+              <button type="button" class="style-pill" data-pill="modern" data-prompt="Add modern minimalist furniture with clean lines and neutral colors" data-i18n="pill.modern">Modern</button>
+              <button type="button" class="style-pill" data-pill="cozy" data-prompt="Create a warm cozy living space with soft textures and warm lighting" data-i18n="pill.cozy">Cozy</button>
+              <button type="button" class="style-pill" data-pill="office" data-prompt="Transform into a professional workspace with desk and smart storage" data-i18n="pill.office">Office</button>
+              <button type="button" class="style-pill" data-pill="natural" data-prompt="Add natural elements with indoor plants rattan and light wood furniture" data-i18n="pill.natural">Natural</button>
+              <button type="button" class="style-pill" data-pill="creative" data-prompt="Design an artistic space with bold colors eclectic art and unique furniture" data-i18n="pill.creative">Creative</button>
             </div>
             <div class="textarea-wrap">
               <textarea class="form-input" id="decoration_prompt" name="decoration_prompt" rows="3"
+                data-i18n-placeholder="generate.placeholder"
                 placeholder="Or describe your own style… e.g. Scandinavian with warm oak and linen."
                 required></textarea>
               <button type="button" class="mic-btn" id="micBtn" aria-label="Voice input">
@@ -101,19 +108,20 @@
                 </svg>
               </button>
             </div>
+            <p id="promptHint" style="display:none; font-size:var(--text-xs); color:var(--color-text-muted); margin-top:var(--space-2);"></p>
           </div>
 
           <!-- Step 3 -->
           <div class="form-step" style="margin-top:var(--space-6)">
-            <label class="form-label" for="aspect_ratio"><span class="step-num">3</span> Aspect Ratio</label>
+            <label class="form-label" for="aspect_ratio"><span class="step-num">3</span> <span data-i18n="generate.step3">Aspect Ratio</span></label>
             <select class="form-input" id="aspect_ratio" name="aspect_ratio">
-              <option value="16:9">16:9 — Landscape</option>
-              <option value="1:1">1:1 — Square</option>
-              <option value="9:16">9:16 — Portrait</option>
+              <option value="16:9" data-i18n="ar.landscape">16:9 — Landscape</option>
+              <option value="1:1" data-i18n="ar.square">1:1 — Square</option>
+              <option value="9:16" data-i18n="ar.portrait">9:16 — Portrait</option>
             </select>
           </div>
 
-          <button type="submit" class="btn-submit" id="submitBtn">
+          <button type="submit" class="btn-submit" id="submitBtn" data-i18n="generate.submit">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
             </svg>
@@ -133,7 +141,7 @@
           <circle cx="8.5" cy="8.5" r="1.5"/>
           <path d="M21 15l-5-5L5 21"/>
         </svg>
-        <p>Your transformed room appears here</p>
+        <p data-i18n="result.placeholder">Your transformed room appears here</p>
       </div>
 
       <!-- Loading -->
@@ -154,7 +162,7 @@
             <path pathLength="360" d="M 49.5975 9.0325 V 19.3422 H 38.689 C 38.5937 18.6105 38.5061 17.9301 38.4329 17.3569 C 38.2063 15.5828 37.4422 13.9868 36.2237 12.7413 C 34.8748 11.3624 33.2514 10.6633 31.3984 10.6633 C 27.3688 10.6633 25.8233 13.5309 25.556 15.0901 C 25.1526 15.5932 24.3175 16.7856 23.916 18.46 C 23.8568 18.7069 23.8106 19.0066 23.7778 19.3421 H 14.4025 V 9.0323 H 49.5975 Z"></path>
             <path pathLength="360" d="M 30.2223 21.2875 C 30.5674 21.2875 30.8471 21.0195 30.8471 20.6889 V 18.92 L 31.9916 18.9675 C 32.3376 18.9833 32.628 18.7259 32.643 18.3956 C 32.658 18.0654 32.3907 17.786 32.0459 17.7717 L 30.2495 17.6969 C 30.077 17.6889 29.9133 17.7497 29.7902 17.8624 C 29.6671 17.9753 29.5976 18.1315 29.5976 18.2948 V 20.6889 C 29.5974 21.0195 29.8772 21.2875 30.2223 21.2875 Z"></path>
           </svg>
-          <p class="loader-subtext">AI is reimagining your room — usually 10–25 seconds…</p>
+          <p class="loader-subtext" data-i18n="result.loading">AI is reimagining your room — usually 10–25 seconds…</p>
         </div>
       </div>
 
@@ -163,9 +171,9 @@
 
         <!-- Tab bar -->
         <div class="ba-tabs" role="tablist" aria-label="Before and After view">
-          <button class="ba-tab" id="tabBefore" role="tab" aria-selected="false" aria-controls="panelBefore">Before</button>
-          <button class="ba-tab active" id="tabAfter" role="tab" aria-selected="true" aria-controls="panelAfter">After</button>
-          <button class="ba-tab" id="tabSlider" role="tab" aria-selected="false" aria-controls="panelSlider">Compare</button>
+          <button class="ba-tab" id="tabBefore" role="tab" aria-selected="false" aria-controls="panelBefore" data-i18n="result.before">Before</button>
+          <button class="ba-tab active" id="tabAfter" role="tab" aria-selected="true" aria-controls="panelAfter" data-i18n="result.after">After</button>
+          <button class="ba-tab" id="tabSlider" role="tab" aria-selected="false" aria-controls="panelSlider" data-i18n="result.compare">Compare</button>
         </div>
 
         <!-- Before panel -->
@@ -221,19 +229,18 @@
             </label>
           </div>
         </div>
-        <!-- ── REACTION PANEL ── -->
-<div class="reaction-panel">
-  <div class="reaction-bar">
 
-    <button class="reaction-btn" data-label="Like" data-emoji="👍">👍</button>
-    <button class="reaction-btn" data-label="Cheer" data-emoji="👏🏻">👏🏻</button>
-    <button class="reaction-btn" data-label="Celebrate" data-emoji="🎉">🎉</button>
-    <button class="reaction-btn" data-label="Appreciate" data-emoji="✨">✨</button>
-    <button class="reaction-btn" data-label="Smile" data-emoji="🙂">🙂</button>
-    <button class="reaction-btn" data-label="Dislike" data-emoji="👎">👎</button>
-
-  </div>
-</div>
+        <!-- REACTION PANEL -->
+        <div class="reaction-panel">
+          <div class="reaction-bar">
+            <button class="reaction-btn" data-label="Like" data-emoji="👍">👍</button>
+            <button class="reaction-btn" data-label="Cheer" data-emoji="👏🏻">👏🏻</button>
+            <button class="reaction-btn" data-label="Celebrate" data-emoji="🎉">🎉</button>
+            <button class="reaction-btn" data-label="Appreciate" data-emoji="✨">✨</button>
+            <button class="reaction-btn" data-label="Smile" data-emoji="🙂">🙂</button>
+            <button class="reaction-btn" data-label="Dislike" data-emoji="👎">👎</button>
+          </div>
+        </div>
 
       </div>
     </div>
