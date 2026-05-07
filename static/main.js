@@ -79,16 +79,14 @@ ratioSelect.addEventListener('change',()=>{
 });
 
 /* ============================================
-   TABS  (tabs already exist in HTML, just wire them up)
+   TABS
    ============================================ */
 function switchTab(tabId){
-  // tabs
   document.querySelectorAll('.ba-tab').forEach(t=>{
     const active=t.id===tabId;
     t.classList.toggle('active',active);
     t.setAttribute('aria-selected',active);
   });
-  // panels
   const panelMap={tabBefore:'panelBefore',tabAfter:'panelAfter',tabSlider:'panelSlider'};
   Object.entries(panelMap).forEach(([tid,pid])=>{
     const panel=document.getElementById(pid);
@@ -123,6 +121,7 @@ function initSlider(){
     pct=Math.max(0,Math.min(100,pct));
     clip.style.width=pct+'%';
     divider.style.left=pct+'%';
+    divider.setAttribute('aria-valuenow',Math.round(pct));
   }
   function getPct(clientX){
     const r=wrap.getBoundingClientRect();
@@ -135,6 +134,14 @@ function initSlider(){
   window.addEventListener('touchmove',e=>{if(dragging)setPos(getPct(e.touches[0].clientX));},{passive:true});
   window.addEventListener('mouseup',()=>dragging=false);
   window.addEventListener('touchend',()=>dragging=false);
+
+  // Keyboard support for accessibility
+  divider.addEventListener('keydown',e=>{
+    const cur=parseFloat(divider.getAttribute('aria-valuenow')||50);
+    if(e.key==='ArrowLeft')setPos(cur-5);
+    if(e.key==='ArrowRight')setPos(cur+5);
+  });
+
   setPos(50);
 }
 
@@ -150,26 +157,98 @@ function showToast(msg,isError=false){
 }
 
 /* ============================================
-   SHOW RESULTS  — sets src on existing <img> tags
+   VOICE INPUT
+   ============================================ */
+const micBtn=document.getElementById('micBtn');
+const voiceOverlay=document.getElementById('voiceOverlay');
+const voiceTranscript=document.getElementById('voiceTranscript');
+const voiceCancel=document.getElementById('voiceCancel');
+const voiceLabel=document.getElementById('voiceLabel');
+
+let recognition=null;
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+if(micBtn){
+  if(!SpeechRecognition){
+    // Browser doesn't support it — hide the button silently
+    micBtn.style.display='none';
+  } else {
+    micBtn.addEventListener('click',startVoice);
+  }
+}
+
+function startVoice(){
+  recognition=new SpeechRecognition();
+  recognition.lang='en-US';
+  recognition.interimResults=true;
+  recognition.maxAlternatives=1;
+
+  voiceTranscript.textContent='Listening…';
+  voiceLabel.textContent='Listening…';
+  voiceOverlay.classList.add('active');
+  micBtn.classList.add('listening');
+
+  recognition.onresult=e=>{
+    let interim='', final='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const t=e.results[i][0].transcript;
+      e.results[i].isFinal ? final+=t : interim+=t;
+    }
+    voiceTranscript.textContent=final||interim||'Listening…';
+    if(final){
+      promptTA.value=final;
+      // deselect any active pill since user typed their own
+      pills.forEach(p=>p.classList.remove('selected'));
+    }
+  };
+
+  recognition.onerror=e=>{
+    stopVoice();
+    if(e.error!=='aborted')showToast('Microphone error: '+e.error,true);
+  };
+
+  recognition.onend=()=>stopVoice();
+}
+
+function stopVoice(){
+  if(recognition){try{recognition.abort();}catch(_){} recognition=null;}
+  voiceOverlay.classList.remove('active');
+  micBtn.classList.remove('listening');
+}
+
+if(voiceCancel)voiceCancel.addEventListener('click',stopVoice);
+
+// Close overlay on backdrop click
+if(voiceOverlay){
+  voiceOverlay.addEventListener('click',e=>{
+    if(e.target===voiceOverlay)stopVoice();
+  });
+}
+
+/* ============================================
+   SHOW RESULTS
    ============================================ */
 function showResult(afterURL,beforeURL){
-  // Set image sources on the existing HTML elements
   const resultImg=document.getElementById('resultImage');
   const beforeImg=document.getElementById('beforeImage');
   const sliderAfter=document.getElementById('sliderAfter');
   const sliderBefore=document.getElementById('sliderBefore');
 
-  if(resultImg) resultImg.src=afterURL;
-  if(sliderAfter) sliderAfter.src=afterURL;
+  if(resultImg)resultImg.src=afterURL;
+  if(sliderAfter)sliderAfter.src=afterURL;
   if(beforeURL){
-    if(beforeImg) beforeImg.src=beforeURL;
-    if(sliderBefore) sliderBefore.src=beforeURL;
+    if(beforeImg)beforeImg.src=beforeURL;
+    if(sliderBefore)sliderBefore.src=beforeURL;
   }
 
-  // Show the result area, hide placeholder
+  // Show/hide the correct panels
   document.getElementById('resultPlaceholder').style.display='none';
   document.getElementById('loadingPanel').style.display='none';
   document.getElementById('resultArea').style.display='block';
+
+  // Reset slider init flag so it re-initialises with fresh images
+  const divider=document.getElementById('baDivider');
+  if(divider)divider._init=false;
 
   // Default to After tab
   switchTab('tabAfter');
@@ -188,6 +267,7 @@ function resetBtn(){
 }
 
 let _beforeURL=null;
+let _afterURL=null;
 
 form.addEventListener('submit',async(e)=>{
   e.preventDefault();
@@ -198,8 +278,10 @@ form.addEventListener('submit',async(e)=>{
   const prompt=promptTA.value.trim();
   if(!prompt){showToast('Please select or describe a style.',true);return;}
 
-  // Capture before URL
-  if(_beforeURL)URL.revokeObjectURL(_beforeURL);
+  // Revoke old object URLs to free memory
+  if(_beforeURL){URL.revokeObjectURL(_beforeURL);_beforeURL=null;}
+  if(_afterURL){URL.revokeObjectURL(_afterURL);_afterURL=null;}
+
   _beforeURL=URL.createObjectURL(file);
 
   submitBtn.disabled=true;
@@ -209,8 +291,13 @@ form.addEventListener('submit',async(e)=>{
   document.getElementById('resultArea').style.display='none';
   document.getElementById('loadingPanel').style.display='block';
 
+  // Reset loading bar animation
   const bar=document.getElementById('loadingBar');
   if(bar){bar.style.animation='none';bar.offsetHeight;bar.style.animation='';}
+
+  // Reset download checkbox for new generation
+  const downloadCheck=document.getElementById('downloadCheck');
+  if(downloadCheck)downloadCheck.checked=false;
 
   try{
     const res=await fetch('/decorate-room',{method:'POST',body:new FormData(form)});
@@ -231,35 +318,36 @@ form.addEventListener('submit',async(e)=>{
           const sd=await sr.json();
           if(sd.status==='done'){clearInterval(timer);resolve();}
           else if(sd.status==='error'){clearInterval(timer);reject(new Error(sd.error||'Generation failed'));}
-          else if(elapsed>=120000){clearInterval(timer);reject(new Error('Timed out'));}
+          else if(elapsed>=120000){clearInterval(timer);reject(new Error('Timed out after 2 minutes'));}
         }catch(err){clearInterval(timer);reject(err);}
       },3000);
     });
 
-    // Get result image
+    // Fetch result image
     const imgRes=await fetch('/result/'+job_id);
     if(!imgRes.ok)throw new Error('Failed to retrieve result image');
     const blob=await imgRes.blob();
-    const afterURL=URL.createObjectURL(blob);
+    _afterURL=URL.createObjectURL(blob);
 
-    showResult(afterURL,_beforeURL);
+    showResult(_afterURL,_beforeURL);
 
     submitBtn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Done!';
     submitBtn.classList.add('success');
     showToast('Your room has been transformed!');
 
-    // Download button
-    const downloadCheck=document.getElementById('downloadCheck');
+    // Wire up download button for this result
     if(downloadCheck){
-      downloadCheck.checked=false;
-      downloadCheck.addEventListener('change',function(){
-        if(this.checked){
+      // Clone to remove any previous listeners
+      const fresh=downloadCheck.cloneNode(true);
+      downloadCheck.parentNode.replaceChild(fresh,downloadCheck);
+      fresh.addEventListener('change',function(){
+        if(this.checked&&_afterURL){
           const a=document.createElement('a');
-          a.href=afterURL;
+          a.href=_afterURL;
           a.download='decogen-room.jpg';
           a.click();
         }
-      },{once:true});
+      });
     }
 
   }catch(err){
