@@ -63,8 +63,19 @@ def decorate_room():
     if not decoration_prompt:
         return jsonify({"error": "No style description provided"}), 400
 
+    # Check API key exists
+    api_key = os.getenv("BFL_API_KEY")
+    if not api_key:
+        return jsonify({"error": "BFL_API_KEY not configured on server"}), 500
+
     job_id = str(uuid.uuid4())
     image_bytes = room_image.read()
+
+    # Log image size for debugging
+    print(f"[DEBUG] Image size: {len(image_bytes)/1024/1024:.2f} MB")
+    print(f"[DEBUG] Prompt: {decoration_prompt}")
+    print(f"[DEBUG] Aspect ratio: {aspect_ratio}")
+    print(f"[DEBUG] API key present: {'yes' if api_key else 'no'}")
 
     jobs[job_id] = {"status": "processing"}
 
