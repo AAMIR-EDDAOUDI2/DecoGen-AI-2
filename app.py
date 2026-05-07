@@ -11,7 +11,7 @@ load_dotenv()
 
 app = Flask(__name__, static_folder="static", static_url_path="/static")
 
-# In-memory job store: { job_id: { status, result_bytes, error } }
+# In-memory job store: { job_id: { status, result_bytes, error, before_bytes } }
 jobs = {}
 
 
@@ -44,49 +44,63 @@ def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio):
         }
 
     except Exception as e:
+        print(f"[ERROR] Job {job_id} failed: {e}", flush=True)
         jobs[job_id] = {"status": "error", "error": str(e)}
 
 
 @app.route("/")
 def index():
-    return render_template("index.html")  # ← only change here
+    return render_template("index.html")
 
 
 @app.route("/decorate-room", methods=["POST"])
 def decorate_room():
-    room_image = request.files.get("room_image")
-    decoration_prompt = request.form.get("decoration_prompt", "").strip()
-    aspect_ratio = request.form.get("aspect_ratio", "16:9")
+    try:
+        room_image        = request.files.get("room_image")
+        decoration_prompt = request.form.get("decoration_prompt", "").strip()
+        aspect_ratio      = request.form.get("aspect_ratio", "16:9")
 
-    if not room_image:
-        return jsonify({"error": "No image uploaded"}), 400
-    if not decoration_prompt:
-        return jsonify({"error": "No style description provided"}), 400
+        # ── Validation ──────────────────────────────────────────
+        if not room_image:
+            return jsonify({"error": "No image uploaded"}), 400
+        if not decoration_prompt:
+            return jsonify({"error": "Please describe a style"}), 400
 
-    # Check API key exists
-    api_key = os.getenv("BFL_API_KEY")
-    if not api_key:
-        return jsonify({"error": "BFL_API_KEY not configured on server"}), 500
+        api_key = os.getenv("BFL_API_KEY")
+        if not api_key:
+            return jsonify({"error": "BFL_API_KEY not configured on server"}), 500
 
-    job_id = str(uuid.uuid4())
-    image_bytes = room_image.read()
+        # ── Read image once ──────────────────────────────────────
+        image_bytes = room_image.read()
+        if len(image_bytes) == 0:
+            return jsonify({"error": "Uploaded file is empty"}), 400
 
-    # Log image size for debugging
-    print(f"[DEBUG] Image size: {len(image_bytes)/1024/1024:.2f} MB")
-    print(f"[DEBUG] Prompt: {decoration_prompt}")
-    print(f"[DEBUG] Aspect ratio: {aspect_ratio}")
-    print(f"[DEBUG] API key present: {'yes' if api_key else 'no'}")
+        # ── Debug logs ───────────────────────────────────────────
+        print(f"[DEBUG] Image size:    {len(image_bytes)/1024/1024:.2f} MB", flush=True)
+        print(f"[DEBUG] Prompt:        {decoration_prompt}",                 flush=True)
+        print(f"[DEBUG] Aspect ratio:  {aspect_ratio}",                      flush=True)
+        print(f"[DEBUG] API key:       {'set' if api_key else 'MISSING'}",   flush=True)
 
-    jobs[job_id] = {"status": "processing"}
+        # ── Create job ───────────────────────────────────────────
+        job_id = str(uuid.uuid4())
+        jobs[job_id] = {
+            "status":       "processing",
+            "before_bytes": image_bytes   # store original for before/after
+        }
 
-    thread = threading.Thread(
-        target=run_generation,
-        args=(job_id, image_bytes, decoration_prompt, aspect_ratio),
-        daemon=True
-    )
-    thread.start()
+        thread = threading.Thread(
+            target=run_generation,
+            args=(job_id, image_bytes, decoration_prompt, aspect_ratio),
+            daemon=True
+        )
+        thread.start()
 
-    return jsonify({"job_id": job_id}), 202
+        print(f"[DEBUG] Job started: {job_id}", flush=True)
+        return jsonify({"job_id": job_id}), 202
+
+    except Exception as e:
+        print(f"[ERROR] /decorate-room crashed: {e}", flush=True)
+        return jsonify({"error": f"Server error: {str(e)}"}), 500
 
 
 @app.route("/status/<job_id>", methods=["GET"])
@@ -97,7 +111,8 @@ def check_status(job_id):
     if job["status"] == "processing":
         return jsonify({"status": "processing"}), 200
     if job["status"] == "error":
-        return jsonify({"status": "error", "error": job["error"]}), 200
+        return jsonify({"status": "error", "error": job.get("error", "Unknown error")}), 200
+    # done
     return jsonify({"status": "done"}), 200
 
 
@@ -106,11 +121,38 @@ def get_result(job_id):
     job = jobs.get(job_id)
     if not job or job["status"] != "done":
         return jsonify({"error": "Result not ready"}), 404
+
     return send_file(
         io.BytesIO(job["result_bytes"]),
         mimetype="image/jpeg",
-        as_attachment=False
+        as_attachment=False,
+        download_name="decogen-result.jpg"
     )
+
+
+@app.route("/before/<job_id>", methods=["GET"])
+def get_before(job_id):
+    """Serve the original uploaded image for the before/after comparison."""
+    job = jobs.get(job_id)
+    if not job or "before_bytes" not in job:
+        return jsonify({"error": "Original not found"}), 404
+
+    return send_file(
+        io.BytesIO(job["before_bytes"]),
+        mimetype="image/jpeg",
+        as_attachment=False,
+        download_name="decogen-original.jpg"
+    )
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return jsonify({"error": "Route not found"}), 404
+
+
+@app.errorhandler(500)
+def server_error(e):
+    return jsonify({"error": "Internal server error"}), 500
 
 
 if __name__ == "__main__":
