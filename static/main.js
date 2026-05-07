@@ -20,47 +20,47 @@ const translations = {
     'result.before': 'Before', 'result.after': 'After', 'result.compare': 'Compare',
     'ar.landscape': '16:9 — Landscape', 'ar.square': '1:1 — Square', 'ar.portrait': '9:16 — Portrait',
     'gallery.eyebrow': 'Showcase',
-'gallery.heading': 'AI Design Gallery',
-'gallery.subhead': 'Rooms reimagined by DecoGen AI.',
-'gallery.item1': 'Modern Minimal', 'gallery.item2': 'Cozy Retreat',
-'gallery.item3': 'Home Office', 'gallery.item4': 'Natural Warmth',
-'gallery.item5': 'Creative Studio', 'gallery.item6': 'Luxury Interior',
-'about.eyebrow': 'About the Project',
-'about.heading': 'Where AI Meets <em>Interior Design</em>',
-'about.desc': 'DecoGen AI uses advanced deep learning to reimagine living spaces. Upload a photo, choose a style, and receive a realistic concept render in seconds — powered by FLUX Kontext image models from Black Forest Labs.',
-'about.stat1': 'Model Engine', 'about.stat2': 'Design Styles',
-'about.stat3': 'Generation Time', 'about.stat4': 'PFE Project 2026',
+    'gallery.heading': 'AI Design Gallery',
+    'gallery.subhead': 'Rooms reimagined by DecoGen AI.',
+    'gallery.item1': 'Modern Minimal', 'gallery.item2': 'Cozy Retreat',
+    'gallery.item3': 'Home Office', 'gallery.item4': 'Natural Warmth',
+    'gallery.item5': 'Creative Studio', 'gallery.item6': 'Luxury Interior',
+    'about.eyebrow': 'About the Project',
+    'about.heading': 'Where AI Meets <em>Interior Design</em>',
+    'about.desc': 'DecoGen AI uses advanced deep learning to reimagine living spaces. Upload a photo, choose a style, and receive a realistic concept render in seconds — powered by FLUX Kontext image models from Black Forest Labs.',
+    'about.stat1': 'Model Engine', 'about.stat2': 'Design Styles',
+    'about.stat3': 'Generation Time', 'about.stat4': 'PFE Project 2026',
   },
   fr: {
     'nav.home': 'Accueil', 'nav.design': 'Créer',
     'nav.gallery': 'Galerie', 'nav.about': 'À propos',
-    'hero.eyebrow': 'Design d\'intérieur par IA',
+    'hero.eyebrow': "Design d'intérieur par IA",
     'hero.h1': 'Concevez votre espace <em>de rêve</em>',
     'hero.desc': 'Téléchargez une photo de votre pièce et laissez notre IA la réimaginer en quelques secondes.',
     'hero.cta': 'Commencer',
     'generate.eyebrow': 'Transformer', 'generate.heading': 'Concevez votre pièce',
     'generate.subhead': 'Téléchargez une photo et décrivez le style — notre IA fait le reste.',
     'generate.step1': 'Photo de la pièce', 'generate.step2': 'Choisir un style',
-    'generate.step3': 'Format d\'image',
+    'generate.step3': "Format d'image",
     'generate.placeholder': 'Décrivez votre style… ex : Scandinave avec chêne et lin.',
     'generate.submit': 'Générer le design',
     'pill.modern': 'Moderne', 'pill.cozy': 'Cosy', 'pill.office': 'Bureau',
     'pill.natural': 'Naturel', 'pill.creative': 'Créatif',
     'result.placeholder': 'Votre pièce transformée apparaît ici',
-    'result.loading': 'L\'IA réimagine votre pièce — environ 10–25 secondes…',
+    'result.loading': "L'IA réimagine votre pièce — environ 10–25 secondes…",
     'result.before': 'Avant', 'result.after': 'Après', 'result.compare': 'Comparer',
     'ar.landscape': '16:9 — Paysage', 'ar.square': '1:1 — Carré', 'ar.portrait': '9:16 — Portrait',
     'gallery.eyebrow': 'Vitrine',
-'gallery.heading': 'Galerie de designs IA',
-'gallery.subhead': 'Des pièces réinventées par DecoGen AI.',
-'gallery.item1': 'Minimalisme Moderne', 'gallery.item2': 'Cocon Douillet',
-'gallery.item3': 'Bureau à Domicile', 'gallery.item4': 'Chaleur Naturelle',
-'gallery.item5': 'Studio Créatif', 'gallery.item6': 'Intérieur Luxueux',
-'about.eyebrow': 'À propos du projet',
-'about.heading': "Là où l'IA rencontre <em>le design d'intérieur</em>",
-'about.desc': "DecoGen AI utilise le deep learning pour réimaginer les espaces de vie. Téléchargez une photo, choisissez un style et recevez un rendu réaliste en quelques secondes — propulsé par les modèles FLUX Kontext de Black Forest Labs.",
-'about.stat1': 'Moteur IA', 'about.stat2': 'Styles de design',
-'about.stat3': 'Temps de génération', 'about.stat4': 'Projet PFE 2026',
+    'gallery.heading': 'Galerie de designs IA',
+    'gallery.subhead': 'Des pièces réinventées par DecoGen AI.',
+    'gallery.item1': 'Minimalisme Moderne', 'gallery.item2': 'Cocon Douillet',
+    'gallery.item3': 'Bureau à Domicile', 'gallery.item4': 'Chaleur Naturelle',
+    'gallery.item5': 'Studio Créatif', 'gallery.item6': 'Intérieur Luxueux',
+    'about.eyebrow': 'À propos du projet',
+    'about.heading': "Là où l'IA rencontre <em>le design d'intérieur</em>",
+    'about.desc': "DecoGen AI utilise le deep learning pour réimaginer les espaces de vie. Téléchargez une photo, choisissez un style et recevez un rendu réaliste en quelques secondes — propulsé par les modèles FLUX Kontext de Black Forest Labs.",
+    'about.stat1': 'Moteur IA', 'about.stat2': 'Styles de design',
+    'about.stat3': 'Temps de génération', 'about.stat4': 'Projet PFE 2026',
   },
   ar: {
     'nav.home': 'الرئيسية', 'nav.design': 'تصميم الغرفة',
@@ -82,16 +82,16 @@ const translations = {
     'result.before': 'قبل', 'result.after': 'بعد', 'result.compare': 'مقارنة',
     'ar.landscape': '16:9 — أفقي', 'ar.square': '1:1 — مربع', 'ar.portrait': '9:16 — عمودي',
     'gallery.eyebrow': 'معرض الأعمال',
-'gallery.heading': 'معرض تصاميم الذكاء الاصطناعي',
-'gallery.subhead': 'غرف أعيد تصورها بواسطة DecoGen AI.',
-'gallery.item1': 'حد أدنى عصري', 'gallery.item2': 'ملاذ دافئ',
-'gallery.item3': 'مكتب منزلي', 'gallery.item4': 'دفء طبيعي',
-'gallery.item5': 'استوديو إبداعي', 'gallery.item6': 'ديكور فاخر',
-'about.eyebrow': 'حول المشروع',
-'about.heading': 'حيث يلتقي الذكاء الاصطناعي <em>بتصميم الديكور</em>',
-'about.desc': 'يستخدم DecoGen AI التعلم العميق لإعادة تخيّل المساحات. ارفع صورة، اختر أسلوباً، واحصل على تصور واقعي في ثوانٍ — مدعوم بنماذج FLUX Kontext من Black Forest Labs.',
-'about.stat1': 'محرك النموذج', 'about.stat2': 'أساليب التصميم',
-'about.stat3': 'وقت التوليد', 'about.stat4': 'مشروع PFE 2026',
+    'gallery.heading': 'معرض تصاميم الذكاء الاصطناعي',
+    'gallery.subhead': 'غرف أعيد تصورها بواسطة DecoGen AI.',
+    'gallery.item1': 'حد أدنى عصري', 'gallery.item2': 'ملاذ دافئ',
+    'gallery.item3': 'مكتب منزلي', 'gallery.item4': 'دفء طبيعي',
+    'gallery.item5': 'استوديو إبداعي', 'gallery.item6': 'ديكور فاخر',
+    'about.eyebrow': 'حول المشروع',
+    'about.heading': 'حيث يلتقي الذكاء الاصطناعي <em>بتصميم الديكور</em>',
+    'about.desc': 'يستخدم DecoGen AI التعلم العميق لإعادة تخيّل المساحات. ارفع صورة، اختر أسلوباً، واحصل على تصور واقعي في ثوانٍ — مدعوم بنماذج FLUX Kontext من Black Forest Labs.',
+    'about.stat1': 'محرك النموذج', 'about.stat2': 'أساليب التصميم',
+    'about.stat3': 'وقت التوليد', 'about.stat4': 'مشروع PFE 2026',
   }
 };
 
@@ -99,45 +99,41 @@ function applyLang(lang) {
   const html = document.documentElement;
   html.setAttribute('data-lang', lang);
   html.setAttribute('lang', lang);
-  // RTL for Arabic
   html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
 
   const t = translations[lang];
 
-  // Translate all [data-i18n] elements
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (t[key]) el.textContent = t[key];
   });
 
-  // Translate innerHTML (for elements with <em> tags etc.)
   document.querySelectorAll('[data-i18n-html]').forEach(el => {
     const key = el.getAttribute('data-i18n-html');
     if (t[key]) el.innerHTML = t[key];
   });
 
-  // Translate placeholders
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const key = el.getAttribute('data-i18n-placeholder');
     if (t[key]) el.placeholder = t[key];
   });
 
-  // Translate <option> elements
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    if (el.tagName === 'OPTION') {
-      const key = el.getAttribute('data-i18n');
-      if (t[key]) el.textContent = t[key];
-    }
-  });
+  // Prompt hint for non-English
+  const hint = document.getElementById('promptHint');
+  if (hint) {
+    hint.style.display = lang === 'en' ? 'none' : 'block';
+    hint.textContent = lang === 'fr'
+      ? '💡 Pour de meilleurs résultats, décrivez en anglais.'
+      : '💡 للحصول على أفضل النتائج، صِف بالإنجليزية.';
+  }
 
-  // Update active lang button
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
   });
 }
 
 // Init lang switcher
-(function() {
+(function () {
   let currentLang = 'en';
   applyLang(currentLang);
 
@@ -154,13 +150,11 @@ function applyLang(lang) {
   const html = document.documentElement;
   const input = document.getElementById('themeInput');
 
-  // App starts in dark mode — checkbox checked = dark
   let theme = html.getAttribute('data-theme') ||
     (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
   function applyTheme(t) {
     html.setAttribute('data-theme', t);
-    // checked = dark (moon), unchecked = light (sun)
     if (input) input.checked = (t === 'dark');
   }
 
@@ -208,8 +202,7 @@ mobileNav && mobileNav.querySelectorAll('a').forEach(a =>
   })
 );
 
-// ── STYLE PILLS ───────────────────────────────────────────────
-// ── STYLE CARD SELECTION ──
+// ── STYLE CARD SELECTION ──────────────────────────────────────
 document.querySelectorAll('.style-card').forEach(card => {
   card.addEventListener('click', () => {
     document.querySelectorAll('.style-card').forEach(c => c.classList.remove('selected'));
@@ -426,12 +419,14 @@ function pollStatus(jobId) {
   });
 }
 
-// ── FORM SUBMIT ───────────────────────────────────────────────
+// ── FORM ELEMENTS ─────────────────────────────────────────────
 const form              = document.getElementById('aiDesignForm');
 const submitBtn         = document.getElementById('submitBtn');
 const loadingPanel      = document.getElementById('loadingPanel');
 const resultPlaceholder = document.getElementById('resultPlaceholder');
+const promptTA          = document.getElementById('decoration_prompt'); // ✅ THE FIX
 
+// ── FORM SUBMIT ───────────────────────────────────────────────
 form && form.addEventListener('submit', async e => {
   e.preventDefault();
 
@@ -508,13 +503,10 @@ document.head.appendChild(styleTag);
 // ── REACTION PANEL ────────────────────────────────────────────
 document.querySelectorAll('.reaction-btn').forEach(btn => {
   btn.addEventListener('click', function () {
-
-    /* toggle reacted state — only one active at a time */
     const wasReacted = this.classList.contains('reacted');
     document.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('reacted'));
     if (!wasReacted) this.classList.add('reacted');
 
-    /* burst — 6 emoji particles fan upward from click point */
     const emoji = this.dataset.emoji;
     const rect  = this.getBoundingClientRect();
     const cx    = rect.left + rect.width  / 2;
