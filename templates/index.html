@@ -136,11 +136,20 @@
           <img id="resultImage" src="" alt="AI-generated room design" loading="lazy">
         </div>
         <div class="result-actions">
-          <a id="downloadBtn" href="" download="decogen-room.jpg" class="btn-download">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Save Image
-          </a>
-        </div>
+  <div class="dl-container">
+    <label class="dl-label" id="downloadLabel">
+      <input type="checkbox" class="dl-input" id="downloadCheck"/>
+      <span class="dl-circle">
+        <svg class="dl-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 19V5m0 14-4-4m4 4 4-4"></path>
+        </svg>
+        <div class="dl-square"></div>
+      </span>
+      <p class="dl-title">Save Image</p>
+      <p class="dl-title">Saved ✓</p>
+    </label>
+  </div>
+</div>
       </div>
     </div>
   </div>
