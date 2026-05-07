@@ -40,6 +40,7 @@
   --shadow-lg:0 12px 32px rgba(0,0,0,.40);
 }
 
+/* ── RESET ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:var(--nav-h);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 body{font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);min-height:100dvh;line-height:1.65;transition:background var(--transition),color var(--transition)}
@@ -72,14 +73,12 @@ h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;text-wrap:balance}
 .mobile-nav.open{display:flex}
 .mobile-nav a{font-size:var(--text-base);font-weight:500;color:var(--color-text-muted);padding:var(--space-2) 0;border-bottom:1px solid var(--color-divider);transition:color var(--transition)}
 .mobile-nav a:hover{color:var(--color-text)}
-@media(max-width:768px){.nav-links{display:none}.menu-toggle{display:flex}}
 
 /* ── KEYFRAMES ── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes loadProgress{0%{width:0%}60%{width:75%}90%{width:90%}100%{width:95%}}
 @keyframes dashArray{0%{stroke-dasharray:0 1 359 0}50%{stroke-dasharray:0 359 1 0}100%{stroke-dasharray:359 1 0 0}}
 @keyframes dashOffset{0%{stroke-dashoffset:365}100%{stroke-dashoffset:5}}
-@keyframes spin{to{transform:rotate(360deg)}}
 @keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}50%{box-shadow:0 0 0 8px rgba(192,57,43,0)}}
 @keyframes dl-pulse{0%{scale:.95;box-shadow:0 0 0 0 rgba(200,169,110,.7)}70%{scale:1;box-shadow:0 0 0 16px rgba(200,169,110,0)}100%{scale:.95;box-shadow:0 0 0 0 rgba(200,169,110,0)}}
 @keyframes dl-installing{from{height:0}to{height:100%}}
@@ -87,8 +86,6 @@ h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;text-wrap:balance}
 @keyframes dl-installed{100%{width:150px;border-color:var(--color-success)}}
 @keyframes dl-circleDelete{100%{opacity:0;visibility:hidden}}
 @keyframes dl-showMsg{100%{opacity:1;visibility:visible;right:56px}}
-
-/* ── ORB KEYFRAMES (original) ── */
 @keyframes rotation{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 @keyframes roundness{0%{filter:contrast(15)}20%{filter:contrast(3)}40%{filter:contrast(3)}60%{filter:contrast(15)}100%{filter:contrast(15)}}
 @keyframes colorize{0%{filter:hue-rotate(0deg)}20%{filter:hue-rotate(-30deg)}40%{filter:hue-rotate(-60deg)}60%{filter:hue-rotate(-90deg)}80%{filter:hue-rotate(-45deg)}100%{filter:hue-rotate(0deg)}}
@@ -139,7 +136,7 @@ textarea.form-input{resize:vertical;min-height:90px}
 .textarea-wrap{position:relative;margin-top:var(--space-3)}
 .textarea-wrap .form-input{padding-right:50px}
 .mic-btn{position:absolute;right:10px;bottom:10px;width:32px;height:32px;border-radius:var(--radius-full);background:var(--color-accent);color:#fff;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;transition:background var(--transition),transform var(--transition);z-index:2}
-.mic-btn svg{stroke:white}
+.mic-btn svg{pointer-events:none}
 .mic-btn:hover{background:var(--color-accent-hover);transform:scale(1.08)}
 .mic-btn.listening{background:#c0392b;animation:micPulse 1s ease-in-out infinite}
 
@@ -153,11 +150,11 @@ textarea.form-input{resize:vertical;min-height:90px}
 .loader-container{aspect-ratio:16/9;background:var(--color-surface-offset);border-radius:var(--radius-xl);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-6)}
 .loader-subtext{font-size:var(--text-sm);color:var(--color-text-muted);text-align:center;letter-spacing:.04em}
 
-/* Loading SVG (renamed from .loader to .loader-svg to avoid conflict with orb) */
+/* ── LOADING SVG SPINNER (separate from .loader orb) ── */
 .loader-svg{width:8em;height:8em;transform:translateZ(0)}
 .loader-svg path{stroke-width:0.6px;fill:none;animation:dashArray 4s ease-in-out infinite,dashOffset 4s linear infinite}
 [data-theme="light"] .loader-svg path{stroke:var(--color-primary)}
-[data-theme="dark"]  .loader-svg path{stroke:var(--color-accent)}
+[data-theme="dark"] .loader-svg path{stroke:var(--color-accent)}
 
 /* ── RESULT AREA ── */
 #resultArea{background:var(--color-surface-offset);border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);overflow:hidden}
@@ -267,7 +264,7 @@ footer a:hover{opacity:.75}
 .voice-cancel{padding:10px 20px;background:transparent;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.2);border-radius:var(--radius-full);font-size:var(--text-sm);cursor:pointer;transition:color var(--transition),border-color var(--transition)}
 .voice-cancel:hover{color:#fff;border-color:rgba(255,255,255,.5)}
 
-/* ── ORIGINAL ORB ── */
+/* ── ORB (voice overlay animation) ── */
 .loader{--color-one:#ffbf48;--color-two:#be4a1d;--color-three:#ffbf4780;--color-four:#bf4a1d80;--color-five:#ffbf4740;--time-animation:2s;--size:1;position:relative;border-radius:50%;transform:scale(var(--size));box-shadow:0 0 25px 0 var(--color-three),0 20px 50px 0 var(--color-four);animation:colorize calc(var(--time-animation) * 3) ease-in-out infinite}
 .loader::before{content:"";position:absolute;top:0;left:0;width:100px;height:100px;border-radius:50%;border-top:solid 1px var(--color-one);border-bottom:solid 1px var(--color-two);background:linear-gradient(180deg,var(--color-five),var(--color-four));box-shadow:inset 0 10px 10px 0 var(--color-three),inset 0 -10px 10px 0 var(--color-four)}
 .loader .box{width:100px;height:100px;background:linear-gradient(180deg,var(--color-one) 30%,var(--color-two) 70%);mask:url(#clipping);-webkit-mask:url(#clipping)}
@@ -282,18 +279,16 @@ footer a:hover{opacity:.75}
 .loader svg #clipping polygon:nth-child(6){transform-origin:60% 40%;animation:rotation var(--time-animation) linear infinite}
 .loader svg #clipping polygon:nth-child(7){transform-origin:60% 40%;animation:rotation var(--time-animation) linear infinite;animation-delay:calc(var(--time-animation) / -1.5)}
 
-/* ════════════════════════════
-   RESPONSIVE — TABLET
-   ════════════════════════════ */
+/* ══ RESPONSIVE — TABLET ══ */
 @media(max-width:1024px){
   .generate-inner{grid-template-columns:1fr 1.2fr;gap:var(--space-12)}
   .about-inner{gap:var(--space-12)}
 }
 
-/* ════════════════════════════
-   RESPONSIVE — MOBILE
-   ════════════════════════════ */
+/* ══ RESPONSIVE — MOBILE ══ */
 @media(max-width:768px){
+  .nav-links{display:none}
+  .menu-toggle{display:flex}
   .generate-inner{grid-template-columns:1fr;gap:var(--space-10)}
   .about-inner{grid-template-columns:1fr;gap:var(--space-10)}
   #generate{padding:var(--space-12) var(--space-4)}
@@ -314,9 +309,7 @@ footer a:hover{opacity:.75}
   .hero-content{padding:0 var(--space-4)}
 }
 
-/* ════════════════════════════
-   RESPONSIVE — SMALL MOBILE
-   ════════════════════════════ */
+/* ══ RESPONSIVE — SMALL MOBILE ══ */
 @media(max-width:480px){
   .gallery-grid{grid-template-columns:1fr}
   .style-pills{gap:var(--space-1)}
