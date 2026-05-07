@@ -88,25 +88,13 @@
               <button type="button" class="style-pill" data-prompt="Design an artistic space with bold colors eclectic art and unique furniture">Creative</button>
             </div>
 
-            <!-- Textarea wrapper — position:relative is REQUIRED for mic button -->
-            <div style="position:relative;margin-top:var(--space-3)">
-              <textarea
-                class="form-input"
-                id="decoration_prompt"
-                name="decoration_prompt"
-                rows="3"
+            <!-- Textarea + mic -->
+            <div class="textarea-wrap">
+              <textarea class="form-input" id="decoration_prompt" name="decoration_prompt" rows="3"
                 placeholder="Or describe your own style… e.g. Scandinavian with warm oak and linen."
-                style="padding-right:48px"
                 required></textarea>
-
-              <!-- MIC BUTTON — sits inside the textarea wrapper -->
-              <button
-                type="button"
-                class="mic-btn"
-                id="micBtn"
-                title="Speak your prompt"
-                aria-label="Voice input">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+              <button type="button" class="mic-btn" id="micBtn" title="Voice input" aria-label="Start voice input">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                   <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
                   <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/>
                 </svg>
@@ -128,7 +116,6 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
             Generate Design
           </button>
-
         </form>
       </div>
     </div>
@@ -146,15 +133,12 @@
       <div id="loadingPanel" style="display:none" aria-live="polite">
         <div class="loading-bar"><div class="loading-bar-fill" id="loadingBar"></div></div>
         <div class="loader-container">
-          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="loader">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="loader-svg">
             <path pathLength="360" d="M 56.3752 2 H 7.6248 C 7.2797 2 6.9999 2.268 6.9999 2.5985 V 61.4015 C 6.9999 61.7321 7.2797 62 7.6248 62 H 56.3752 C 56.7203 62 57.0001 61.7321 57.0001 61.4015 V 2.5985 C 57.0001 2.268 56.7203 2 56.3752 2 Z"></path>
             <path pathLength="360" d="M 55.7503 60.803 H 8.2497 V 3.1971 H 55.7503 V 60.803 Z"></path>
             <path pathLength="360" d="M 29.7638 47.6092 C 29.4971 47.3997 29.1031 47.4368 28.8844 47.6925 C 28.6656 47.9481 28.7046 48.3253 28.9715 48.5348 L 32.8768 51.6023 C 32.9931 51.6936 33.1333 51.738 33.2727 51.738 C 33.4533 51.738 33.6328 51.6634 33.7562 51.519 C 33.975 51.2634 33.936 50.8862 33.6692 50.6767 L 29.7638 47.6092 Z"></path>
             <path pathLength="360" d="M 42.3557 34.9046 C 38.4615 34.7664 36.9617 37.6749 36.7179 39.2213 L 35.8587 44.2341 C 35.8029 44.5604 36.0335 44.8681 36.374 44.9218 C 36.4084 44.9272 36.4424 44.9299 36.476 44.9299 C 36.7766 44.9299 37.0415 44.7214 37.0918 44.4281 L 37.9523 39.4076 C 37.9744 39.2673 38.544 35.9737 42.311 36.1007 C 42.6526 36.1124 42.9454 35.8544 42.9577 35.524 C 42.9702 35.1937 42.7006 34.9164 42.3557 34.9046 Z"></path>
             <path pathLength="360" d="M 13.1528 55.5663 C 13.1528 55.8968 13.4326 56.1648 13.7777 56.1648 H 50.2223 C 50.5674 56.1648 50.8472 55.8968 50.8472 55.5663 V 8.4339 C 50.8472 8.1034 50.5674 7.8354 50.2223 7.8354 H 13.7777 C 13.4326 7.8354 13.1528 8.1034 13.1528 8.4339 V 55.5663 Z"></path>
-            <path pathLength="360" d="M 25.3121 26.5567 C 24.9717 27.4941 25.0042 28.8167 25.0634 29.5927 C 23.6244 29.8484 20.3838 31.0913 18.9478 37.0352 C 18.5089 37.5603 17.8746 38.1205 17.2053 38.7114 C 16.2598 39.546 15.2351 40.4515 14.4027 41.5332 V 20.5393 H 23.7222 C 23.7178 22.6817 24.1666 25.4398 25.3121 26.5567 Z"></path>
-            <path pathLength="360" d="M 49.5975 43.4819 C 48.3838 39.1715 46.3138 33.6788 43.4709 29.7736 C 42.6161 28.5995 40.7095 27.0268 39.6852 26.1818 L 39.6352 26.1405 C 39.4176 24.783 39.1158 22.5803 38.8461 20.5394 H 49.5976 V 43.4819 Z"></path>
-            <path pathLength="360" d="M 49.5975 9.0325 V 19.3422 H 38.689 C 38.5937 18.6105 38.5061 17.9301 38.4329 17.3569 C 38.2063 15.5828 37.4422 13.9868 36.2237 12.7413 C 34.8748 11.3624 33.2514 10.6633 31.3984 10.6633 C 27.3688 10.6633 25.8233 13.5309 25.556 15.0901 C 25.1526 15.5932 24.3175 16.7856 23.916 18.46 C 23.8568 18.7069 23.8106 19.0066 23.7778 19.3421 H 14.4025 V 9.0323 H 49.5975 Z"></path>
           </svg>
           <p class="loader-subtext">AI is reimagining your room — usually 10–25 seconds…</p>
         </div>
@@ -225,11 +209,7 @@
         </div>
 
       </div>
-      <!-- end #resultArea -->
-
     </div>
-    <!-- end .result-panel -->
-
   </div>
 </section>
 
@@ -295,14 +275,35 @@
 
 <div class="toast" id="toast" role="alert" aria-live="assertive"></div>
 
-<!-- VOICE OVERLAY -->
+<!-- VOICE OVERLAY — original orb animation -->
 <div class="voice-overlay" id="voiceOverlay" aria-modal="true" role="dialog" aria-label="Voice input">
   <p class="voice-label" id="voiceLabel">Listening…</p>
-  <div class="voice-orb-wrap" id="voiceOrb">
-    <div class="orb-box"></div>
+
+  <div class="loader" id="voiceOrb">
+    <svg width="100" height="100" viewBox="0 0 100 100">
+      <defs>
+        <mask id="clipping">
+          <polygon points="0,0 100,0 100,100 0,100" fill="black"></polygon>
+          <polygon points="25,25 75,25 50,75" fill="white"></polygon>
+          <polygon points="50,25 75,75 25,75" fill="white"></polygon>
+          <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+          <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+          <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+          <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+        </mask>
+      </defs>
+    </svg>
+    <div class="box"></div>
   </div>
+
   <p class="voice-transcript" id="voiceTranscript">Say your room style…</p>
-  <button class="voice-cancel" id="voiceCancel" type="button">Cancel</button>
+  <div class="voice-actions">
+    <button class="voice-confirm" id="voiceConfirm" type="button">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      Use this
+    </button>
+    <button class="voice-cancel" id="voiceCancel" type="button">Cancel</button>
+  </div>
 </div>
 
 <script src="{{ url_for('static', filename='main.js') }}"></script>
