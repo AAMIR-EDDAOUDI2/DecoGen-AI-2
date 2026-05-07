@@ -38,6 +38,7 @@
   --shadow-md:0 4px 12px rgba(0,0,0,.30);
   --shadow-lg:0 12px 32px rgba(0,0,0,.40);
 }
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:var(--nav-h);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 body{font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);min-height:100dvh;line-height:1.65;transition:background var(--transition),color var(--transition)}
@@ -75,19 +76,12 @@ h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;text-wrap:balance}
 @media(max-width:768px){.nav-links{display:none}.menu-toggle{display:flex}}
 
 /* ============================================
-   ANIMATIONS & KEYFRAMES
+   KEYFRAMES
    ============================================ */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes loadProgress{0%{width:0%}60%{width:75%}90%{width:90%}100%{width:95%}}
-@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
-@keyframes transform-animation{0%{transform:translate(-55%)}100%{transform:translate(55%)}}
-@keyframes opacity-animation{0%,100%{opacity:0}15%{opacity:1}65%{opacity:0}}
-@keyframes loader-letter-anim{
-  0%{opacity:0}
-  5%{opacity:1;text-shadow:0 0 8px var(--color-accent);transform:scale(1.1) translateY(-2px)}
-  20%{opacity:0.2}
-  100%{opacity:0}
-}
+@keyframes dashArray{0%{stroke-dasharray:0 1 359 0}50%{stroke-dasharray:0 359 1 0}100%{stroke-dasharray:359 1 0 0}}
+@keyframes dashOffset{0%{stroke-dashoffset:365}100%{stroke-dashoffset:5}}
 
 /* ============================================
    HERO
@@ -137,119 +131,218 @@ textarea.form-input{resize:vertical;min-height:90px}
 .btn-submit:disabled{opacity:.55;cursor:not-allowed}
 .btn-submit.success{background:#437a22}
 .btn-submit.error{background:#9b2020}
-.result-panel{position:sticky;top:calc(var(--nav-h) + var(--space-6))}
-.result-placeholder{aspect-ratio:16/9;background:var(--color-surface-offset);border:1px dashed var(--color-border);border-radius:var(--radius-xl);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-3);color:var(--color-text-faint)}
-.result-placeholder svg{width:40px;height:40px;opacity:.4}
-.result-placeholder p{font-size:var(--text-sm)}
-.loading-bar{height:2px;background:var(--color-surface-offset);border-radius:var(--radius-full);overflow:hidden;margin-bottom:var(--space-4)}
-.loading-bar-fill{height:100%;background:var(--color-accent);border-radius:var(--radius-full);width:0%;animation:loadProgress 20s ease forwards}
-.result-image-wrap{border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-lg);width:100%;background:var(--color-surface-offset);position:relative}
-.result-image-wrap img{width:100%;height:100%;object-fit:cover;display:block}
-.result-actions{display:flex;justify-content:center;margin-top:var(--space-4)}
 
 /* ============================================
-   LOADER — GENERATING ANIMATION
+   RESULT PANEL
    ============================================ */
+.result-panel{position:sticky;top:calc(var(--nav-h) + var(--space-6))}
+
+/* Placeholder (before generation) */
+.result-placeholder{
+  aspect-ratio:16/9;
+  background:var(--color-surface-offset);
+  border:1px dashed var(--color-border);
+  border-radius:var(--radius-xl);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:var(--space-3);color:var(--color-text-faint);
+}
+.result-placeholder svg{width:40px;height:40px;opacity:.4}
+.result-placeholder p{font-size:var(--text-sm)}
+
+/* Loading bar */
+.loading-bar{height:2px;background:var(--color-surface-offset);border-radius:var(--radius-full);overflow:hidden;margin-bottom:var(--space-4)}
+.loading-bar-fill{height:100%;background:var(--color-accent);border-radius:var(--radius-full);width:0%;animation:loadProgress 20s ease forwards}
+
+/* Loading container */
 .loader-container{
   aspect-ratio:16/9;
   background:var(--color-surface-offset);
   border-radius:var(--radius-xl);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:var(--space-6);
 }
-.loader-subtext{
-  font-size:var(--text-sm);
-  color:var(--color-text-muted);
-  text-align:center;
-  letter-spacing:.04em;
-}
-.loader{
-  width:8em;
-  height:8em;
-  transform:translateZ(0);
-  will-change:transform;
-}
-.loader path{
-  stroke-width:0.6px;
-  fill:none;
-  will-change:stroke-dasharray,stroke-dashoffset;
-  animation:
-    dashArray 4s ease-in-out infinite,
-    dashOffset 4s linear infinite;
-}
+.loader-subtext{font-size:var(--text-sm);color:var(--color-text-muted);text-align:center;letter-spacing:.04em}
+.loader{width:8em;height:8em;transform:translateZ(0);will-change:transform}
+.loader path{stroke-width:0.6px;fill:none;will-change:stroke-dasharray,stroke-dashoffset;animation:dashArray 4s ease-in-out infinite,dashOffset 4s linear infinite}
 [data-theme="light"] .loader path{stroke:var(--color-primary)}
 [data-theme="dark"]  .loader path{stroke:var(--color-accent)}
-@keyframes dashArray{
-  0%  {stroke-dasharray:0 1 359 0}
-  50% {stroke-dasharray:0 359 1 0}
-  100%{stroke-dasharray:359 1 0 0}
-}
-@keyframes dashOffset{
-  0%  {stroke-dashoffset:365}
-  100%{stroke-dashoffset:5}
+
+/* Result area wrapper — NO aspect-ratio here, children define height */
+.result-image-wrap{
+  width:100%;
+  border-radius:var(--radius-xl);
+  overflow:hidden;
+  box-shadow:var(--shadow-lg);
+  background:var(--color-surface-offset);
+  position:relative;
 }
 
 /* ============================================
-   DOWNLOAD BUTTON
+   BEFORE / AFTER TABS
    ============================================ */
+.ba-tabs{
+  display:flex;
+  gap:var(--space-1);
+  background:var(--color-surface-offset);
+  padding:var(--space-1);
+  /* no border-radius on top — wrap clips it */
+}
+.ba-tab{
+  flex:1;
+  padding:10px var(--space-3);
+  font-size:var(--text-sm);
+  font-family:var(--font-body);
+  font-weight:500;
+  letter-spacing:.03em;
+  color:var(--color-text-muted);
+  background:transparent;
+  border:none;
+  border-radius:var(--radius-md);
+  cursor:pointer;
+  transition:background var(--transition),color var(--transition);
+}
+.ba-tab.active{
+  background:var(--color-surface);
+  color:var(--color-accent);
+  box-shadow:var(--shadow-sm);
+}
+.ba-tab:hover:not(.active){color:var(--color-text)}
+
+/* ============================================
+   BEFORE / AFTER IMAGE PANELS
+   ============================================ */
+.ba-panel{display:none;position:relative}
+.ba-panel.active{display:block}
+
+/* The actual result images — aspect-ratio lives HERE */
+.ba-img{
+  display:block;
+  width:100%;
+  aspect-ratio:16/9;
+  object-fit:cover;
+}
+
+/* ============================================
+   BADGE OVERLAY
+   ============================================ */
+.ba-badge{
+  position:absolute;
+  top:var(--space-3);
+  left:var(--space-3);
+  background:rgba(0,0,0,.55);
+  color:#fff;
+  font-size:var(--text-xs);
+  font-family:var(--font-body);
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:var(--space-1) var(--space-3);
+  border-radius:var(--radius-full);
+  backdrop-filter:blur(6px);
+  pointer-events:none;
+  z-index:2;
+}
+.ba-badge--after{background:rgba(200,169,110,.85)}
+
+/* ============================================
+   COMPARE SLIDER PANEL
+   ============================================ */
+.ba-slider-wrap{
+  position:relative;
+  width:100%;
+  aspect-ratio:16/9;
+  overflow:hidden;
+  cursor:col-resize;
+  user-select:none;
+  touch-action:none;
+  background:var(--color-surface-offset);
+}
+
+/* Base image (After) — fills entire slider */
+.ba-slider-after{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  position:absolute;
+  inset:0;
+}
+
+/* Clipped overlay (Before) */
+.ba-slider-before-clip{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  width:50%; /* controlled by JS */
+}
+.ba-slider-before{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  position:absolute;
+  inset:0;
+  /* stretch to full panel width so clip reveals correctly */
+  min-width:100vw;
+  max-width:none;
+}
+
+/* Divider line */
+.ba-divider{
+  position:absolute;
+  top:0;bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:3px;
+  background:#fff;
+  box-shadow:0 0 8px rgba(0,0,0,.4);
+  display:flex;align-items:center;justify-content:center;
+  z-index:10;
+  cursor:col-resize;
+}
+.ba-handle{
+  width:40px;height:40px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 2px 12px rgba(0,0,0,.25);
+  display:flex;align-items:center;justify-content:center;
+  color:#333;
+  flex-shrink:0;
+  transition:transform .15s ease;
+}
+.ba-divider:hover .ba-handle{transform:scale(1.12)}
+.ba-divider:focus-visible{outline:2px solid var(--color-accent);outline-offset:2px}
+
+/* ============================================
+   RESULT ACTIONS (download)
+   ============================================ */
+.result-actions{display:flex;justify-content:center;margin-top:var(--space-4)}
 .dl-container{display:flex;justify-content:center;align-items:center}
 .dl-label{
-  background-color:transparent;
-  border:2px solid var(--color-accent);
-  display:flex;align-items:center;
-  border-radius:var(--radius-full);
-  width:160px;cursor:pointer;
-  transition:all 0.4s ease;
-  padding:5px;position:relative;
+  background-color:transparent;border:2px solid var(--color-accent);
+  display:flex;align-items:center;border-radius:var(--radius-full);
+  width:160px;cursor:pointer;transition:all 0.4s ease;padding:5px;position:relative;
 }
 .dl-label::before{
-  content:'';position:absolute;
-  top:0;bottom:0;left:0;right:0;
-  background-color:var(--color-accent);
-  width:8px;height:8px;
-  transition:all 0.4s ease;
-  border-radius:var(--radius-full);
+  content:'';position:absolute;top:0;bottom:0;left:0;right:0;
+  background-color:var(--color-accent);width:8px;height:8px;
+  transition:all 0.4s ease;border-radius:var(--radius-full);
   margin:auto;opacity:0;visibility:hidden;
 }
 .dl-input{display:none}
 .dl-title{
-  font-size:var(--text-sm);
-  color:var(--color-text);
-  transition:all 0.4s ease;
-  position:absolute;right:18px;bottom:14px;
-  text-align:center;font-weight:500;
+  font-size:var(--text-sm);color:var(--color-text);transition:all 0.4s ease;
+  position:absolute;right:18px;bottom:14px;text-align:center;font-weight:500;
 }
 .dl-title:last-child{opacity:0;visibility:hidden}
 .dl-circle{
-  height:45px;width:45px;
-  border-radius:var(--radius-full);
-  background-color:var(--color-accent);
-  display:flex;justify-content:center;align-items:center;
-  transition:all 0.4s ease;position:relative;
-  box-shadow:0 0 0 0 rgba(200,169,110,0.5);
-  overflow:hidden;
+  height:45px;width:45px;border-radius:var(--radius-full);background-color:var(--color-accent);
+  display:flex;justify-content:center;align-items:center;transition:all 0.4s ease;
+  position:relative;box-shadow:0 0 0 0 rgba(200,169,110,0.5);overflow:hidden;
 }
-.dl-circle .dl-icon{
-  color:#fff;width:30px;
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  transition:all 0.4s ease;
-}
-.dl-circle .dl-square{
-  aspect-ratio:1;width:15px;border-radius:2px;
-  background-color:#fff;opacity:0;visibility:hidden;
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  transition:all 0.4s ease;
-}
-.dl-circle::before{
-  content:'';position:absolute;left:0;top:0;
-  background-color:var(--color-accent-hover);
-  width:100%;height:0;transition:all 0.4s ease;
-}
+.dl-circle .dl-icon{color:#fff;width:30px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:all 0.4s ease}
+.dl-circle .dl-square{aspect-ratio:1;width:15px;border-radius:2px;background-color:#fff;opacity:0;visibility:hidden;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:all 0.4s ease}
+.dl-circle::before{content:'';position:absolute;left:0;top:0;background-color:var(--color-accent-hover);width:100%;height:0;transition:all 0.4s ease}
 .dl-label:has(.dl-input:checked){width:57px;animation:dl-installed 0.4s ease 3.5s forwards}
 .dl-label:has(.dl-input:checked)::before{animation:dl-rotate 3s ease-in-out 0.4s forwards}
 .dl-input:checked + .dl-circle{animation:dl-pulse 1s forwards,dl-circleDelete 0.2s ease 3.5s forwards;rotate:180deg}
@@ -258,17 +351,9 @@ textarea.form-input{resize:vertical;min-height:90px}
 .dl-input:checked ~ .dl-circle .dl-square{opacity:1;visibility:visible}
 .dl-input:checked ~ .dl-title{opacity:0;visibility:hidden}
 .dl-input:checked ~ .dl-title:last-child{animation:dl-showMsg 0.4s ease 3.5s forwards}
-@keyframes dl-pulse{
-  0%{scale:.95;box-shadow:0 0 0 0 rgba(200,169,110,0.7)}
-  70%{scale:1;box-shadow:0 0 0 16px rgba(200,169,110,0)}
-  100%{scale:.95;box-shadow:0 0 0 0 rgba(200,169,110,0)}
-}
+@keyframes dl-pulse{0%{scale:.95;box-shadow:0 0 0 0 rgba(200,169,110,0.7)}70%{scale:1;box-shadow:0 0 0 16px rgba(200,169,110,0)}100%{scale:.95;box-shadow:0 0 0 0 rgba(200,169,110,0)}}
 @keyframes dl-installing{from{height:0}to{height:100%}}
-@keyframes dl-rotate{
-  0%{transform:rotate(-90deg) translate(27px) rotate(0);opacity:1;visibility:visible}
-  99%{transform:rotate(270deg) translate(27px) rotate(270deg);opacity:1;visibility:visible}
-  100%{opacity:0;visibility:hidden}
-}
+@keyframes dl-rotate{0%{transform:rotate(-90deg) translate(27px) rotate(0);opacity:1;visibility:visible}99%{transform:rotate(270deg) translate(27px) rotate(270deg);opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}
 @keyframes dl-installed{100%{width:150px;border-color:var(--color-success)}}
 @keyframes dl-circleDelete{100%{opacity:0;visibility:hidden}}
 @keyframes dl-showMsg{100%{opacity:1;visibility:visible;right:56px}}
@@ -287,7 +372,7 @@ textarea.form-input{resize:vertical;min-height:90px}
 .gallery-overlay span{font-family:var(--font-body);font-size:var(--text-xs);font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.8)}
 
 /* ============================================
-   ABOUT
+   ABOUT (light mode)
    ============================================ */
 #about{padding:clamp(var(--space-16),8vw,var(--space-24)) clamp(var(--space-6),5vw,var(--space-16));background:var(--color-text);color:var(--color-bg);position:relative;overflow:hidden}
 #about::before{content:'';position:absolute;top:-40%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(200,169,110,.08) 0%,transparent 70%);pointer-events:none}
@@ -303,15 +388,18 @@ textarea.form-input{resize:vertical;min-height:90px}
 
 /* ============================================
    ABOUT — DARK MODE FIX
-   The #about section uses background:var(--color-text) which flips to
-   light in dark mode, making text invisible. Force readable colours.
    ============================================ */
-[data-theme="dark"] #about{background:#c8a96e10;border-top:1px solid rgba(200,169,110,.15)}
+[data-theme="dark"] #about{
+  background:var(--color-surface);
+  border-top:1px solid var(--color-border);
+  border-bottom:1px solid var(--color-border);
+}
+[data-theme="dark"] #about::before{background:radial-gradient(circle,rgba(200,169,110,.05) 0%,transparent 70%)}
 [data-theme="dark"] .about-text h2{color:var(--color-text)}
 [data-theme="dark"] .about-text h2 em{color:var(--color-accent)}
 [data-theme="dark"] .about-text p{color:var(--color-text-muted)}
 [data-theme="dark"] #about .eyebrow{color:var(--color-accent)}
-[data-theme="dark"] .stat-card{background:var(--color-surface);border-color:rgba(200,169,110,.2)}
+[data-theme="dark"] .stat-card{background:var(--color-surface-2);border-color:rgba(200,169,110,.2)}
 [data-theme="dark"] .stat-num{color:var(--color-accent)}
 [data-theme="dark"] .stat-label{color:var(--color-text-muted)}
 
@@ -331,130 +419,3 @@ footer a:hover{opacity:.75}
 .toast{position:fixed;bottom:var(--space-6);right:var(--space-6);z-index:200;padding:14px 20px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);font-size:var(--text-sm);max-width:320px;transform:translateY(20px);opacity:0;transition:transform var(--transition),opacity var(--transition);pointer-events:none}
 .toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
 .toast.toast-error{border-color:rgba(155,32,32,.3)}
-
-/* ============================================
-   BEFORE / AFTER TABS
-   ============================================ */
-.ba-tabs{
-  display:flex;
-  gap:var(--space-1);
-  background:var(--color-surface-offset);
-  border-radius:var(--radius-lg);
-  padding:var(--space-1);
-  margin-bottom:var(--space-3);
-}
-.ba-tab{
-  flex:1;
-  padding:var(--space-2) var(--space-3);
-  font-size:var(--text-sm);
-  font-family:var(--font-body);
-  font-weight:500;
-  letter-spacing:.03em;
-  color:var(--color-text-muted);
-  background:transparent;
-  border:none;
-  border-radius:var(--radius-md);
-  cursor:pointer;
-  transition:background var(--transition),color var(--transition);
-}
-.ba-tab.active,.ba-tab[aria-selected="true"]{
-  background:var(--color-surface);
-  color:var(--color-accent);
-  box-shadow:var(--shadow-sm);
-}
-.ba-tab:hover:not(.active){color:var(--color-text)}
-
-/* ============================================
-   BEFORE / AFTER PANELS
-   ============================================ */
-.ba-panel{display:none}
-.ba-panel.active{display:block}
-
-/* ============================================
-   BADGE OVERLAY ON IMAGE
-   ============================================ */
-.ba-badge{
-  position:absolute;
-  top:var(--space-3);
-  left:var(--space-3);
-  background:rgba(0,0,0,.55);
-  color:#fff;
-  font-size:var(--text-xs);
-  font-family:var(--font-body);
-  font-weight:600;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  padding:var(--space-1) var(--space-3);
-  border-radius:var(--radius-full);
-  backdrop-filter:blur(6px);
-  pointer-events:none;
-  z-index:2;
-}
-.ba-badge--after{
-  background:rgba(200,169,110,.85);
-}
-
-/* ============================================
-   BEFORE / AFTER COMPARISON SLIDER
-   ============================================ */
-.ba-slider-wrap{
-  position:relative;
-  overflow:hidden;
-  border-radius:var(--radius-xl);
-  user-select:none;
-  touch-action:none;
-  cursor:col-resize;
-  aspect-ratio:16/9;
-  background:var(--color-surface-offset);
-  box-shadow:var(--shadow-lg);
-}
-.ba-slider-img{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  pointer-events:none;
-}
-.ba-slider-clip{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
-  width:50%;
-}
-.ba-slider-clip .ba-slider-img{
-  width:100vw;
-  max-width:unset;
-}
-.ba-divider{
-  position:absolute;
-  top:0;bottom:0;
-  left:50%;
-  transform:translateX(-50%);
-  width:3px;
-  background:#fff;
-  box-shadow:0 0 8px rgba(0,0,0,.4);
-  cursor:col-resize;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:10;
-}
-.ba-handle{
-  width:40px;height:40px;
-  border-radius:50%;
-  background:#fff;
-  box-shadow:0 2px 12px rgba(0,0,0,.25);
-  display:flex;
-  align-items:center;justify-content:center;
-  color:#333;
-  transition:transform .15s ease;
-  flex-shrink:0;
-}
-.ba-divider:hover .ba-handle,
-.ba-divider:focus .ba-handle{transform:scale(1.15)}
-.ba-divider:focus-visible{
-  outline:2px solid var(--color-accent);
-  outline-offset:2px;
-}
