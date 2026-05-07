@@ -98,7 +98,6 @@ const placeholder=document.getElementById('resultPlaceholder');
 const loadingPanel=document.getElementById('loadingPanel');
 const resultArea=document.getElementById('resultArea');
 const resultImage=document.getElementById('resultImage');
-const downloadBtn=document.getElementById('downloadBtn');
 
 function resetBtn(){
   submitBtn.disabled=false;
@@ -129,7 +128,6 @@ form.addEventListener('submit',async(e)=>{
   const file=document.getElementById('room_image').files[0];
   if(!file){showToast('Please upload a room photo first.',true);return;}
 
-  // 👇 FILE SIZE WARNING — only new line added
   if(file.size > 5 * 1024 * 1024) showToast('Large image detected — resizing for best results…');
 
   const prompt=promptTA.value.trim();
@@ -160,12 +158,28 @@ form.addEventListener('submit',async(e)=>{
     const url=URL.createObjectURL(blob);
 
     resultImage.src=url;
-    downloadBtn.href=url;
     loadingPanel.style.display='none';
     resultArea.style.display='block';
     submitBtn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Generation Complete';
     submitBtn.classList.add('success');
     showToast('Your room has been transformed!');
+
+    /* ============================================
+       DOWNLOAD BUTTON — animated trigger
+       ============================================ */
+    const downloadCheck=document.getElementById('downloadCheck');
+    downloadCheck.checked=false; // reset state for new generation
+    downloadCheck.onchange=null; // clear any previous handler
+
+    downloadCheck.addEventListener('change',function handler(){
+      if(this.checked){
+        const a=document.createElement('a');
+        a.href=url;
+        a.download='decogen-room.jpg';
+        a.click();
+      }
+      downloadCheck.removeEventListener('change',handler);
+    },{once:true});
 
   }catch(err){
     loadingPanel.style.display='none';
@@ -184,11 +198,11 @@ form.addEventListener('submit',async(e)=>{
 (function keepAnimationsAlive(){
   let id;
   function tick(){
-    id = requestAnimationFrame(tick);
+    id=requestAnimationFrame(tick);
   }
   tick();
-  document.addEventListener('visibilitychange', () => {
-    if(document.hidden){ cancelAnimationFrame(id); }
-    else { tick(); }
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){cancelAnimationFrame(id);}
+    else{tick();}
   });
 })();
