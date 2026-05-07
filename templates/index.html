@@ -291,32 +291,36 @@
 
 <!-- VOICE OVERLAY -->
 <div class="voice-overlay" id="voiceOverlay" aria-modal="true" role="dialog" aria-label="Voice input">
+
   <p class="voice-label" id="voiceLabel">Listening…</p>
 
-  <!-- Orb -->
-  <div class="loader">
-    <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0">
-      <defs>
-        <mask id="clipping">
-          <polygon points="50,0 100,100 0,100" fill="white" style="filter:blur(7px)"></polygon>
-          <polygon points="50,0 100,100 0,100" fill="white" style="filter:blur(7px)"></polygon>
-          <polygon points="50,0 100,100 0,100" fill="white" style="filter:blur(7px)"></polygon>
-          <polygon points="50,0 100,100 0,100" fill="white" style="filter:blur(7px)"></polygon>
-          <polygon points="50,0 100,100 0,100" fill="white" style="filter:blur(7px)"></polygon>
-          <polygon points="50,0 100,100 0,100" fill="white" style="filter:blur(7px)"></polygon>
-          <polygon points="50,0 100,100 0,100" fill="white" style="filter:blur(7px)"></polygon>
-        </mask>
-      </defs>
-    </svg>
-    <div class="box"></div>
+  <!-- ORB: wrap + mask SVG inline + box -->
+  <div class="voice-orb-wrap">
+    <div class="loader">
+      <svg class="loader-mask-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <mask id="clipping">
+            <polygon points="50,0 100,100 0,100" fill="white"></polygon>
+            <polygon points="50,0 100,100 0,100" fill="white"></polygon>
+            <polygon points="50,0 100,100 0,100" fill="white"></polygon>
+            <polygon points="50,0 100,100 0,100" fill="white"></polygon>
+            <polygon points="50,0 100,100 0,100" fill="white"></polygon>
+            <polygon points="50,0 100,100 0,100" fill="white"></polygon>
+            <polygon points="50,0 100,100 0,100" fill="white"></polygon>
+          </mask>
+        </defs>
+      </svg>
+      <div class="box"></div>
+    </div>
   </div>
 
-  <p class="voice-transcript" id="voiceTranscript">Say your room style…</p>
+  <p class="voice-transcript" id="voiceTranscript"></p>
 
   <div class="voice-actions">
     <button class="voice-confirm" id="voiceConfirm" type="button">Use This</button>
-    <button class="voice-cancel" id="voiceCancel" type="button">Cancel</button>
+    <button class="voice-cancel"  id="voiceCancel"  type="button">Cancel</button>
   </div>
+
 </div>
 
 <script src="{{ url_for('static', filename='main.js') }}"></script>
