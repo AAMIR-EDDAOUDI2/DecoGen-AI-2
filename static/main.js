@@ -1,3 +1,121 @@
+// ── I18N / LANGUAGE SWITCHER ──────────────────────────────────
+const translations = {
+  en: {
+    'nav.home': 'Home', 'nav.design': 'Design Room',
+    'nav.gallery': 'Gallery', 'nav.about': 'About',
+    'hero.eyebrow': 'AI-Powered Interior Design',
+    'hero.h1': 'Design Your <em>Dream</em> Space',
+    'hero.desc': 'Upload a photo of your room and let our AI reimagine it in seconds — any style, any mood.',
+    'hero.cta': 'Start Designing',
+    'generate.eyebrow': 'Transform', 'generate.heading': 'Design Your Room',
+    'generate.subhead': 'Upload a photo and describe the style — our AI handles the rest.',
+    'generate.step1': 'Upload Room Photo', 'generate.step2': 'Choose a Style',
+    'generate.step3': 'Aspect Ratio',
+    'generate.placeholder': 'Or describe your own style… e.g. Scandinavian with warm oak and linen.',
+    'generate.submit': 'Generate Design',
+    'pill.modern': 'Modern', 'pill.cozy': 'Cozy', 'pill.office': 'Office',
+    'pill.natural': 'Natural', 'pill.creative': 'Creative',
+    'result.placeholder': 'Your transformed room appears here',
+    'result.loading': 'AI is reimagining your room — usually 10–25 seconds…',
+    'result.before': 'Before', 'result.after': 'After', 'result.compare': 'Compare',
+    'ar.landscape': '16:9 — Landscape', 'ar.square': '1:1 — Square', 'ar.portrait': '9:16 — Portrait',
+  },
+  fr: {
+    'nav.home': 'Accueil', 'nav.design': 'Créer',
+    'nav.gallery': 'Galerie', 'nav.about': 'À propos',
+    'hero.eyebrow': 'Design d\'intérieur par IA',
+    'hero.h1': 'Concevez votre espace <em>de rêve</em>',
+    'hero.desc': 'Téléchargez une photo de votre pièce et laissez notre IA la réimaginer en quelques secondes.',
+    'hero.cta': 'Commencer',
+    'generate.eyebrow': 'Transformer', 'generate.heading': 'Concevez votre pièce',
+    'generate.subhead': 'Téléchargez une photo et décrivez le style — notre IA fait le reste.',
+    'generate.step1': 'Photo de la pièce', 'generate.step2': 'Choisir un style',
+    'generate.step3': 'Format d\'image',
+    'generate.placeholder': 'Décrivez votre style… ex : Scandinave avec chêne et lin.',
+    'generate.submit': 'Générer le design',
+    'pill.modern': 'Moderne', 'pill.cozy': 'Cosy', 'pill.office': 'Bureau',
+    'pill.natural': 'Naturel', 'pill.creative': 'Créatif',
+    'result.placeholder': 'Votre pièce transformée apparaît ici',
+    'result.loading': 'L\'IA réimagine votre pièce — environ 10–25 secondes…',
+    'result.before': 'Avant', 'result.after': 'Après', 'result.compare': 'Comparer',
+    'ar.landscape': '16:9 — Paysage', 'ar.square': '1:1 — Carré', 'ar.portrait': '9:16 — Portrait',
+  },
+  ar: {
+    'nav.home': 'الرئيسية', 'nav.design': 'تصميم الغرفة',
+    'nav.gallery': 'المعرض', 'nav.about': 'حول',
+    'hero.eyebrow': 'تصميم داخلي بالذكاء الاصطناعي',
+    'hero.h1': 'صمّم مساحتك <em>المثالية</em>',
+    'hero.desc': 'ارفع صورة غرفتك ودع الذكاء الاصطناعي يعيد تخيّلها في ثوانٍ — أي أسلوب، أي مزاج.',
+    'hero.cta': 'ابدأ التصميم',
+    'generate.eyebrow': 'حوّل', 'generate.heading': 'صمّم غرفتك',
+    'generate.subhead': 'ارفع صورة وصف الأسلوب — الذكاء الاصطناعي يتولى الباقي.',
+    'generate.step1': 'رفع صورة الغرفة', 'generate.step2': 'اختر أسلوباً',
+    'generate.step3': 'نسبة الأبعاد',
+    'generate.placeholder': 'صف أسلوبك الخاص… مثلاً: نمط اسكندنافي بخشب البلوط.',
+    'generate.submit': 'توليد التصميم',
+    'pill.modern': 'عصري', 'pill.cozy': 'دافئ', 'pill.office': 'مكتبي',
+    'pill.natural': 'طبيعي', 'pill.creative': 'إبداعي',
+    'result.placeholder': 'غرفتك المحوّلة ستظهر هنا',
+    'result.loading': 'الذكاء الاصطناعي يعيد تخيّل غرفتك — عادةً 10–25 ثانية…',
+    'result.before': 'قبل', 'result.after': 'بعد', 'result.compare': 'مقارنة',
+    'ar.landscape': '16:9 — أفقي', 'ar.square': '1:1 — مربع', 'ar.portrait': '9:16 — عمودي',
+  }
+};
+
+function applyLang(lang) {
+  const html = document.documentElement;
+  html.setAttribute('data-lang', lang);
+  html.setAttribute('lang', lang);
+  // RTL for Arabic
+  html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
+  const t = translations[lang];
+
+  // Translate all [data-i18n] elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) el.textContent = t[key];
+  });
+
+  // Translate innerHTML (for elements with <em> tags etc.)
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (t[key]) el.innerHTML = t[key];
+  });
+
+  // Translate placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (t[key]) el.placeholder = t[key];
+  });
+
+  // Translate <option> elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    if (el.tagName === 'OPTION') {
+      const key = el.getAttribute('data-i18n');
+      if (t[key]) el.textContent = t[key];
+    }
+  });
+
+  // Update active lang button
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+  });
+}
+
+// Init lang switcher
+(function() {
+  let currentLang = 'en';
+  applyLang(currentLang);
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentLang = btn.getAttribute('data-lang');
+      applyLang(currentLang);
+    });
+  });
+})();
+
 // ── THEME TOGGLE ──────────────────────────────────────────────
 (function () {
   const html = document.documentElement;
