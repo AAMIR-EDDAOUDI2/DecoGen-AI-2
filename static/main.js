@@ -116,7 +116,7 @@ function showBeforeAfter(afterURL){
       <div style="position:relative">
         <span class="ba-badge ba-badge--after">After</span>
         <img src="${afterURL}" alt="AI-generated room design" loading="eager"
-             style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius-xl)">
+             style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;border-radius:0 0 var(--radius-xl) var(--radius-xl)"
       </div>
     </div>
 
@@ -126,7 +126,7 @@ function showBeforeAfter(afterURL){
         <span class="ba-badge">Before</span>
         ${_beforeURL
           ? `<img src="${_beforeURL}" alt="Original room photo" loading="eager"
-                  style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius-xl)">`
+                  style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;border-radius:0 0 var(--radius-xl) var(--radius-xl)"
           : `<div style="display:flex;align-items:center;justify-content:center;height:200px;color:var(--color-text-faint);font-size:var(--text-sm)">Original photo not available</div>`
         }
       </div>
