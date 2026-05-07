@@ -108,13 +108,53 @@
           <!-- Step 2 -->
           <div class="form-step" style="margin-top:var(--space-6)">
             <label class="form-label"><span class="step-num">2</span> <span data-i18n="generate.step2">Choose a Style</span></label>
-            <div class="style-pills" role="group" aria-label="Style presets">
-              <button type="button" class="style-pill" data-pill="modern" data-prompt="Add modern minimalist furniture with clean lines and neutral colors" data-i18n="pill.modern">Modern</button>
-              <button type="button" class="style-pill" data-pill="cozy" data-prompt="Create a warm cozy living space with soft textures and warm lighting" data-i18n="pill.cozy">Cozy</button>
-              <button type="button" class="style-pill" data-pill="office" data-prompt="Transform into a professional workspace with desk and smart storage" data-i18n="pill.office">Office</button>
-              <button type="button" class="style-pill" data-pill="natural" data-prompt="Add natural elements with indoor plants rattan and light wood furniture" data-i18n="pill.natural">Natural</button>
-              <button type="button" class="style-pill" data-pill="creative" data-prompt="Design an artistic space with bold colors eclectic art and unique furniture" data-i18n="pill.creative">Creative</button>
-            </div>
+            <div class="style-grid-wrap">
+  <div class="style-grid" role="group" aria-label="Style presets" id="styleGrid">
+
+    <button type="button" class="style-card" data-prompt="modern minimalist interior design, clean lines, neutral palette, uncluttered space, functional furniture" data-i18n="pill.modern">Modern Minimalist</button>
+    <button type="button" class="style-card" data-prompt="Scandinavian interior, light wood, white walls, cozy textiles, hygge aesthetic, simple functional design">Scandinavian</button>
+    <button type="button" class="style-card" data-prompt="Japandi interior design, Japanese minimalism meets Scandinavian simplicity, wabi-sabi, natural materials, muted earth tones">Japandi</button>
+    <button type="button" class="style-card" data-prompt="contemporary luxury interior, high-end finishes, marble surfaces, sophisticated color palette, designer furniture">Contemporary Luxury</button>
+    <button type="button" class="style-card" data-prompt="modern luxury interior, opulent materials, gold accents, velvet upholstery, statement lighting, premium aesthetics">Modern Luxury</button>
+    <button type="button" class="style-card" data-prompt="industrial interior design, exposed brick walls, metal pipes, raw concrete, factory loft aesthetic, Edison bulbs">Industrial</button>
+    <button type="button" class="style-card" data-prompt="bohemian interior, eclectic mix of patterns and textures, macrame, plants, rich jewel tones, layered rugs, global influences" data-i18n="pill.cozy">Bohemian (Boho)</button>
+    <button type="button" class="style-card" data-prompt="cozy aesthetic interior, warm lighting, soft blankets, plush cushions, warm wood tones, inviting atmosphere">Cozy Aesthetic</button>
+    <button type="button" class="style-card" data-prompt="Nordic interior design, clean lines, natural light, minimalist furniture, white and grey tones, functional Scandinavian style">Nordic</button>
+    <button type="button" class="style-card" data-prompt="Moroccan modern interior, geometric tile patterns, arched doorways, lanterns, rich jewel tones, ornate details with contemporary touches">Moroccan Modern</button>
+    <button type="button" class="style-card" data-prompt="Mediterranean interior design, warm terracotta tiles, whitewashed walls, blue accents, rustic wood, arched windows, coastal warmth">Mediterranean</button>
+    <button type="button" class="style-card" data-prompt="rustic interior design, natural wood beams, stone walls, earthy tones, vintage accessories, warm and rugged aesthetic">Rustic</button>
+    <button type="button" class="style-card" data-prompt="farmhouse interior design, shiplap walls, barn wood accents, neutral palette, vintage-modern mix, cozy country aesthetic">Farmhouse</button>
+    <button type="button" class="style-card" data-prompt="vintage interior design, antique furniture, retro color palette, aged patina, nostalgic decor, classic patterns">Vintage</button>
+    <button type="button" class="style-card" data-prompt="classic elegant interior, timeless design, symmetry, rich fabrics, traditional furniture, refined color palette, crown moldings">Classic Elegant</button>
+    <button type="button" class="style-card" data-prompt="Parisian style interior, chic and effortless, herringbone floors, neutral tones with bold accents, vintage touches, French elegance">Parisian Style</button>
+    <button type="button" class="style-card" data-prompt="futuristic interior design, sleek surfaces, LED lighting, smart home technology, minimalist high-tech aesthetic, metallic finishes">Futuristic</button>
+    <button type="button" class="style-card" data-prompt="cyberpunk interior design, neon lights, dark industrial surfaces, holographic accents, tech-noir aesthetic, purple and blue glows">Cyberpunk</button>
+    <button type="button" class="style-card" data-prompt="gaming room setup, RGB lighting, multiple monitors, ergonomic gaming chair, dark walls with neon accents, tech-forward design">Gaming Room</button>
+    <button type="button" class="style-card" data-prompt="dark academia interior, dark wood paneling, leather armchairs, overflowing bookshelves, candlelight, vintage maps, gothic collegiate aesthetic">Dark Academia</button>
+    <button type="button" class="style-card" data-prompt="light academia interior, cream and beige tones, vintage books, botanical prints, soft natural light, linen fabrics, antique desk">Light Academia</button>
+    <button type="button" class="style-card" data-prompt="Korean aesthetic interior, pastel colors, cute minimalism, soft lighting, clean white walls, kawaii decor accents, cozy and organized">Korean Aesthetic</button>
+    <button type="button" class="style-card" data-prompt="Japanese Zen interior, tatami mats, bamboo elements, bonsai plants, neutral tones, sliding shoji screens, meditative calm">Japanese Zen</button>
+    <button type="button" class="style-card" data-prompt="tropical interior design, lush indoor plants, rattan furniture, bold botanical prints, warm humid palette, resort-like atmosphere">Tropical</button>
+    <button type="button" class="style-card" data-prompt="cottagecore interior, floral wallpaper, vintage ceramics, dried flower arrangements, cozy window seats, garden-inspired pastoral aesthetic">Cottagecore</button>
+    <button type="button" class="style-card" data-prompt="smart home interior, integrated technology, clean minimalist surfaces, hidden cables, voice-controlled lighting, sleek modern aesthetic">Smart Home</button>
+    <button type="button" class="style-card" data-prompt="black and white modern interior, high contrast monochrome palette, bold geometric patterns, graphic art, sleek contemporary furniture">Black & White Modern</button>
+    <button type="button" class="style-card" data-prompt="earth tone interior, warm terracotta, sandy beige, olive green, clay brown, natural textures, grounding organic aesthetic">Earth Tone Interior</button>
+    <button type="button" class="style-card" data-prompt="neutral luxury interior, soft greige palette, cashmere textures, travertine stone, understated opulence, calm sophisticated atmosphere">Neutral Luxury</button>
+    <button type="button" class="style-card" data-prompt="minimal tech style interior, ultra-clean surfaces, hidden storage, integrated screens, monochrome palette, Apple-aesthetic precision">Minimal Tech Style</button>
+    <button type="button" class="style-card" data-prompt="Pinterest aesthetic room, dreamy pastel tones, string lights, gallery wall, cozy corner seating, curated decorative objects">Pinterest Aesthetic</button>
+    <button type="button" class="style-card" data-prompt="TikTok room style, LED strip lights, neon signs, aesthetic shelving, trendy decor, colorful accents, social media-worthy setup">TikTok Room Style</button>
+    <button type="button" class="style-card" data-prompt="hotel luxury suite interior, plush bedding, marble bathroom, floor-to-ceiling windows, muted elegant tones, bespoke furniture, 5-star ambience">Hotel Luxury Suite</button>
+    <button type="button" class="style-card" data-prompt="artistic loft interior, exposed concrete ceilings, large canvas artwork, open floor plan, industrial windows, creative eclectic decor">Artistic Loft</button>
+    <button type="button" class="style-card" data-prompt="luxury penthouse interior, panoramic city views, floor-to-ceiling glass, marble floors, bespoke designer furniture, opulent finishes">Luxury Penthouse</button>
+    <button type="button" class="style-card" data-prompt="nature inspired interior, biophilic design, living walls, natural stone, wood grain textures, organic shapes, forest-like tranquility">Nature Inspired</button>
+    <button type="button" class="style-card" data-prompt="warm cozy interior, amber lighting, layered textiles, plush rugs, fireplace, wooden accents, hygge-inspired snug atmosphere">Warm Cozy Interior</button>
+    <button type="button" class="style-card" data-prompt="soft girl aesthetic room, pastel pink and lavender tones, fluffy textures, fairy lights, cute plushies, romantic feminine decor">Soft Girl Aesthetic</button>
+    <button type="button" class="style-card" data-prompt="masculine modern interior, dark bold tones, leather furniture, concrete and metal accents, clean lines, strong geometric forms">Masculine Modern</button>
+    <button type="button" class="style-card" data-prompt="feminine elegant interior, blush and gold palette, floral details, soft drapery, mirrored surfaces, delicate ornate furniture">Feminine Elegant</button>
+    <button type="button" class="style-card" data-prompt="space sci-fi interior, zero-gravity aesthetic, metallic silver surfaces, star map ceilings, floating furniture, deep space color palette with glowing accents">Space / Sci-Fi</button>
+
+  </div>
+</div>
             <div class="textarea-wrap">
               <textarea class="form-input" id="decoration_prompt" name="decoration_prompt" rows="3"
                 data-i18n-placeholder="generate.placeholder"
