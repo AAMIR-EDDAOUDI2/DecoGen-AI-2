@@ -86,7 +86,7 @@
               <button type="button" class="style-pill" data-prompt="Add natural elements with indoor plants rattan and light wood furniture">Natural</button>
               <button type="button" class="style-pill" data-prompt="Design an artistic space with bold colors eclectic art and unique furniture">Creative</button>
             </div>
-            <div class="textarea-wrap" style="position:relative;margin-top:var(--space-3)">
+            <div style="position:relative;margin-top:var(--space-3)">
               <textarea class="form-input" id="decoration_prompt" name="decoration_prompt" rows="3"
                 placeholder="Or describe your own style… e.g. Scandinavian with warm oak and linen."
                 style="padding-right:50px" required></textarea>
@@ -212,7 +212,7 @@
 
               <button class="relative before:hidden hover:before:flex before:justify-center before:items-center before:h-4 before:text-[.6rem] before:px-1 before:content-['Celebrate'] before:bg-black dark:before:bg-white dark:before:text-black before:text-white before:bg-opacity-50 before:absolute before:-top-7 before:rounded-lg hover:-translate-y-5 cursor-pointer hover:scale-125 bg-white dark:bg-[#1a1814] rounded-full p-2 px-3">🎉</button>
 
-              <button class="relative before:hidden hover:before:flex before:justify-center before:items-center before:h-4 before:text-[.6rem] before:px-1 before:content-['Inspo'] before:bg-black dark:before:bg-white dark:before:text-black before:text-white before:bg-opacity-50 before:absolute before:-top-7 before:rounded-lg hover:-translate-y-5 cursor-pointer hover:scale-125 bg-white dark:bg-[#1a1814] rounded-full p-2 px-3">🏠</button>
+              <button class="relative before:hidden hover:before:flex before:justify-center before:items-center before:h-4 before:text-[.6rem] before:px-1 before:content-['Dislike'] before:bg-black dark:before:bg-white dark:before:text-black before:text-white before:bg-opacity-50 before:absolute before:-top-7 before:rounded-lg hover:-translate-y-5 cursor-pointer hover:scale-125 bg-white dark:bg-[#1a1814] rounded-full p-2 px-3">👎</button>
 
             </div>
           </div>
@@ -299,6 +299,16 @@
 </footer>
 
 <div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+
+<!-- VOICE OVERLAY -->
+<div class="voice-overlay" id="voiceOverlay" aria-modal="true" role="dialog" aria-label="Voice input">
+  <p class="voice-label" id="voiceLabel">Listening…</p>
+  <div class="voice-orb-wrap" id="voiceOrb">
+    <div class="orb-box"></div>
+  </div>
+  <p class="voice-transcript" id="voiceTranscript">Say your room style…</p>
+  <button class="voice-cancel" id="voiceCancel" type="button">Cancel</button>
+</div>
 
 <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
