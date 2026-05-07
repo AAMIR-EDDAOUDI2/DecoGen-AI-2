@@ -237,10 +237,10 @@ voiceConfirm && voiceConfirm.addEventListener('click', () => {
 });
 
 // ── POLL JOB STATUS ───────────────────────────────────────────
-function pollStatus(jobId, beforeURL) {
+function pollStatus(jobId) {
   return new Promise((resolve, reject) => {
-    const MAX_WAIT = 120000; // 2 minutes max
-    const INTERVAL = 2500;   // poll every 2.5s
+    const MAX_WAIT = 120000;
+    const INTERVAL = 2500;
     let elapsed = 0;
 
     const timer = setInterval(async () => {
@@ -262,7 +262,6 @@ function pollStatus(jobId, beforeURL) {
           clearInterval(timer);
           reject(new Error(data.error || 'Generation failed'));
         }
-        // still 'processing' → keep polling
       } catch (err) {
         clearInterval(timer);
         reject(err);
@@ -286,10 +285,8 @@ form && form.addEventListener('submit', async e => {
   if (!fileInput?.files[0]) { showToast('Please upload a room photo.', 'error'); return; }
   if (!prompt)              { showToast('Please enter or choose a style.', 'error'); return; }
 
-  // capture original image locally for the Before tab
   capturedBeforeURL = URL.createObjectURL(fileInput.files[0]);
 
-  // UI: loading state
   submitBtn.disabled = true;
   submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Generating…`;
 
@@ -297,7 +294,6 @@ form && form.addEventListener('submit', async e => {
   resultPlaceholder.style.display = 'none';
   loadingPanel.style.display      = 'block';
 
-  // reset loading bar animation
   const bar = document.getElementById('loadingBar');
   bar.style.animation = 'none';
   bar.offsetHeight;
@@ -306,13 +302,11 @@ form && form.addEventListener('submit', async e => {
   const formData = new FormData(form);
 
   try {
-    // ✅ FIX: correct route + no manual Content-Type header
     const res = await fetch('/decorate-room', {
       method: 'POST',
       body: formData
     });
 
-    // ✅ FIX: always check content-type before .json()
     const contentType = res.headers.get('content-type') || '';
     if (!contentType.includes('application/json')) {
       const text = await res.text();
@@ -326,7 +320,6 @@ form && form.addEventListener('submit', async e => {
     const jobId = data.job_id;
     if (!jobId) throw new Error('No job ID returned from server');
 
-    // ✅ FIX: poll until done instead of expecting immediate result
     const resultURL = await pollStatus(jobId);
 
     showBeforeAfter(resultURL);
@@ -351,7 +344,44 @@ form && form.addEventListener('submit', async e => {
   }
 });
 
-// spin keyframe injection
+// ── SPIN KEYFRAME ─────────────────────────────────────────────
 const styleTag = document.createElement('style');
 styleTag.textContent = `@keyframes spin{to{transform:rotate(360deg)}}`;
 document.head.appendChild(styleTag);
+
+// ── REACTION PANEL ────────────────────────────────────────────
+document.querySelectorAll('.reaction-btn').forEach(btn => {
+  btn.addEventListener('click', function () {
+
+    /* toggle reacted state — only one active at a time */
+    const wasReacted = this.classList.contains('reacted');
+    document.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('reacted'));
+    if (!wasReacted) this.classList.add('reacted');
+
+    /* burst — 6 emoji particles fan upward from click point */
+    const emoji = this.dataset.emoji;
+    const rect  = this.getBoundingClientRect();
+    const cx    = rect.left + rect.width  / 2;
+    const cy    = rect.top  + rect.height / 2;
+    const count = 6;
+
+    for (let i = 0; i < count; i++) {
+      const el     = document.createElement('span');
+      el.className = 'emoji-burst';
+      el.textContent = emoji;
+
+      const spread = (i - (count - 1) / 2) * 22;
+      const delay  = i * 55;
+
+      el.style.cssText = `
+        left: ${cx + spread}px;
+        top:  ${cy}px;
+        animation-delay: ${delay}ms;
+        transform-origin: center bottom;
+      `;
+
+      document.body.appendChild(el);
+      el.addEventListener('animationend', () => el.remove());
+    }
+  });
+});
