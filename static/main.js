@@ -209,12 +209,15 @@ mobileNav && mobileNav.querySelectorAll('a').forEach(a =>
 );
 
 // ── STYLE PILLS ───────────────────────────────────────────────
-const promptTA = document.getElementById('decoration_prompt');
-document.querySelectorAll('.style-pill').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.style-pill').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    if (promptTA) promptTA.value = btn.dataset.prompt;
+// ── STYLE CARD SELECTION ──
+document.querySelectorAll('.style-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.style-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    const prompt = card.getAttribute('data-prompt');
+    if (prompt) {
+      document.getElementById('decoration_prompt').value = prompt;
+    }
   });
 });
 
