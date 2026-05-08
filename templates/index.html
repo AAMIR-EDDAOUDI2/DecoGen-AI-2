@@ -49,11 +49,26 @@
     </div>
   </div>
 </label>
-    <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language selector">
-      <button class="lang-btn active" data-lang="en">EN</button>
-      <button class="lang-btn" data-lang="fr">FR</button>
-      <button class="lang-btn" data-lang="ar">AR</button>
-    </div>
+    <!-- REPLACE your old lang switcher with this -->
+<div class="lang-switcher" id="langSwitcher">
+  <button class="lang-current-btn" id="langCurrentBtn" aria-haspopup="true" aria-expanded="false">
+    <span id="langCurrentLabel">EN</span>
+    <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M1 1l4 4 4-4"/>
+    </svg>
+  </button>
+  <div class="lang-dropdown" role="listbox" id="langDropdown">
+    <button class="lang-opt active" data-lang="en" role="option">
+      <span class="lang-opt-flag">🇬🇧</span> English
+    </button>
+    <button class="lang-opt" data-lang="fr" role="option">
+      <span class="lang-opt-flag">🇫🇷</span> Français
+    </button>
+    <button class="lang-opt" data-lang="ar" role="option">
+      <span class="lang-opt-flag">🇲🇦</span> العربية
+    </button>
+  </div>
+</div>
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
