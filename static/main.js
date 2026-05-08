@@ -101,6 +101,52 @@ const translations = {
   }
 };
 
+// ── HELPERS: set button state ─────────────────────────────────
+function setBtnDefault(btn, lang) {
+  const t = translations[lang] || translations['en'];
+  btn.classList.remove('success', 'error', 'is-generating');
+  btn.innerHTML = `
+    <span class="btn-default-content">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+      <span data-i18n="generate.submit">${t['generate.submit']}</span>
+    </span>
+    <span class="btn-generating-content">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.6">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+      <span class="btn-loader">
+        <span class="btn-loader-static">Generating</span>
+        <div class="btn-loader-words" aria-hidden="true">
+          <span class="btn-loader-word">style…</span>
+          <span class="btn-loader-word">layout…</span>
+          <span class="btn-loader-word">colors…</span>
+          <span class="btn-loader-word">details…</span>
+          <span class="btn-loader-word">style…</span>
+        </div>
+      </span>
+    </span>`;
+}
+
+function setBtnGenerating(btn) {
+  btn.classList.add('is-generating');
+}
+
+function setBtnSuccess(btn, lang) {
+  btn.classList.remove('is-generating');
+  btn.classList.add('success');
+  const msg = lang === 'fr' ? 'Design prêt !' : lang === 'ar' ? '!التصميم جاهز' : 'Design Ready!';
+  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> ${msg}`;
+}
+
+function setBtnError(btn, lang) {
+  btn.classList.remove('is-generating');
+  btn.classList.add('error');
+  const msg = lang === 'fr' ? 'Réessayer' : lang === 'ar' ? 'حاول مجدداً' : 'Try Again';
+  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ${msg}`;
+}
+
 // ── applyLang ─────────────────────────────────────────────────
 function applyLang(lang) {
   const html = document.documentElement;
@@ -109,30 +155,25 @@ function applyLang(lang) {
   html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
   const t = translations[lang];
 
-  // text content
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (t[key] !== undefined) el.textContent = t[key];
   });
 
-  // innerHTML (for <em> tags)
   document.querySelectorAll('[data-i18n-html]').forEach(el => {
     const key = el.getAttribute('data-i18n-html');
     if (t[key] !== undefined) el.innerHTML = t[key];
   });
 
-  // placeholders
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const key = el.getAttribute('data-i18n-placeholder');
     if (t[key] !== undefined) el.placeholder = t[key];
   });
 
-  // active state on pill buttons
   document.querySelectorAll('.lang-opt').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
   });
 
-  // prompt hint
   const hint = document.getElementById('promptHint');
   if (hint) {
     if (lang === 'en') {
@@ -145,28 +186,27 @@ function applyLang(lang) {
     }
   }
 
-  // re-apply upload text based on current upload state
-  const uploadText  = document.getElementById('uploadText');
-  const roomInput   = document.getElementById('room_image');
+  const uploadText = document.getElementById('uploadText');
+  const roomInput  = document.getElementById('room_image');
   if (uploadText) {
     const hasFile = roomInput && roomInput.files && roomInput.files.length > 0;
     uploadText.textContent = hasFile ? t['upload.done'] : t['upload.idle'];
   }
 
-  // update submit button text (only if not in loading/success/error state)
+  // Only reset button text if it's in idle state
   const submitBtn = document.getElementById('submitBtn');
-  if (submitBtn && !submitBtn.disabled && !submitBtn.classList.contains('success') && !submitBtn.classList.contains('error')) {
-    submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> ${t['generate.submit']}`;
+  if (submitBtn && !submitBtn.disabled
+      && !submitBtn.classList.contains('success')
+      && !submitBtn.classList.contains('error')
+      && !submitBtn.classList.contains('is-generating')) {
+    setBtnDefault(submitBtn, lang);
   }
 }
 
 // ── Lang switcher init ────────────────────────────────────────
 (function () {
   let currentLang = 'en';
-
   applyLang(currentLang);
-
-  // inline pill switcher (desktop navbar)
   document.querySelectorAll('#langSwitcher .lang-opt').forEach(btn => {
     btn.addEventListener('click', () => {
       currentLang = btn.getAttribute('data-lang');
@@ -186,10 +226,8 @@ function applyLang(lang) {
     const lang = document.documentElement.getAttribute('data-lang') || 'en';
     const t = translations[lang];
     if (input.files && input.files.length > 0) {
-      // show image preview
       const reader = new FileReader();
       reader.onload = e => {
-        // remove old preview if any
         let prev = uploadLabel.querySelector('.preview-img');
         if (!prev) {
           prev = document.createElement('img');
@@ -201,7 +239,6 @@ function applyLang(lang) {
         uploadLabel.classList.add('has-preview');
       };
       reader.readAsDataURL(input.files[0]);
-
       uploadText.textContent = t['upload.done'];
       uploadLabel.style.borderColor = 'var(--color-accent)';
       uploadLabel.style.borderStyle = 'solid';
@@ -509,8 +546,9 @@ form && form.addEventListener('submit', async e => {
 
   capturedBeforeURL = URL.createObjectURL(fileInput.files[0]);
 
+  // ── GENERATING STATE ──
   submitBtn.disabled = true;
-  submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> ${lang === 'fr' ? 'Génération…' : lang === 'ar' ? '…جارٍ التوليد' : 'Generating…'}`;
+  setBtnGenerating(submitBtn);
 
   document.getElementById('resultArea').style.display = 'none';
   resultPlaceholder.style.display = 'none';
@@ -542,26 +580,19 @@ form && form.addEventListener('submit', async e => {
     const resultURL = await pollStatus(jobId);
     showBeforeAfter(resultURL);
 
-    submitBtn.classList.add('success');
-    submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> ${lang === 'fr' ? 'Design prêt !' : lang === 'ar' ? '!التصميم جاهز' : 'Design Ready!'}`;
+    setBtnSuccess(submitBtn, lang);
     showToast(lang === 'fr' ? 'Votre pièce a été redesignée ✨' : lang === 'ar' ? '✨ تم إعادة تصميم غرفتك' : 'Your room has been redesigned ✨');
 
   } catch (err) {
     loadingPanel.style.display      = 'none';
     resultPlaceholder.style.display = 'flex';
-    submitBtn.classList.add('error');
-    submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ${lang === 'fr' ? 'Réessayer' : lang === 'ar' ? 'حاول مجدداً' : 'Try Again'}`;
+    setBtnError(submitBtn, lang);
     showToast(err.message || 'Something went wrong', 'error');
     console.error('[DecoGen Error]', err);
 
   } finally {
     submitBtn.disabled = false;
-    setTimeout(() => {
-      submitBtn.classList.remove('success', 'error');
-      const currentLang = document.documentElement.getAttribute('data-lang') || 'en';
-      const t = translations[currentLang];
-      submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> ${t['generate.submit']}`;
-    }, 4000);
+    setTimeout(() => setBtnDefault(submitBtn, lang), 4000);
   }
 });
 
