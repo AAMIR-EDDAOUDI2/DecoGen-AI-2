@@ -17,12 +17,14 @@
 <!-- NAVBAR -->
 <nav id="navbar" class="navbar" role="navigation" aria-label="Main navigation">
   <div class="logo" aria-label="DecoGen AI">DecoGen<span>AI</span></div>
+
   <div class="nav-links">
     <a href="#home"     class="nav-link active" data-i18n="nav.home">Home</a>
     <a href="#generate" class="nav-link" data-i18n="nav.design">Design Room</a>
     <a href="#gallery"  class="nav-link" data-i18n="nav.gallery">Gallery</a>
     <a href="#about"    class="nav-link" data-i18n="nav.about">About</a>
   </div>
+
   <div class="nav-right">
 
     <!-- Theme toggle -->
@@ -52,48 +54,26 @@
       </div>
     </label>
 
-    <!-- Lang switcher dropdown -->
+    <!-- Lang switcher — flat pills, always visible -->
     <div class="lang-switcher" id="langSwitcher">
-      <button class="lang-current-btn" id="langCurrentBtn" aria-haspopup="true" aria-expanded="false">
-        <span id="langCurrentLabel">EN</span>
-        <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M1 1l4 4 4-4"/>
-        </svg>
-      </button>
-      <div class="lang-dropdown" role="listbox" id="langDropdown">
-        <button class="lang-opt active" data-lang="en" role="option">
-          <span class="lang-opt-flag">🇬🇧</span> English
-        </button>
-        <button class="lang-opt" data-lang="fr" role="option">
-          <span class="lang-opt-flag">🇫🇷</span> Français
-        </button>
-        <button class="lang-opt" data-lang="ar" role="option">
-          <span class="lang-opt-flag">🇲🇦</span> العربية
-        </button>
-      </div>
+      <button class="lang-opt active" data-lang="en" role="option">EN</button>
+      <button class="lang-opt" data-lang="fr" role="option">FR</button>
+      <button class="lang-opt" data-lang="ar" role="option">AR</button>
     </div>
 
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
+
   </div>
 </nav>
 
 <!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobileNav" role="navigation" aria-label="Mobile navigation">
-  <!-- Lang switcher row — mobile only -->
-  <div class="mobile-lang-row">
-    <span data-i18n="lang.label">Language</span>
-    <div class="mobile-lang-opts">
-      <button class="mobile-lang-opt active" data-mobile-lang="en">EN</button>
-      <button class="mobile-lang-opt" data-mobile-lang="fr">FR</button>
-      <button class="mobile-lang-opt" data-mobile-lang="ar">AR</button>
-    </div>
-  </div>
-  <a href="#home" data-i18n="nav.home">Home</a>
+  <a href="#home"     data-i18n="nav.home">Home</a>
   <a href="#generate" data-i18n="nav.design">Design Room</a>
-  <a href="#gallery" data-i18n="nav.gallery">Gallery</a>
-  <a href="#about" data-i18n="nav.about">About</a>
+  <a href="#gallery"  data-i18n="nav.gallery">Gallery</a>
+  <a href="#about"    data-i18n="nav.about">About</a>
 </div>
 
 <!-- HERO -->
@@ -123,6 +103,7 @@
         <h2 id="generate-heading" data-i18n="generate.heading">Design Your Room</h2>
         <p data-i18n="generate.subhead">Upload a photo and describe the style — our AI handles the rest.</p>
       </div>
+
       <div class="form-card">
         <form id="aiDesignForm" novalidate>
 
@@ -147,7 +128,10 @@
 
           <!-- Step 2 -->
           <div class="form-step" style="margin-top:var(--space-6)">
-            <label class="form-label"><span class="step-num">2</span> <span data-i18n="generate.step2">Choose a Style</span></label>
+            <label class="form-label">
+              <span class="step-num">2</span>
+              <span data-i18n="generate.step2">Choose a Style</span>
+            </label>
             <div class="style-grid-wrap">
               <div class="style-grid" role="group" aria-label="Style presets" id="styleGrid">
                 <button type="button" class="style-card" data-prompt="modern minimalist interior design, clean lines, neutral palette, uncluttered space, functional furniture" data-i18n="pill.modern">Modern Minimalist</button>
@@ -156,7 +140,7 @@
                 <button type="button" class="style-card" data-prompt="contemporary luxury interior, high-end finishes, marble surfaces, sophisticated color palette, designer furniture">Contemporary Luxury</button>
                 <button type="button" class="style-card" data-prompt="modern luxury interior, opulent materials, gold accents, velvet upholstery, statement lighting, premium aesthetics">Modern Luxury</button>
                 <button type="button" class="style-card" data-prompt="industrial interior design, exposed brick walls, metal pipes, raw concrete, factory loft aesthetic, Edison bulbs">Industrial</button>
-                <button type="button" class="style-card" data-prompt="bohemian interior, eclectic mix of patterns and textures, macrame, plants, rich jewel tones, layered rugs, global influences" data-i18n="pill.cozy">Bohemian (Boho)</button>
+                <button type="button" class="style-card" data-prompt="bohemian interior, eclectic mix of patterns and textures, macrame, plants, rich jewel tones, layered rugs, global influences">Bohemian (Boho)</button>
                 <button type="button" class="style-card" data-prompt="cozy aesthetic interior, warm lighting, soft blankets, plush cushions, warm wood tones, inviting atmosphere">Cozy Aesthetic</button>
                 <button type="button" class="style-card" data-prompt="Nordic interior design, clean lines, natural light, minimalist furniture, white and grey tones, functional Scandinavian style">Nordic</button>
                 <button type="button" class="style-card" data-prompt="Moroccan modern interior, geometric tile patterns, arched doorways, lanterns, rich jewel tones, ornate details with contemporary touches">Moroccan Modern</button>
@@ -193,6 +177,7 @@
                 <button type="button" class="style-card" data-prompt="space sci-fi interior, zero-gravity aesthetic, metallic silver surfaces, star map ceilings, floating furniture, deep space color palette with glowing accents">Space / Sci-Fi</button>
               </div>
             </div>
+
             <div class="textarea-wrap">
               <textarea class="form-input" id="decoration_prompt" name="decoration_prompt" rows="3"
                 data-i18n-placeholder="generate.placeholder"
@@ -210,7 +195,10 @@
 
           <!-- Step 3 -->
           <div class="form-step" style="margin-top:var(--space-6)">
-            <label class="form-label" for="aspect_ratio"><span class="step-num">3</span> <span data-i18n="generate.step3">Aspect Ratio</span></label>
+            <label class="form-label" for="aspect_ratio">
+              <span class="step-num">3</span>
+              <span data-i18n="generate.step3">Aspect Ratio</span>
+            </label>
             <select class="form-input" id="aspect_ratio" name="aspect_ratio">
               <option value="16:9" data-i18n="ar.landscape">16:9 — Landscape</option>
               <option value="1:1"  data-i18n="ar.square">1:1 — Square</option>
@@ -224,6 +212,7 @@
             </svg>
             Generate Design
           </button>
+
         </form>
       </div>
     </div>
@@ -417,9 +406,6 @@
             <polygon points="0,0 100,0 100,100 0,100" fill="black"></polygon>
             <polygon points="25,25 75,25 50,75" fill="white"></polygon>
             <polygon points="50,25 75,75 25,75" fill="white"></polygon>
-            <polygon points="35,35 65,35 50,65" fill="white"></polygon>
-            <polygon points="35,35 65,35 50,65" fill="white"></polygon>
-            <polygon points="35,35 65,35 50,65" fill="white"></polygon>
             <polygon points="35,35 65,35 50,65" fill="white"></polygon>
           </mask>
         </defs>
