@@ -1,108 +1,107 @@
 // ── I18N / LANGUAGE SWITCHER ──────────────────────────────────
 const translations = {
   en: {
-    'nav.home':'Home','nav.design':'Design Room',
-    'nav.gallery':'Gallery','nav.about':'About',
-    'hero.eyebrow':'AI-Powered Interior Design',
-    'hero.h1':'Design Your <em>Dream</em> Space',
-    'hero.desc':'Upload a photo of your room and let our AI reimagine it in seconds — any style, any mood.',
-    'hero.cta':'Start Designing',
-    'generate.eyebrow':'Transform','generate.heading':'Design Your Room',
-    'generate.subhead':'Upload a photo and describe the style — our AI handles the rest.',
-    'generate.step1':'Upload Room Photo','generate.step2':'Choose a Style',
-    'generate.step3':'Aspect Ratio',
-    'generate.placeholder':'Or describe your own style… e.g. Scandinavian with warm oak and linen.',
-    'generate.submit':'Generate Design',
-    'pill.modern':'Modern','pill.cozy':'Cozy','pill.office':'Office',
-    'pill.natural':'Natural','pill.creative':'Creative',
-    'result.placeholder':'Your transformed room appears here',
-    'result.loading':'AI is reimagining your room — usually 10–25 seconds…',
-    'result.before':'Before','result.after':'After','result.compare':'Compare',
-    'upload.idle':'Click to upload image',
-    'upload.done':'✓ Image uploaded — ready to generate!',
-    'lang.label':'Language',
-    'gallery.eyebrow':'Showcase','gallery.heading':'AI Design Gallery',
-    'gallery.subhead':'Rooms reimagined by DecoGen AI.',
-    'gallery.item1':'Modern Minimal','gallery.item2':'Cozy Retreat',
-    'gallery.item3':'Home Office','gallery.item4':'Natural Warmth',
-    'gallery.item5':'Creative Studio','gallery.item6':'Luxury Interior',
-    'about.eyebrow':'About the Project',
-    'about.heading':'Where AI Meets <em>Interior Design</em>',
-    'about.desc':'DecoGen AI uses advanced deep learning to reimagine living spaces. Upload a photo, choose a style, and receive a realistic concept render in seconds — powered by FLUX Kontext image models from Black Forest Labs.',
-    'about.stat1':'Model Engine','about.stat2':'Design Styles',
-    'about.stat3':'Generation Time','about.stat4':'PFE Project 2026',
-    'ar.landscape':'16:9 — Landscape','ar.square':'1:1 — Square','ar.portrait':'9:16 — Portrait',
+    'nav.home': 'Home', 'nav.design': 'Design Room',
+    'nav.gallery': 'Gallery', 'nav.about': 'About',
+    'hero.eyebrow': 'AI-Powered Interior Design',
+    'hero.h1': 'Design Your <em>Dream</em> Space',
+    'hero.desc': 'Upload a photo of your room and let our AI reimagine it in seconds — any style, any mood.',
+    'hero.cta': 'Start Designing',
+    'generate.eyebrow': 'Transform', 'generate.heading': 'Design Your Room',
+    'generate.subhead': 'Upload a photo and describe the style — our AI handles the rest.',
+    'generate.step1': 'Upload Room Photo', 'generate.step2': 'Choose a Style',
+    'generate.step3': 'Aspect Ratio',
+    'generate.placeholder': 'Or describe your own style… e.g. Scandinavian with warm oak and linen.',
+    'generate.submit': 'Generate Design',
+    'pill.modern': 'Modern', 'pill.cozy': 'Cozy', 'pill.office': 'Office',
+    'pill.natural': 'Natural', 'pill.creative': 'Creative',
+    'result.placeholder': 'Your transformed room appears here',
+    'result.loading': 'AI is reimagining your room — usually 10–25 seconds…',
+    'result.before': 'Before', 'result.after': 'After', 'result.compare': 'Compare',
+    'upload.idle': 'Click to upload image',
+    'upload.done': '✓ Image uploaded — ready to generate!',
+    'lang.label': 'Language',
+    'gallery.eyebrow': 'Showcase', 'gallery.heading': 'AI Design Gallery',
+    'gallery.subhead': 'Rooms reimagined by DecoGen AI.',
+    'gallery.item1': 'Modern Minimal', 'gallery.item2': 'Cozy Retreat',
+    'gallery.item3': 'Home Office', 'gallery.item4': 'Natural Warmth',
+    'gallery.item5': 'Creative Studio', 'gallery.item6': 'Luxury Interior',
+    'about.eyebrow': 'About the Project',
+    'about.heading': 'Where AI Meets <em>Interior Design</em>',
+    'about.desc': 'DecoGen AI uses advanced deep learning to reimagine living spaces. Upload a photo, choose a style, and receive a realistic concept render in seconds — powered by FLUX Kontext image models from Black Forest Labs.',
+    'about.stat1': 'Model Engine', 'about.stat2': 'Design Styles',
+    'about.stat3': 'Generation Time', 'about.stat4': 'PFE Project 2026',
+    'ar.landscape': '16:9 — Landscape', 'ar.square': '1:1 — Square', 'ar.portrait': '9:16 — Portrait',
   },
   fr: {
-    'nav.home':'Accueil','nav.design':'Créer',
-    'nav.gallery':'Galerie','nav.about':'À propos',
-    'hero.eyebrow':'Design d\'intérieur par IA',
-    'hero.h1':'Concevez votre espace <em>de rêve</em>',
-    'hero.desc':'Téléchargez une photo de votre pièce et laissez notre IA la réimaginer en quelques secondes.',
-    'hero.cta':'Commencer',
-    'generate.eyebrow':'Transformer','generate.heading':'Concevez votre pièce',
-    'generate.subhead':'Téléchargez une photo et décrivez le style — notre IA fait le reste.',
-    'generate.step1':'Photo de la pièce','generate.step2':'Choisir un style',
-    'generate.step3':'Format d\'image',
-    'generate.placeholder':'Décrivez votre style… ex : Scandinave avec chêne et lin.',
-    'generate.submit':'Générer le design',
-    'pill.modern':'Moderne','pill.cozy':'Cosy','pill.office':'Bureau',
-    'pill.natural':'Naturel','pill.creative':'Créatif',
-    'result.placeholder':'Votre pièce transformée apparaît ici',
-    'result.loading':'L\'IA réimagine votre pièce — environ 10–25 secondes…',
-    'result.before':'Avant','result.after':'Après','result.compare':'Comparer',
-    'upload.idle':'Cliquez pour uploader une image',
-    'upload.done':'✓ Image chargée — prête à générer !',
-    'lang.label':'Langue',
-    'gallery.eyebrow':'Vitrine','gallery.heading':'Galerie IA',
-    'gallery.subhead':'Pièces réimaginées par DecoGen AI.',
-    'gallery.item1':'Minimal Moderne','gallery.item2':'Retraite Cosy',
-    'gallery.item3':'Bureau à domicile','gallery.item4':'Chaleur Naturelle',
-    'gallery.item5':'Studio Créatif','gallery.item6':'Intérieur Luxe',
-    'about.eyebrow':'À propos du projet',
-    'about.heading':'Quand l\'IA rencontre le <em>Design d\'intérieur</em>',
-    'about.desc':'DecoGen AI utilise le deep learning pour réimaginer les espaces de vie. Téléchargez une photo, choisissez un style, et recevez un rendu réaliste en quelques secondes.',
-    'about.stat1':'Moteur IA','about.stat2':'Styles de design',
-    'about.stat3':'Temps de génération','about.stat4':'Projet PFE 2026',
-    'ar.landscape':'16:9 — Paysage','ar.square':'1:1 — Carré','ar.portrait':'9:16 — Portrait',
+    'nav.home': 'Accueil', 'nav.design': 'Créer',
+    'nav.gallery': 'Galerie', 'nav.about': 'À propos',
+    'hero.eyebrow': "Design d'intérieur par IA",
+    'hero.h1': 'Concevez votre espace <em>de rêve</em>',
+    'hero.desc': 'Téléchargez une photo de votre pièce et laissez notre IA la réimaginer en quelques secondes.',
+    'hero.cta': 'Commencer',
+    'generate.eyebrow': 'Transformer', 'generate.heading': 'Concevez votre pièce',
+    'generate.subhead': 'Téléchargez une photo et décrivez le style — notre IA fait le reste.',
+    'generate.step1': 'Photo de la pièce', 'generate.step2': 'Choisir un style',
+    'generate.step3': "Format d'image",
+    'generate.placeholder': 'Décrivez votre style… ex : Scandinave avec chêne et lin.',
+    'generate.submit': 'Générer le design',
+    'pill.modern': 'Moderne', 'pill.cozy': 'Cosy', 'pill.office': 'Bureau',
+    'pill.natural': 'Naturel', 'pill.creative': 'Créatif',
+    'result.placeholder': 'Votre pièce transformée apparaît ici',
+    'result.loading': "L'IA réimagine votre pièce — environ 10–25 secondes…",
+    'result.before': 'Avant', 'result.after': 'Après', 'result.compare': 'Comparer',
+    'upload.idle': 'Cliquez pour uploader une image',
+    'upload.done': '✓ Image chargée — prête à générer !',
+    'lang.label': 'Langue',
+    'gallery.eyebrow': 'Vitrine', 'gallery.heading': 'Galerie IA',
+    'gallery.subhead': 'Pièces réimaginées par DecoGen AI.',
+    'gallery.item1': 'Minimal Moderne', 'gallery.item2': 'Retraite Cosy',
+    'gallery.item3': 'Bureau à domicile', 'gallery.item4': 'Chaleur Naturelle',
+    'gallery.item5': 'Studio Créatif', 'gallery.item6': 'Intérieur Luxe',
+    'about.eyebrow': 'À propos du projet',
+    'about.heading': "Quand l'IA rencontre le <em>Design d'intérieur</em>",
+    'about.desc': 'DecoGen AI utilise le deep learning pour réimaginer les espaces de vie. Téléchargez une photo, choisissez un style, et recevez un rendu réaliste en quelques secondes.',
+    'about.stat1': 'Moteur IA', 'about.stat2': 'Styles de design',
+    'about.stat3': 'Temps de génération', 'about.stat4': 'Projet PFE 2026',
+    'ar.landscape': '16:9 — Paysage', 'ar.square': '1:1 — Carré', 'ar.portrait': '9:16 — Portrait',
   },
   ar: {
-    'nav.home':'الرئيسية','nav.design':'تصميم الغرفة',
-    'nav.gallery':'المعرض','nav.about':'حول',
-    'hero.eyebrow':'تصميم داخلي بالذكاء الاصطناعي',
-    'hero.h1':'صمّم مساحتك <em>المثالية</em>',
-    'hero.desc':'ارفع صورة غرفتك ودع الذكاء الاصطناعي يعيد تخيّلها في ثوانٍ — أي أسلوب، أي مزاج.',
-    'hero.cta':'ابدأ التصميم',
-    'generate.eyebrow':'حوّل','generate.heading':'صمّم غرفتك',
-    'generate.subhead':'ارفع صورة وصف الأسلوب — الذكاء الاصطناعي يتولى الباقي.',
-    'generate.step1':'رفع صورة الغرفة','generate.step2':'اختر أسلوباً',
-    'generate.step3':'نسبة الأبعاد',
-    'generate.placeholder':'صف أسلوبك الخاص… مثلاً: نمط اسكندنافي بخشب البلوط.',
-    'generate.submit':'توليد التصميم',
-    'pill.modern':'عصري','pill.cozy':'دافئ','pill.office':'مكتبي',
-    'pill.natural':'طبيعي','pill.creative':'إبداعي',
-    'result.placeholder':'غرفتك المحوّلة ستظهر هنا',
-    'result.loading':'الذكاء الاصطناعي يعيد تخيّل غرفتك — عادةً 10–25 ثانية…',
-    'result.before':'قبل','result.after':'بعد','result.compare':'مقارنة',
-    'upload.idle':'انقر لرفع صورة',
-    'upload.done':'✓ تم رفع الصورة — جاهز للتوليد!',
-    'lang.label':'اللغة',
-    'gallery.eyebrow':'معرض الأعمال','gallery.heading':'معرض تصاميم الذكاء الاصطناعي',
-    'gallery.subhead':'غرف أعاد تخيّلها DecoGen AI.',
-    'gallery.item1':'عصري بسيط','gallery.item2':'مريح ودافئ',
-    'gallery.item3':'مكتب منزلي','gallery.item4':'دفء طبيعي',
-    'gallery.item5':'استوديو إبداعي','gallery.item6':'ديكور فاخر',
-    'about.eyebrow':'عن المشروع',
-    'about.heading':'حين يلتقي الذكاء الاصطناعي بـ<em>التصميم الداخلي</em>',
-    'about.desc':'يستخدم DecoGen AI التعلم العميق لإعادة تخيّل المساحات. ارفع صورة، اختر أسلوباً، واحصل على تصور واقعي في ثوانٍ.',
-    'about.stat1':'محرك الذكاء الاصطناعي','about.stat2':'أنماط التصميم',
-    'about.stat3':'وقت التوليد','about.stat4':'مشروع PFE 2026',
-    'ar.landscape':'16:9 — أفقي','ar.square':'1:1 — مربع','ar.portrait':'9:16 — عمودي',
+    'nav.home': 'الرئيسية', 'nav.design': 'تصميم الغرفة',
+    'nav.gallery': 'المعرض', 'nav.about': 'حول',
+    'hero.eyebrow': 'تصميم داخلي بالذكاء الاصطناعي',
+    'hero.h1': 'صمّم مساحتك <em>المثالية</em>',
+    'hero.desc': 'ارفع صورة غرفتك ودع الذكاء الاصطناعي يعيد تخيّلها في ثوانٍ — أي أسلوب، أي مزاج.',
+    'hero.cta': 'ابدأ التصميم',
+    'generate.eyebrow': 'حوّل', 'generate.heading': 'صمّم غرفتك',
+    'generate.subhead': 'ارفع صورة وصف الأسلوب — الذكاء الاصطناعي يتولى الباقي.',
+    'generate.step1': 'رفع صورة الغرفة', 'generate.step2': 'اختر أسلوباً',
+    'generate.step3': 'نسبة الأبعاد',
+    'generate.placeholder': 'صف أسلوبك الخاص… مثلاً: نمط اسكندنافي بخشب البلوط.',
+    'generate.submit': 'توليد التصميم',
+    'pill.modern': 'عصري', 'pill.cozy': 'دافئ', 'pill.office': 'مكتبي',
+    'pill.natural': 'طبيعي', 'pill.creative': 'إبداعي',
+    'result.placeholder': 'غرفتك المحوّلة ستظهر هنا',
+    'result.loading': 'الذكاء الاصطناعي يعيد تخيّل غرفتك — عادةً 10–25 ثانية…',
+    'result.before': 'قبل', 'result.after': 'بعد', 'result.compare': 'مقارنة',
+    'upload.idle': 'انقر لرفع صورة',
+    'upload.done': '✓ تم رفع الصورة — جاهز للتوليد!',
+    'lang.label': 'اللغة',
+    'gallery.eyebrow': 'معرض الأعمال', 'gallery.heading': 'معرض تصاميم الذكاء الاصطناعي',
+    'gallery.subhead': 'غرف أعاد تخيّلها DecoGen AI.',
+    'gallery.item1': 'عصري بسيط', 'gallery.item2': 'مريح ودافئ',
+    'gallery.item3': 'مكتب منزلي', 'gallery.item4': 'دفء طبيعي',
+    'gallery.item5': 'استوديو إبداعي', 'gallery.item6': 'ديكور فاخر',
+    'about.eyebrow': 'عن المشروع',
+    'about.heading': 'حين يلتقي الذكاء الاصطناعي بـ<em>التصميم الداخلي</em>',
+    'about.desc': 'يستخدم DecoGen AI التعلم العميق لإعادة تخيّل المساحات. ارفع صورة، اختر أسلوباً، واحصل على تصور واقعي في ثوانٍ.',
+    'about.stat1': 'محرك الذكاء الاصطناعي', 'about.stat2': 'أنماط التصميم',
+    'about.stat3': 'وقت التوليد', 'about.stat4': 'مشروع PFE 2026',
+    'ar.landscape': '16:9 — أفقي', 'ar.square': '1:1 — مربع', 'ar.portrait': '9:16 — عمودي',
   }
 };
 
-const langLabels = { en:'EN', fr:'FR', ar:'AR' };
-
+// ── applyLang ─────────────────────────────────────────────────
 function applyLang(lang) {
   const html = document.documentElement;
   html.setAttribute('data-lang', lang);
@@ -110,32 +109,30 @@ function applyLang(lang) {
   html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
   const t = translations[lang];
 
+  // text content
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (t[key] !== undefined) el.textContent = t[key];
   });
+
+  // innerHTML (for <em> tags)
   document.querySelectorAll('[data-i18n-html]').forEach(el => {
     const key = el.getAttribute('data-i18n-html');
     if (t[key] !== undefined) el.innerHTML = t[key];
   });
+
+  // placeholders
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const key = el.getAttribute('data-i18n-placeholder');
     if (t[key] !== undefined) el.placeholder = t[key];
   });
 
-  // Update desktop dropdown label + active state
-  const currentLabel = document.getElementById('langCurrentLabel');
-  if (currentLabel) currentLabel.textContent = langLabels[lang];
+  // active state on pill buttons
   document.querySelectorAll('.lang-opt').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
   });
 
-  // Update mobile lang opts
-  document.querySelectorAll('.mobile-lang-opt').forEach(btn => {
-    btn.classList.toggle('active', btn.getAttribute('data-mobile-lang') === lang);
-  });
-
-  // Prompt hint
+  // prompt hint
   const hint = document.getElementById('promptHint');
   if (hint) {
     if (lang === 'en') {
@@ -148,53 +145,31 @@ function applyLang(lang) {
     }
   }
 
-  // Re-apply upload text based on current upload state
-  const uploadText = document.getElementById('uploadText');
-  const roomInput  = document.getElementById('room_image');
+  // re-apply upload text based on current upload state
+  const uploadText  = document.getElementById('uploadText');
+  const roomInput   = document.getElementById('room_image');
   if (uploadText) {
     const hasFile = roomInput && roomInput.files && roomInput.files.length > 0;
     uploadText.textContent = hasFile ? t['upload.done'] : t['upload.idle'];
+  }
+
+  // update submit button text (only if not in loading/success/error state)
+  const submitBtn = document.getElementById('submitBtn');
+  if (submitBtn && !submitBtn.disabled && !submitBtn.classList.contains('success') && !submitBtn.classList.contains('error')) {
+    submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> ${t['generate.submit']}`;
   }
 }
 
 // ── Lang switcher init ────────────────────────────────────────
 (function () {
   let currentLang = 'en';
-  const switcher   = document.getElementById('langSwitcher');
-  const currentBtn = document.getElementById('langCurrentBtn');
 
   applyLang(currentLang);
 
-  // Desktop dropdown toggle
-  if (currentBtn) {
-    currentBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      switcher.classList.toggle('open');
-      currentBtn.setAttribute('aria-expanded', switcher.classList.contains('open'));
-    });
-  }
-
-  document.querySelectorAll('.lang-opt').forEach(btn => {
+  // inline pill switcher (desktop navbar)
+  document.querySelectorAll('#langSwitcher .lang-opt').forEach(btn => {
     btn.addEventListener('click', () => {
       currentLang = btn.getAttribute('data-lang');
-      applyLang(currentLang);
-      switcher.classList.remove('open');
-      if (currentBtn) currentBtn.setAttribute('aria-expanded', 'false');
-    });
-  });
-
-  // Close dropdown on outside click
-  document.addEventListener('click', e => {
-    if (switcher && !switcher.contains(e.target)) {
-      switcher.classList.remove('open');
-      if (currentBtn) currentBtn.setAttribute('aria-expanded', 'false');
-    }
-  });
-
-  // Mobile lang opts
-  document.querySelectorAll('.mobile-lang-opt').forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentLang = btn.getAttribute('data-mobile-lang');
       applyLang(currentLang);
     });
   });
@@ -202,8 +177,8 @@ function applyLang(lang) {
 
 // ── Upload feedback ───────────────────────────────────────────
 (function () {
-  const input      = document.getElementById('room_image');
-  const uploadText = document.getElementById('uploadText');
+  const input       = document.getElementById('room_image');
+  const uploadText  = document.getElementById('uploadText');
   const uploadLabel = document.getElementById('uploadLabel');
   if (!input || !uploadText || !uploadLabel) return;
 
@@ -211,6 +186,22 @@ function applyLang(lang) {
     const lang = document.documentElement.getAttribute('data-lang') || 'en';
     const t = translations[lang];
     if (input.files && input.files.length > 0) {
+      // show image preview
+      const reader = new FileReader();
+      reader.onload = e => {
+        // remove old preview if any
+        let prev = uploadLabel.querySelector('.preview-img');
+        if (!prev) {
+          prev = document.createElement('img');
+          prev.className = 'preview-img';
+          prev.alt = 'Room preview';
+          uploadLabel.prepend(prev);
+        }
+        prev.src = e.target.result;
+        uploadLabel.classList.add('has-preview');
+      };
+      reader.readAsDataURL(input.files[0]);
+
       uploadText.textContent = t['upload.done'];
       uploadLabel.style.borderColor = 'var(--color-accent)';
       uploadLabel.style.borderStyle = 'solid';
@@ -220,6 +211,9 @@ function applyLang(lang) {
       uploadText.textContent = t['upload.idle'];
       uploadLabel.style.borderColor = '';
       uploadLabel.style.borderStyle = '';
+      uploadLabel.classList.remove('has-preview');
+      const prev = uploadLabel.querySelector('.preview-img');
+      if (prev) prev.remove();
       const iconSvg = uploadLabel.querySelector('.icon svg');
       if (iconSvg) iconSvg.style.fill = '';
     }
@@ -299,6 +293,7 @@ document.querySelectorAll('.style-card').forEach(card => {
 const toastEl = document.getElementById('toast');
 let toastTimer;
 function showToast(msg, type = '') {
+  if (!toastEl) return;
   clearTimeout(toastTimer);
   toastEl.textContent = msg;
   toastEl.className = 'toast show' + (type ? ' toast-' + type : '');
@@ -327,8 +322,8 @@ function showBeforeAfter(afterURL) {
 
 // ── TAB SWITCHING ─────────────────────────────────────────────
 function switchTab(name) {
-  const tabs   = { before:'tabBefore',  after:'tabAfter',  slider:'tabSlider'  };
-  const panels = { before:'panelBefore', after:'panelAfter', slider:'panelSlider' };
+  const tabs   = { before: 'tabBefore',   after: 'tabAfter',   slider: 'tabSlider'   };
+  const panels = { before: 'panelBefore', after: 'panelAfter', slider: 'panelSlider' };
 
   Object.keys(tabs).forEach(key => {
     const tab   = document.getElementById(tabs[key]);
@@ -421,14 +416,14 @@ if (SpeechRecognition && micBtn) {
 
   recognition.onstart = () => {
     micBtn.classList.add('listening');
-    voiceOverlay.classList.add('active');
-    voiceLabel.textContent = 'Listening…';
-    voiceTranscript.textContent = '';
+    if (voiceOverlay) voiceOverlay.classList.add('active');
+    if (voiceLabel) voiceLabel.textContent = 'Listening…';
+    if (voiceTranscript) voiceTranscript.textContent = '';
   };
 
   recognition.onresult = e => {
     const transcript = Array.from(e.results).map(r => r[0].transcript).join('');
-    voiceTranscript.textContent = transcript;
+    if (voiceTranscript) voiceTranscript.textContent = transcript;
     if (e.results[e.results.length - 1].isFinal) {
       if (promptTA) promptTA.value = transcript;
       stopVoice();
@@ -436,7 +431,7 @@ if (SpeechRecognition && micBtn) {
   };
 
   recognition.onerror = e => {
-    voiceLabel.textContent = 'Error: ' + e.error;
+    if (voiceLabel) voiceLabel.textContent = 'Error: ' + e.error;
     setTimeout(stopVoice, 1500);
   };
 
@@ -459,7 +454,7 @@ function stopVoice() {
 
 voiceCancel  && voiceCancel.addEventListener('click', stopVoice);
 voiceConfirm && voiceConfirm.addEventListener('click', () => {
-  if (promptTA && voiceTranscript.textContent) promptTA.value = voiceTranscript.textContent;
+  if (promptTA && voiceTranscript?.textContent) promptTA.value = voiceTranscript.textContent;
   stopVoice();
 });
 
@@ -507,6 +502,7 @@ form && form.addEventListener('submit', async e => {
 
   const fileInput = document.getElementById('room_image');
   const prompt    = promptTA?.value.trim();
+  const lang      = document.documentElement.getAttribute('data-lang') || 'en';
 
   if (!fileInput?.files[0]) { showToast('Please upload a room photo.', 'error'); return; }
   if (!prompt)               { showToast('Please enter or choose a style.', 'error'); return; }
@@ -514,7 +510,7 @@ form && form.addEventListener('submit', async e => {
   capturedBeforeURL = URL.createObjectURL(fileInput.files[0]);
 
   submitBtn.disabled = true;
-  submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Generating…`;
+  submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> ${lang === 'fr' ? 'Génération…' : lang === 'ar' ? '…جارٍ التوليد' : 'Generating…'}`;
 
   document.getElementById('resultArea').style.display = 'none';
   resultPlaceholder.style.display = 'none';
@@ -545,15 +541,16 @@ form && form.addEventListener('submit', async e => {
 
     const resultURL = await pollStatus(jobId);
     showBeforeAfter(resultURL);
+
     submitBtn.classList.add('success');
-    submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Design Ready!`;
-    showToast('Your room has been redesigned ✨');
+    submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> ${lang === 'fr' ? 'Design prêt !' : lang === 'ar' ? '!التصميم جاهز' : 'Design Ready!'}`;
+    showToast(lang === 'fr' ? 'Votre pièce a été redesignée ✨' : lang === 'ar' ? '✨ تم إعادة تصميم غرفتك' : 'Your room has been redesigned ✨');
 
   } catch (err) {
     loadingPanel.style.display      = 'none';
     resultPlaceholder.style.display = 'flex';
     submitBtn.classList.add('error');
-    submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Try Again`;
+    submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ${lang === 'fr' ? 'Réessayer' : lang === 'ar' ? 'حاول مجدداً' : 'Try Again'}`;
     showToast(err.message || 'Something went wrong', 'error');
     console.error('[DecoGen Error]', err);
 
@@ -561,7 +558,9 @@ form && form.addEventListener('submit', async e => {
     submitBtn.disabled = false;
     setTimeout(() => {
       submitBtn.classList.remove('success', 'error');
-      submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Generate Design`;
+      const currentLang = document.documentElement.getAttribute('data-lang') || 'en';
+      const t = translations[currentLang];
+      submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> ${t['generate.submit']}`;
     }, 4000);
   }
 });
