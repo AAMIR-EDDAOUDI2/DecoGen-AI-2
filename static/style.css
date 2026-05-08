@@ -488,50 +488,51 @@ footer a:hover{opacity:.75}
 }
 
 .btn-loader {
-  display: flex;
-  align-items: center;
+  color: var(--color-bg);
   font-family: var(--font-body);
   font-weight: 600;
   font-size: var(--text-sm);
+  box-sizing: content-box;
+  height: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .btn-loader-static {
   white-space: nowrap;
-  padding-right: 5px;
 }
 
+/* Fixed height = 1 word tall, clips the rest */
 .btn-loader-words {
   overflow: hidden;
   position: relative;
-  height: 1.35em;
-  display: flex;
-  align-items: flex-start;
+  height: 20px;
+  --btn-bg: var(--color-text); /* button background = var(--color-text) */
 }
 
+/* Fade mask top & bottom — same as UIverse */
 .btn-loader-words::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    var(--color-text) 5%,
-    transparent 25%,
-    transparent 75%,
-    var(--color-text) 95%
+    var(--btn-bg) 10%,
+    transparent 30%,
+    transparent 70%,
+    var(--btn-bg) 90%
   );
   z-index: 20;
   pointer-events: none;
 }
 
+/* Each word is full height of the container, stacks vertically */
 .btn-loader-word {
   display: block;
-  height: 1.35em;
-  line-height: 1.35em;
-  padding-left: 4px;
-  white-space: nowrap;
+  height: 100%;
+  padding-left: 6px;
   color: var(--color-accent);
-  opacity: 0.9;
-  animation: btn_spin_words 5s infinite;
-  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  white-space: nowrap;
+  animation: btn_spin_words 4s infinite;
 }
 
 @keyframes btn_spin_words {
@@ -548,3 +549,4 @@ footer a:hover{opacity:.75}
 @media (prefers-reduced-motion: reduce) {
   .btn-loader-word { animation: none; }
 }
+
