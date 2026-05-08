@@ -282,8 +282,15 @@ function applyLang(lang) {
 
 // ── NAVBAR SCROLL ─────────────────────────────────────────────
 const navbar = document.getElementById('navbar');
+let scrollTicking = false;
 window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 10);
+  if (!scrollTicking) {
+    requestAnimationFrame(() => {
+      navbar.classList.toggle('scrolled', window.scrollY > 10);
+      scrollTicking = false;
+    });
+    scrollTicking = true;
+  }
 }, { passive: true });
 
 // ── ACTIVE NAV LINK ON SCROLL ─────────────────────────────────
