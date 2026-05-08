@@ -27,7 +27,6 @@
 
   <div class="nav-right">
 
-    <!-- Theme toggle -->
     <label class="switch" aria-label="Switch theme" data-theme-toggle>
       <input id="themeInput" type="checkbox" />
       <div class="slider round">
@@ -54,7 +53,6 @@
       </div>
     </label>
 
-    <!-- Lang switcher — flat pills, always visible -->
     <div class="lang-switcher" id="langSwitcher">
       <button class="lang-opt active" data-lang="en" role="option">EN</button>
       <button class="lang-opt" data-lang="fr" role="option">FR</button>
@@ -206,11 +204,34 @@
             </select>
           </div>
 
-          <button type="submit" class="btn-submit" id="submitBtn" data-i18n="generate.submit">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-            </svg>
-            Generate Design
+          <!-- ⚡ GENERATE BUTTON — updated with animated words loader -->
+          <button type="submit" class="btn-submit" id="submitBtn">
+
+            <!-- DEFAULT state -->
+            <span class="btn-default-content">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+              <span data-i18n="generate.submit">Generate Design</span>
+            </span>
+
+            <!-- GENERATING state -->
+            <span class="btn-generating-content">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.6">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+              <span class="btn-loader">
+                <span class="btn-loader-static">Generating</span>
+                <div class="btn-loader-words" aria-hidden="true">
+                  <span class="btn-loader-word">style…</span>
+                  <span class="btn-loader-word">layout…</span>
+                  <span class="btn-loader-word">colors…</span>
+                  <span class="btn-loader-word">details…</span>
+                  <span class="btn-loader-word">style…</span>
+                </div>
+              </span>
+            </span>
+
           </button>
 
         </form>
@@ -255,14 +276,12 @@
       <!-- Result: Before / After / Compare -->
       <div id="resultArea" style="display:none" aria-live="polite">
 
-        <!-- Tab bar -->
         <div class="ba-tabs" role="tablist" aria-label="Before and After view">
           <button class="ba-tab" id="tabBefore" role="tab" aria-selected="false" aria-controls="panelBefore" data-i18n="result.before">Before</button>
           <button class="ba-tab active" id="tabAfter" role="tab" aria-selected="true" aria-controls="panelAfter" data-i18n="result.after">After</button>
           <button class="ba-tab" id="tabSlider" role="tab" aria-selected="false" aria-controls="panelSlider" data-i18n="result.compare">Compare</button>
         </div>
 
-        <!-- Before panel -->
         <div id="panelBefore" role="tabpanel" aria-labelledby="tabBefore" class="ba-panel">
           <div class="result-image-wrap">
             <img id="beforeImage" src="" alt="Original room before AI design" loading="lazy" width="640" height="480">
@@ -270,7 +289,6 @@
           </div>
         </div>
 
-        <!-- After panel -->
         <div id="panelAfter" role="tabpanel" aria-labelledby="tabAfter" class="ba-panel active">
           <div class="result-image-wrap">
             <img id="resultImage" src="" alt="AI-generated room design" loading="lazy" width="640" height="480">
@@ -278,7 +296,6 @@
           </div>
         </div>
 
-        <!-- Compare slider panel -->
         <div id="panelSlider" role="tabpanel" aria-labelledby="tabSlider" class="ba-panel">
           <div class="ba-slider-wrap" id="baSliderWrap">
             <img class="ba-slider-img ba-slider-before" id="sliderBefore" src="" alt="Original room" draggable="false">
@@ -299,7 +316,6 @@
           </div>
         </div>
 
-        <!-- Download -->
         <div class="result-actions">
           <div class="dl-container">
             <label class="dl-label" id="downloadLabel">
@@ -316,7 +332,6 @@
           </div>
         </div>
 
-        <!-- REACTION PANEL -->
         <div class="reaction-panel">
           <div class="reaction-bar">
             <button class="reaction-btn" data-label="Like"       data-emoji="👍">👍</button>
