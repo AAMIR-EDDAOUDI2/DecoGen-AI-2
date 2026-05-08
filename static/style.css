@@ -550,3 +550,57 @@ footer a:hover{opacity:.75}
   .btn-loader-word { animation: none; }
 }
 
+
+
+/* ── GPU ACCELERATION FIXES ── */
+
+/* Theme toggle slider */
+.slider,
+.sun-moon {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Loading bar */
+.loading-bar-fill {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Loading SVG spinner */
+.loader-svg path {
+  will-change: stroke-dasharray, stroke-dashoffset;
+  transform: translateZ(0);
+}
+
+/* Voice orb — biggest offender */
+.loader {
+  will-change: filter;
+  transform: translateZ(0);
+}
+.loader .box {
+  will-change: transform;
+  transform: translateZ(0);
+}
+.loader svg #clipping polygon {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Button words animation */
+.btn-loader-word {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Gallery hover */
+.gallery-item img {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Reaction buttons */
+.reaction-btn {
+  will-change: transform;
+  transform: translateZ(0);
+}
