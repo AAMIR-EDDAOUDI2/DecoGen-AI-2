@@ -24,58 +24,72 @@
     <a href="#about"    class="nav-link" data-i18n="nav.about">About</a>
   </div>
   <div class="nav-right">
+
+    <!-- Theme toggle -->
     <label class="switch" aria-label="Switch theme" data-theme-toggle>
-  <input id="themeInput" type="checkbox" />
-  <div class="slider round">
-    <div class="sun-moon">
-      <svg id="moon-dot-1" class="moon-dot" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-      <svg id="moon-dot-2" class="moon-dot" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-      <svg id="moon-dot-3" class="moon-dot" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-      <svg id="light-ray-1" class="light-ray" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-      <svg id="light-ray-2" class="light-ray" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-      <svg id="light-ray-3" class="light-ray" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-      <svg id="cloud-1" class="cloud-dark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-      <svg id="cloud-2" class="cloud-dark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-      <svg id="cloud-3" class="cloud-dark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-      <svg id="cloud-4" class="cloud-light" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-      <svg id="cloud-5" class="cloud-light" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-      <svg id="cloud-6" class="cloud-light" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
+      <input id="themeInput" type="checkbox" />
+      <div class="slider round">
+        <div class="sun-moon">
+          <svg id="moon-dot-1" class="moon-dot" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
+          <svg id="moon-dot-2" class="moon-dot" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
+          <svg id="moon-dot-3" class="moon-dot" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
+          <svg id="light-ray-1" class="light-ray" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
+          <svg id="light-ray-2" class="light-ray" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
+          <svg id="light-ray-3" class="light-ray" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
+          <svg id="cloud-1" class="cloud-dark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
+          <svg id="cloud-2" class="cloud-dark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
+          <svg id="cloud-3" class="cloud-dark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
+          <svg id="cloud-4" class="cloud-light" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
+          <svg id="cloud-5" class="cloud-light" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
+          <svg id="cloud-6" class="cloud-light" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
+        </div>
+        <div class="stars">
+          <svg id="star-1" class="star" viewBox="0 0 20 20"><path d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"></path></svg>
+          <svg id="star-2" class="star" viewBox="0 0 20 20"><path d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"></path></svg>
+          <svg id="star-3" class="star" viewBox="0 0 20 20"><path d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"></path></svg>
+          <svg id="star-4" class="star" viewBox="0 0 20 20"><path d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"></path></svg>
+        </div>
+      </div>
+    </label>
+
+    <!-- Lang switcher dropdown -->
+    <div class="lang-switcher" id="langSwitcher">
+      <button class="lang-current-btn" id="langCurrentBtn" aria-haspopup="true" aria-expanded="false">
+        <span id="langCurrentLabel">EN</span>
+        <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M1 1l4 4 4-4"/>
+        </svg>
+      </button>
+      <div class="lang-dropdown" role="listbox" id="langDropdown">
+        <button class="lang-opt active" data-lang="en" role="option">
+          <span class="lang-opt-flag">🇬🇧</span> English
+        </button>
+        <button class="lang-opt" data-lang="fr" role="option">
+          <span class="lang-opt-flag">🇫🇷</span> Français
+        </button>
+        <button class="lang-opt" data-lang="ar" role="option">
+          <span class="lang-opt-flag">🇲🇦</span> العربية
+        </button>
+      </div>
     </div>
-    <div class="stars">
-      <svg id="star-1" class="star" viewBox="0 0 20 20"><path d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"></path></svg>
-      <svg id="star-2" class="star" viewBox="0 0 20 20"><path d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"></path></svg>
-      <svg id="star-3" class="star" viewBox="0 0 20 20"><path d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"></path></svg>
-      <svg id="star-4" class="star" viewBox="0 0 20 20"><path d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"></path></svg>
-    </div>
-  </div>
-</label>
-    <!-- REPLACE your old lang switcher with this -->
-<div class="lang-switcher" id="langSwitcher">
-  <button class="lang-current-btn" id="langCurrentBtn" aria-haspopup="true" aria-expanded="false">
-    <span id="langCurrentLabel">EN</span>
-    <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M1 1l4 4 4-4"/>
-    </svg>
-  </button>
-  <div class="lang-dropdown" role="listbox" id="langDropdown">
-    <button class="lang-opt active" data-lang="en" role="option">
-      <span class="lang-opt-flag">🇬🇧</span> English
-    </button>
-    <button class="lang-opt" data-lang="fr" role="option">
-      <span class="lang-opt-flag">🇫🇷</span> Français
-    </button>
-    <button class="lang-opt" data-lang="ar" role="option">
-      <span class="lang-opt-flag">🇲🇦</span> العربية
-    </button>
-  </div>
-</div>
+
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
 
+<!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobileNav" role="navigation" aria-label="Mobile navigation">
+  <!-- Lang switcher row — mobile only -->
+  <div class="mobile-lang-row">
+    <span data-i18n="lang.label">Language</span>
+    <div class="mobile-lang-opts">
+      <button class="mobile-lang-opt active" data-mobile-lang="en">EN</button>
+      <button class="mobile-lang-opt" data-mobile-lang="fr">FR</button>
+      <button class="mobile-lang-opt" data-mobile-lang="ar">AR</button>
+    </div>
+  </div>
   <a href="#home" data-i18n="nav.home">Home</a>
   <a href="#generate" data-i18n="nav.design">Design Room</a>
   <a href="#gallery" data-i18n="nav.gallery">Gallery</a>
@@ -113,75 +127,72 @@
         <form id="aiDesignForm" novalidate>
 
           <!-- Step 1 -->
-          <!-- Step 1 -->
-<div class="form-step">
-  <div class="form-label">
-    <span class="step-num">1</span>
-    <span data-i18n="generate.step1">Upload Room Photo</span>
-  </div>
-  <label for="room_image" class="custum-file-upload" id="uploadLabel">
-    <div class="icon">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z"/>
-      </svg>
-    </div>
-    <div class="text">
-      <span id="uploadText">Click to upload image</span>
-    </div>
-    <input id="room_image" name="room_image" type="file" accept="image/*" required>
-  </label>
-</div>
+          <div class="form-step">
+            <div class="form-label">
+              <span class="step-num">1</span>
+              <span data-i18n="generate.step1">Upload Room Photo</span>
+            </div>
+            <label for="room_image" class="custum-file-upload" id="uploadLabel">
+              <div class="icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z"/>
+                </svg>
+              </div>
+              <div class="text">
+                <span id="uploadText" data-i18n="upload.idle">Click to upload image</span>
+              </div>
+              <input id="room_image" name="room_image" type="file" accept="image/*" required>
+            </label>
+          </div>
 
           <!-- Step 2 -->
           <div class="form-step" style="margin-top:var(--space-6)">
             <label class="form-label"><span class="step-num">2</span> <span data-i18n="generate.step2">Choose a Style</span></label>
             <div class="style-grid-wrap">
-  <div class="style-grid" role="group" aria-label="Style presets" id="styleGrid">
-
-    <button type="button" class="style-card" data-prompt="modern minimalist interior design, clean lines, neutral palette, uncluttered space, functional furniture" data-i18n="pill.modern">Modern Minimalist</button>
-    <button type="button" class="style-card" data-prompt="Scandinavian interior, light wood, white walls, cozy textiles, hygge aesthetic, simple functional design">Scandinavian</button>
-    <button type="button" class="style-card" data-prompt="Japandi interior design, Japanese minimalism meets Scandinavian simplicity, wabi-sabi, natural materials, muted earth tones">Japandi</button>
-    <button type="button" class="style-card" data-prompt="contemporary luxury interior, high-end finishes, marble surfaces, sophisticated color palette, designer furniture">Contemporary Luxury</button>
-    <button type="button" class="style-card" data-prompt="modern luxury interior, opulent materials, gold accents, velvet upholstery, statement lighting, premium aesthetics">Modern Luxury</button>
-    <button type="button" class="style-card" data-prompt="industrial interior design, exposed brick walls, metal pipes, raw concrete, factory loft aesthetic, Edison bulbs">Industrial</button>
-    <button type="button" class="style-card" data-prompt="bohemian interior, eclectic mix of patterns and textures, macrame, plants, rich jewel tones, layered rugs, global influences" data-i18n="pill.cozy">Bohemian (Boho)</button>
-    <button type="button" class="style-card" data-prompt="cozy aesthetic interior, warm lighting, soft blankets, plush cushions, warm wood tones, inviting atmosphere">Cozy Aesthetic</button>
-    <button type="button" class="style-card" data-prompt="Nordic interior design, clean lines, natural light, minimalist furniture, white and grey tones, functional Scandinavian style">Nordic</button>
-    <button type="button" class="style-card" data-prompt="Moroccan modern interior, geometric tile patterns, arched doorways, lanterns, rich jewel tones, ornate details with contemporary touches">Moroccan Modern</button>
-    <button type="button" class="style-card" data-prompt="Mediterranean interior design, warm terracotta tiles, whitewashed walls, blue accents, rustic wood, arched windows, coastal warmth">Mediterranean</button>
-    <button type="button" class="style-card" data-prompt="rustic interior design, natural wood beams, stone walls, earthy tones, vintage accessories, warm and rugged aesthetic">Rustic</button>
-    <button type="button" class="style-card" data-prompt="farmhouse interior design, shiplap walls, barn wood accents, neutral palette, vintage-modern mix, cozy country aesthetic">Farmhouse</button>
-    <button type="button" class="style-card" data-prompt="vintage interior design, antique furniture, retro color palette, aged patina, nostalgic decor, classic patterns">Vintage</button>
-    <button type="button" class="style-card" data-prompt="classic elegant interior, timeless design, symmetry, rich fabrics, traditional furniture, refined color palette, crown moldings">Classic Elegant</button>
-    <button type="button" class="style-card" data-prompt="Parisian style interior, chic and effortless, herringbone floors, neutral tones with bold accents, vintage touches, French elegance">Parisian Style</button>
-    <button type="button" class="style-card" data-prompt="futuristic interior design, sleek surfaces, LED lighting, smart home technology, minimalist high-tech aesthetic, metallic finishes">Futuristic</button>
-    <button type="button" class="style-card" data-prompt="cyberpunk interior design, neon lights, dark industrial surfaces, holographic accents, tech-noir aesthetic, purple and blue glows">Cyberpunk</button>
-    <button type="button" class="style-card" data-prompt="gaming room setup, RGB lighting, multiple monitors, ergonomic gaming chair, dark walls with neon accents, tech-forward design">Gaming Room</button>
-    <button type="button" class="style-card" data-prompt="dark academia interior, dark wood paneling, leather armchairs, overflowing bookshelves, candlelight, vintage maps, gothic collegiate aesthetic">Dark Academia</button>
-    <button type="button" class="style-card" data-prompt="light academia interior, cream and beige tones, vintage books, botanical prints, soft natural light, linen fabrics, antique desk">Light Academia</button>
-    <button type="button" class="style-card" data-prompt="Korean aesthetic interior, pastel colors, cute minimalism, soft lighting, clean white walls, kawaii decor accents, cozy and organized">Korean Aesthetic</button>
-    <button type="button" class="style-card" data-prompt="Japanese Zen interior, tatami mats, bamboo elements, bonsai plants, neutral tones, sliding shoji screens, meditative calm">Japanese Zen</button>
-    <button type="button" class="style-card" data-prompt="tropical interior design, lush indoor plants, rattan furniture, bold botanical prints, warm humid palette, resort-like atmosphere">Tropical</button>
-    <button type="button" class="style-card" data-prompt="cottagecore interior, floral wallpaper, vintage ceramics, dried flower arrangements, cozy window seats, garden-inspired pastoral aesthetic">Cottagecore</button>
-    <button type="button" class="style-card" data-prompt="smart home interior, integrated technology, clean minimalist surfaces, hidden cables, voice-controlled lighting, sleek modern aesthetic">Smart Home</button>
-    <button type="button" class="style-card" data-prompt="black and white modern interior, high contrast monochrome palette, bold geometric patterns, graphic art, sleek contemporary furniture">Black & White Modern</button>
-    <button type="button" class="style-card" data-prompt="earth tone interior, warm terracotta, sandy beige, olive green, clay brown, natural textures, grounding organic aesthetic">Earth Tone Interior</button>
-    <button type="button" class="style-card" data-prompt="neutral luxury interior, soft greige palette, cashmere textures, travertine stone, understated opulence, calm sophisticated atmosphere">Neutral Luxury</button>
-    <button type="button" class="style-card" data-prompt="minimal tech style interior, ultra-clean surfaces, hidden storage, integrated screens, monochrome palette, Apple-aesthetic precision">Minimal Tech Style</button>
-    <button type="button" class="style-card" data-prompt="Pinterest aesthetic room, dreamy pastel tones, string lights, gallery wall, cozy corner seating, curated decorative objects">Pinterest Aesthetic</button>
-    <button type="button" class="style-card" data-prompt="TikTok room style, LED strip lights, neon signs, aesthetic shelving, trendy decor, colorful accents, social media-worthy setup">TikTok Room Style</button>
-    <button type="button" class="style-card" data-prompt="hotel luxury suite interior, plush bedding, marble bathroom, floor-to-ceiling windows, muted elegant tones, bespoke furniture, 5-star ambience">Hotel Luxury Suite</button>
-    <button type="button" class="style-card" data-prompt="artistic loft interior, exposed concrete ceilings, large canvas artwork, open floor plan, industrial windows, creative eclectic decor">Artistic Loft</button>
-    <button type="button" class="style-card" data-prompt="luxury penthouse interior, panoramic city views, floor-to-ceiling glass, marble floors, bespoke designer furniture, opulent finishes">Luxury Penthouse</button>
-    <button type="button" class="style-card" data-prompt="nature inspired interior, biophilic design, living walls, natural stone, wood grain textures, organic shapes, forest-like tranquility">Nature Inspired</button>
-    <button type="button" class="style-card" data-prompt="warm cozy interior, amber lighting, layered textiles, plush rugs, fireplace, wooden accents, hygge-inspired snug atmosphere">Warm Cozy Interior</button>
-    <button type="button" class="style-card" data-prompt="soft girl aesthetic room, pastel pink and lavender tones, fluffy textures, fairy lights, cute plushies, romantic feminine decor">Soft Girl Aesthetic</button>
-    <button type="button" class="style-card" data-prompt="masculine modern interior, dark bold tones, leather furniture, concrete and metal accents, clean lines, strong geometric forms">Masculine Modern</button>
-    <button type="button" class="style-card" data-prompt="feminine elegant interior, blush and gold palette, floral details, soft drapery, mirrored surfaces, delicate ornate furniture">Feminine Elegant</button>
-    <button type="button" class="style-card" data-prompt="space sci-fi interior, zero-gravity aesthetic, metallic silver surfaces, star map ceilings, floating furniture, deep space color palette with glowing accents">Space / Sci-Fi</button>
-
-  </div>
-</div>
+              <div class="style-grid" role="group" aria-label="Style presets" id="styleGrid">
+                <button type="button" class="style-card" data-prompt="modern minimalist interior design, clean lines, neutral palette, uncluttered space, functional furniture" data-i18n="pill.modern">Modern Minimalist</button>
+                <button type="button" class="style-card" data-prompt="Scandinavian interior, light wood, white walls, cozy textiles, hygge aesthetic, simple functional design">Scandinavian</button>
+                <button type="button" class="style-card" data-prompt="Japandi interior design, Japanese minimalism meets Scandinavian simplicity, wabi-sabi, natural materials, muted earth tones">Japandi</button>
+                <button type="button" class="style-card" data-prompt="contemporary luxury interior, high-end finishes, marble surfaces, sophisticated color palette, designer furniture">Contemporary Luxury</button>
+                <button type="button" class="style-card" data-prompt="modern luxury interior, opulent materials, gold accents, velvet upholstery, statement lighting, premium aesthetics">Modern Luxury</button>
+                <button type="button" class="style-card" data-prompt="industrial interior design, exposed brick walls, metal pipes, raw concrete, factory loft aesthetic, Edison bulbs">Industrial</button>
+                <button type="button" class="style-card" data-prompt="bohemian interior, eclectic mix of patterns and textures, macrame, plants, rich jewel tones, layered rugs, global influences" data-i18n="pill.cozy">Bohemian (Boho)</button>
+                <button type="button" class="style-card" data-prompt="cozy aesthetic interior, warm lighting, soft blankets, plush cushions, warm wood tones, inviting atmosphere">Cozy Aesthetic</button>
+                <button type="button" class="style-card" data-prompt="Nordic interior design, clean lines, natural light, minimalist furniture, white and grey tones, functional Scandinavian style">Nordic</button>
+                <button type="button" class="style-card" data-prompt="Moroccan modern interior, geometric tile patterns, arched doorways, lanterns, rich jewel tones, ornate details with contemporary touches">Moroccan Modern</button>
+                <button type="button" class="style-card" data-prompt="Mediterranean interior design, warm terracotta tiles, whitewashed walls, blue accents, rustic wood, arched windows, coastal warmth">Mediterranean</button>
+                <button type="button" class="style-card" data-prompt="rustic interior design, natural wood beams, stone walls, earthy tones, vintage accessories, warm and rugged aesthetic">Rustic</button>
+                <button type="button" class="style-card" data-prompt="farmhouse interior design, shiplap walls, barn wood accents, neutral palette, vintage-modern mix, cozy country aesthetic">Farmhouse</button>
+                <button type="button" class="style-card" data-prompt="vintage interior design, antique furniture, retro color palette, aged patina, nostalgic decor, classic patterns">Vintage</button>
+                <button type="button" class="style-card" data-prompt="classic elegant interior, timeless design, symmetry, rich fabrics, traditional furniture, refined color palette, crown moldings">Classic Elegant</button>
+                <button type="button" class="style-card" data-prompt="Parisian style interior, chic and effortless, herringbone floors, neutral tones with bold accents, vintage touches, French elegance">Parisian Style</button>
+                <button type="button" class="style-card" data-prompt="futuristic interior design, sleek surfaces, LED lighting, smart home technology, minimalist high-tech aesthetic, metallic finishes">Futuristic</button>
+                <button type="button" class="style-card" data-prompt="cyberpunk interior design, neon lights, dark industrial surfaces, holographic accents, tech-noir aesthetic, purple and blue glows">Cyberpunk</button>
+                <button type="button" class="style-card" data-prompt="gaming room setup, RGB lighting, multiple monitors, ergonomic gaming chair, dark walls with neon accents, tech-forward design">Gaming Room</button>
+                <button type="button" class="style-card" data-prompt="dark academia interior, dark wood paneling, leather armchairs, overflowing bookshelves, candlelight, vintage maps, gothic collegiate aesthetic">Dark Academia</button>
+                <button type="button" class="style-card" data-prompt="light academia interior, cream and beige tones, vintage books, botanical prints, soft natural light, linen fabrics, antique desk">Light Academia</button>
+                <button type="button" class="style-card" data-prompt="Korean aesthetic interior, pastel colors, cute minimalism, soft lighting, clean white walls, kawaii decor accents, cozy and organized">Korean Aesthetic</button>
+                <button type="button" class="style-card" data-prompt="Japanese Zen interior, tatami mats, bamboo elements, bonsai plants, neutral tones, sliding shoji screens, meditative calm">Japanese Zen</button>
+                <button type="button" class="style-card" data-prompt="tropical interior design, lush indoor plants, rattan furniture, bold botanical prints, warm humid palette, resort-like atmosphere">Tropical</button>
+                <button type="button" class="style-card" data-prompt="cottagecore interior, floral wallpaper, vintage ceramics, dried flower arrangements, cozy window seats, garden-inspired pastoral aesthetic">Cottagecore</button>
+                <button type="button" class="style-card" data-prompt="smart home interior, integrated technology, clean minimalist surfaces, hidden cables, voice-controlled lighting, sleek modern aesthetic">Smart Home</button>
+                <button type="button" class="style-card" data-prompt="black and white modern interior, high contrast monochrome palette, bold geometric patterns, graphic art, sleek contemporary furniture">Black &amp; White Modern</button>
+                <button type="button" class="style-card" data-prompt="earth tone interior, warm terracotta, sandy beige, olive green, clay brown, natural textures, grounding organic aesthetic">Earth Tone Interior</button>
+                <button type="button" class="style-card" data-prompt="neutral luxury interior, soft greige palette, cashmere textures, travertine stone, understated opulence, calm sophisticated atmosphere">Neutral Luxury</button>
+                <button type="button" class="style-card" data-prompt="minimal tech style interior, ultra-clean surfaces, hidden storage, integrated screens, monochrome palette, Apple-aesthetic precision">Minimal Tech Style</button>
+                <button type="button" class="style-card" data-prompt="Pinterest aesthetic room, dreamy pastel tones, string lights, gallery wall, cozy corner seating, curated decorative objects">Pinterest Aesthetic</button>
+                <button type="button" class="style-card" data-prompt="TikTok room style, LED strip lights, neon signs, aesthetic shelving, trendy decor, colorful accents, social media-worthy setup">TikTok Room Style</button>
+                <button type="button" class="style-card" data-prompt="hotel luxury suite interior, plush bedding, marble bathroom, floor-to-ceiling windows, muted elegant tones, bespoke furniture, 5-star ambience">Hotel Luxury Suite</button>
+                <button type="button" class="style-card" data-prompt="artistic loft interior, exposed concrete ceilings, large canvas artwork, open floor plan, industrial windows, creative eclectic decor">Artistic Loft</button>
+                <button type="button" class="style-card" data-prompt="luxury penthouse interior, panoramic city views, floor-to-ceiling glass, marble floors, bespoke designer furniture, opulent finishes">Luxury Penthouse</button>
+                <button type="button" class="style-card" data-prompt="nature inspired interior, biophilic design, living walls, natural stone, wood grain textures, organic shapes, forest-like tranquility">Nature Inspired</button>
+                <button type="button" class="style-card" data-prompt="warm cozy interior, amber lighting, layered textiles, plush rugs, fireplace, wooden accents, hygge-inspired snug atmosphere">Warm Cozy Interior</button>
+                <button type="button" class="style-card" data-prompt="soft girl aesthetic room, pastel pink and lavender tones, fluffy textures, fairy lights, cute plushies, romantic feminine decor">Soft Girl Aesthetic</button>
+                <button type="button" class="style-card" data-prompt="masculine modern interior, dark bold tones, leather furniture, concrete and metal accents, clean lines, strong geometric forms">Masculine Modern</button>
+                <button type="button" class="style-card" data-prompt="feminine elegant interior, blush and gold palette, floral details, soft drapery, mirrored surfaces, delicate ornate furniture">Feminine Elegant</button>
+                <button type="button" class="style-card" data-prompt="space sci-fi interior, zero-gravity aesthetic, metallic silver surfaces, star map ceilings, floating furniture, deep space color palette with glowing accents">Space / Sci-Fi</button>
+              </div>
+            </div>
             <div class="textarea-wrap">
               <textarea class="form-input" id="decoration_prompt" name="decoration_prompt" rows="3"
                 data-i18n-placeholder="generate.placeholder"
@@ -202,7 +213,7 @@
             <label class="form-label" for="aspect_ratio"><span class="step-num">3</span> <span data-i18n="generate.step3">Aspect Ratio</span></label>
             <select class="form-input" id="aspect_ratio" name="aspect_ratio">
               <option value="16:9" data-i18n="ar.landscape">16:9 — Landscape</option>
-              <option value="1:1" data-i18n="ar.square">1:1 — Square</option>
+              <option value="1:1"  data-i18n="ar.square">1:1 — Square</option>
               <option value="9:16" data-i18n="ar.portrait">9:16 — Portrait</option>
             </select>
           </div>
@@ -319,12 +330,12 @@
         <!-- REACTION PANEL -->
         <div class="reaction-panel">
           <div class="reaction-bar">
-            <button class="reaction-btn" data-label="Like" data-emoji="👍">👍</button>
-            <button class="reaction-btn" data-label="Cheer" data-emoji="👏🏻">👏🏻</button>
-            <button class="reaction-btn" data-label="Celebrate" data-emoji="🎉">🎉</button>
+            <button class="reaction-btn" data-label="Like"       data-emoji="👍">👍</button>
+            <button class="reaction-btn" data-label="Cheer"      data-emoji="👏🏻">👏🏻</button>
+            <button class="reaction-btn" data-label="Celebrate"  data-emoji="🎉">🎉</button>
             <button class="reaction-btn" data-label="Appreciate" data-emoji="✨">✨</button>
-            <button class="reaction-btn" data-label="Smile" data-emoji="🙂">🙂</button>
-            <button class="reaction-btn" data-label="Dislike" data-emoji="👎">👎</button>
+            <button class="reaction-btn" data-label="Smile"      data-emoji="🙂">🙂</button>
+            <button class="reaction-btn" data-label="Dislike"    data-emoji="👎">👎</button>
           </div>
         </div>
 
@@ -397,9 +408,7 @@
 
 <!-- VOICE OVERLAY -->
 <div class="voice-overlay" id="voiceOverlay" aria-modal="true" role="dialog" aria-label="Voice input">
-
   <p class="voice-label" id="voiceLabel">Listening…</p>
-
   <div class="voice-orb-wrap">
     <div class="loader">
       <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
@@ -418,14 +427,11 @@
       <div class="box"></div>
     </div>
   </div>
-
   <p class="voice-transcript" id="voiceTranscript"></p>
-
   <div class="voice-actions">
     <button class="voice-confirm" id="voiceConfirm" type="button">Use This</button>
     <button class="voice-cancel"  id="voiceCancel"  type="button">Cancel</button>
   </div>
-
 </div>
 
 <script src="{{ url_for('static', filename='main.js') }}"></script>
