@@ -21,6 +21,17 @@ const translations = {
     'upload.idle':'Click to upload image',
     'upload.done':'✓ Image uploaded — ready to generate!',
     'lang.label':'Language',
+    'gallery.eyebrow':'Showcase','gallery.heading':'AI Design Gallery',
+    'gallery.subhead':'Rooms reimagined by DecoGen AI.',
+    'gallery.item1':'Modern Minimal','gallery.item2':'Cozy Retreat',
+    'gallery.item3':'Home Office','gallery.item4':'Natural Warmth',
+    'gallery.item5':'Creative Studio','gallery.item6':'Luxury Interior',
+    'about.eyebrow':'About the Project',
+    'about.heading':'Where AI Meets <em>Interior Design</em>',
+    'about.desc':'DecoGen AI uses advanced deep learning to reimagine living spaces. Upload a photo, choose a style, and receive a realistic concept render in seconds — powered by FLUX Kontext image models from Black Forest Labs.',
+    'about.stat1':'Model Engine','about.stat2':'Design Styles',
+    'about.stat3':'Generation Time','about.stat4':'PFE Project 2026',
+    'ar.landscape':'16:9 — Landscape','ar.square':'1:1 — Square','ar.portrait':'9:16 — Portrait',
   },
   fr: {
     'nav.home':'Accueil','nav.design':'Créer',
@@ -43,6 +54,17 @@ const translations = {
     'upload.idle':'Cliquez pour uploader une image',
     'upload.done':'✓ Image chargée — prête à générer !',
     'lang.label':'Langue',
+    'gallery.eyebrow':'Vitrine','gallery.heading':'Galerie IA',
+    'gallery.subhead':'Pièces réimaginées par DecoGen AI.',
+    'gallery.item1':'Minimal Moderne','gallery.item2':'Retraite Cosy',
+    'gallery.item3':'Bureau à domicile','gallery.item4':'Chaleur Naturelle',
+    'gallery.item5':'Studio Créatif','gallery.item6':'Intérieur Luxe',
+    'about.eyebrow':'À propos du projet',
+    'about.heading':'Quand l\'IA rencontre le <em>Design d\'intérieur</em>',
+    'about.desc':'DecoGen AI utilise le deep learning pour réimaginer les espaces de vie. Téléchargez une photo, choisissez un style, et recevez un rendu réaliste en quelques secondes.',
+    'about.stat1':'Moteur IA','about.stat2':'Styles de design',
+    'about.stat3':'Temps de génération','about.stat4':'Projet PFE 2026',
+    'ar.landscape':'16:9 — Paysage','ar.square':'1:1 — Carré','ar.portrait':'9:16 — Portrait',
   },
   ar: {
     'nav.home':'الرئيسية','nav.design':'تصميم الغرفة',
@@ -65,6 +87,17 @@ const translations = {
     'upload.idle':'انقر لرفع صورة',
     'upload.done':'✓ تم رفع الصورة — جاهز للتوليد!',
     'lang.label':'اللغة',
+    'gallery.eyebrow':'معرض الأعمال','gallery.heading':'معرض تصاميم الذكاء الاصطناعي',
+    'gallery.subhead':'غرف أعاد تخيّلها DecoGen AI.',
+    'gallery.item1':'عصري بسيط','gallery.item2':'مريح ودافئ',
+    'gallery.item3':'مكتب منزلي','gallery.item4':'دفء طبيعي',
+    'gallery.item5':'استوديو إبداعي','gallery.item6':'ديكور فاخر',
+    'about.eyebrow':'عن المشروع',
+    'about.heading':'حين يلتقي الذكاء الاصطناعي بـ<em>التصميم الداخلي</em>',
+    'about.desc':'يستخدم DecoGen AI التعلم العميق لإعادة تخيّل المساحات. ارفع صورة، اختر أسلوباً، واحصل على تصور واقعي في ثوانٍ.',
+    'about.stat1':'محرك الذكاء الاصطناعي','about.stat2':'أنماط التصميم',
+    'about.stat3':'وقت التوليد','about.stat4':'مشروع PFE 2026',
+    'ar.landscape':'16:9 — أفقي','ar.square':'1:1 — مربع','ar.portrait':'9:16 — عمودي',
   }
 };
 
@@ -90,14 +123,14 @@ function applyLang(lang) {
     if (t[key] !== undefined) el.placeholder = t[key];
   });
 
-  // Update desktop dropdown
+  // Update desktop dropdown label + active state
   const currentLabel = document.getElementById('langCurrentLabel');
   if (currentLabel) currentLabel.textContent = langLabels[lang];
   document.querySelectorAll('.lang-opt').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
   });
 
-  // Update mobile opts
+  // Update mobile lang opts
   document.querySelectorAll('.mobile-lang-opt').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-mobile-lang') === lang);
   });
@@ -117,23 +150,24 @@ function applyLang(lang) {
 
   // Re-apply upload text based on current upload state
   const uploadText = document.getElementById('uploadText');
-  const roomInput = document.getElementById('room_image');
+  const roomInput  = document.getElementById('room_image');
   if (uploadText) {
     const hasFile = roomInput && roomInput.files && roomInput.files.length > 0;
     uploadText.textContent = hasFile ? t['upload.done'] : t['upload.idle'];
   }
 }
 
-// ── Desktop dropdown toggle ──
-(function() {
+// ── Lang switcher init ────────────────────────────────────────
+(function () {
   let currentLang = 'en';
-  const switcher = document.getElementById('langSwitcher');
+  const switcher   = document.getElementById('langSwitcher');
   const currentBtn = document.getElementById('langCurrentBtn');
 
   applyLang(currentLang);
 
+  // Desktop dropdown toggle
   if (currentBtn) {
-    currentBtn.addEventListener('click', (e) => {
+    currentBtn.addEventListener('click', e => {
       e.stopPropagation();
       switcher.classList.toggle('open');
       currentBtn.setAttribute('aria-expanded', switcher.classList.contains('open'));
@@ -149,15 +183,15 @@ function applyLang(lang) {
     });
   });
 
-  // Close dropdown when clicking outside
-  document.addEventListener('click', (e) => {
+  // Close dropdown on outside click
+  document.addEventListener('click', e => {
     if (switcher && !switcher.contains(e.target)) {
       switcher.classList.remove('open');
       if (currentBtn) currentBtn.setAttribute('aria-expanded', 'false');
     }
   });
 
-  // ── Mobile lang opts ──
+  // Mobile lang opts
   document.querySelectorAll('.mobile-lang-opt').forEach(btn => {
     btn.addEventListener('click', () => {
       currentLang = btn.getAttribute('data-mobile-lang');
@@ -166,12 +200,11 @@ function applyLang(lang) {
   });
 })();
 
-// ── Upload feedback ──
-(function() {
-  const input = document.getElementById('room_image');
+// ── Upload feedback ───────────────────────────────────────────
+(function () {
+  const input      = document.getElementById('room_image');
   const uploadText = document.getElementById('uploadText');
   const uploadLabel = document.getElementById('uploadLabel');
-
   if (!input || !uploadText || !uploadLabel) return;
 
   input.addEventListener('change', () => {
@@ -181,46 +214,21 @@ function applyLang(lang) {
       uploadText.textContent = t['upload.done'];
       uploadLabel.style.borderColor = 'var(--color-accent)';
       uploadLabel.style.borderStyle = 'solid';
-      uploadLabel.querySelector('.icon svg').style.fill = 'var(--color-accent)';
+      const iconSvg = uploadLabel.querySelector('.icon svg');
+      if (iconSvg) iconSvg.style.fill = 'var(--color-accent)';
     } else {
       uploadText.textContent = t['upload.idle'];
       uploadLabel.style.borderColor = '';
       uploadLabel.style.borderStyle = '';
-      uploadLabel.querySelector('.icon svg').style.fill = '';
+      const iconSvg = uploadLabel.querySelector('.icon svg');
+      if (iconSvg) iconSvg.style.fill = '';
     }
-  });
-})();
-
-  // Prompt hint for non-English
-  const hint = document.getElementById('promptHint');
-  if (hint) {
-    hint.style.display = lang === 'en' ? 'none' : 'block';
-    hint.textContent = lang === 'fr'
-      ? '💡 Pour de meilleurs résultats, décrivez en anglais.'
-      : '💡 للحصول على أفضل النتائج، صِف بالإنجليزية.';
-  }
-
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-  });
-}
-
-// Init lang switcher
-(function () {
-  let currentLang = 'en';
-  applyLang(currentLang);
-
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentLang = btn.getAttribute('data-lang');
-      applyLang(currentLang);
-    });
   });
 })();
 
 // ── THEME TOGGLE ──────────────────────────────────────────────
 (function () {
-  const html = document.documentElement;
+  const html  = document.documentElement;
   const input = document.getElementById('themeInput');
 
   let theme = html.getAttribute('data-theme') ||
@@ -233,10 +241,12 @@ function applyLang(lang) {
 
   applyTheme(theme);
 
-  input && input.addEventListener('change', () => {
-    theme = input.checked ? 'dark' : 'light';
-    applyTheme(theme);
-  });
+  if (input) {
+    input.addEventListener('change', () => {
+      theme = input.checked ? 'dark' : 'light';
+      applyTheme(theme);
+    });
+  }
 })();
 
 // ── NAVBAR SCROLL ─────────────────────────────────────────────
@@ -281,9 +291,7 @@ document.querySelectorAll('.style-card').forEach(card => {
     document.querySelectorAll('.style-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
     const prompt = card.getAttribute('data-prompt');
-    if (prompt) {
-      document.getElementById('decoration_prompt').value = prompt;
-    }
+    if (prompt) document.getElementById('decoration_prompt').value = prompt;
   });
 });
 
@@ -319,8 +327,8 @@ function showBeforeAfter(afterURL) {
 
 // ── TAB SWITCHING ─────────────────────────────────────────────
 function switchTab(name) {
-  const tabs   = { before: 'tabBefore',  after: 'tabAfter',  slider: 'tabSlider'  };
-  const panels = { before: 'panelBefore', after: 'panelAfter', slider: 'panelSlider' };
+  const tabs   = { before:'tabBefore',  after:'tabAfter',  slider:'tabSlider'  };
+  const panels = { before:'panelBefore', after:'panelAfter', slider:'panelSlider' };
 
   Object.keys(tabs).forEach(key => {
     const tab   = document.getElementById(tabs[key]);
@@ -400,6 +408,7 @@ const voiceCancel     = document.getElementById('voiceCancel');
 const voiceConfirm    = document.getElementById('voiceConfirm');
 const voiceLabel      = document.getElementById('voiceLabel');
 const voiceTranscript = document.getElementById('voiceTranscript');
+const promptTA        = document.getElementById('decoration_prompt');
 
 let recognition = null;
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -418,8 +427,7 @@ if (SpeechRecognition && micBtn) {
   };
 
   recognition.onresult = e => {
-    const transcript = Array.from(e.results)
-      .map(r => r[0].transcript).join('');
+    const transcript = Array.from(e.results).map(r => r[0].transcript).join('');
     voiceTranscript.textContent = transcript;
     if (e.results[e.results.length - 1].isFinal) {
       if (promptTA) promptTA.value = transcript;
@@ -435,8 +443,7 @@ if (SpeechRecognition && micBtn) {
   recognition.onend = () => stopVoice();
 
   micBtn.addEventListener('click', () => {
-    try { recognition.start(); }
-    catch { /* already running */ }
+    try { recognition.start(); } catch { /* already running */ }
   });
 } else if (micBtn) {
   micBtn.title = 'Voice input not supported in this browser';
@@ -452,9 +459,7 @@ function stopVoice() {
 
 voiceCancel  && voiceCancel.addEventListener('click', stopVoice);
 voiceConfirm && voiceConfirm.addEventListener('click', () => {
-  if (promptTA && voiceTranscript.textContent) {
-    promptTA.value = voiceTranscript.textContent;
-  }
+  if (promptTA && voiceTranscript.textContent) promptTA.value = voiceTranscript.textContent;
   stopVoice();
 });
 
@@ -472,11 +477,9 @@ function pollStatus(jobId) {
         reject(new Error('Generation timed out. Please try again.'));
         return;
       }
-
       try {
         const res  = await fetch(`/status/${jobId}`);
         const data = await res.json();
-
         if (data.status === 'done') {
           clearInterval(timer);
           resolve(`/result/${jobId}`);
@@ -497,7 +500,6 @@ const form              = document.getElementById('aiDesignForm');
 const submitBtn         = document.getElementById('submitBtn');
 const loadingPanel      = document.getElementById('loadingPanel');
 const resultPlaceholder = document.getElementById('resultPlaceholder');
-const promptTA          = document.getElementById('decoration_prompt'); // ✅ THE FIX
 
 // ── FORM SUBMIT ───────────────────────────────────────────────
 form && form.addEventListener('submit', async e => {
@@ -507,7 +509,7 @@ form && form.addEventListener('submit', async e => {
   const prompt    = promptTA?.value.trim();
 
   if (!fileInput?.files[0]) { showToast('Please upload a room photo.', 'error'); return; }
-  if (!prompt)              { showToast('Please enter or choose a style.', 'error'); return; }
+  if (!prompt)               { showToast('Please enter or choose a style.', 'error'); return; }
 
   capturedBeforeURL = URL.createObjectURL(fileInput.files[0]);
 
@@ -526,10 +528,7 @@ form && form.addEventListener('submit', async e => {
   const formData = new FormData(form);
 
   try {
-    const res = await fetch('/decorate-room', {
-      method: 'POST',
-      body: formData
-    });
+    const res = await fetch('/decorate-room', { method: 'POST', body: formData });
 
     const contentType = res.headers.get('content-type') || '';
     if (!contentType.includes('application/json')) {
@@ -545,7 +544,6 @@ form && form.addEventListener('submit', async e => {
     if (!jobId) throw new Error('No job ID returned from server');
 
     const resultURL = await pollStatus(jobId);
-
     showBeforeAfter(resultURL);
     submitBtn.classList.add('success');
     submitBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Design Ready!`;
@@ -587,7 +585,7 @@ document.querySelectorAll('.reaction-btn').forEach(btn => {
     const count = 6;
 
     for (let i = 0; i < count; i++) {
-      const el     = document.createElement('span');
+      const el = document.createElement('span');
       el.className = 'emoji-burst';
       el.textContent = emoji;
 
