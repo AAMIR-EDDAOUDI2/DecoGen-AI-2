@@ -756,3 +756,110 @@ footer a:hover{opacity:.75}
   #reviews { padding: var(--space-12) var(--space-4); }
   .reviews-grid { gap: var(--space-4); }
 }
+
+/* ── AUTH NAV ─────────────────────────────────────────── */
+.nav-auth {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-icon-btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text);
+  transition: border-color .2s, background .2s;
+}
+.auth-icon-btn:hover {
+  border-color: var(--color-accent);
+  background: var(--color-surface-offset);
+}
+
+.auth-avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.auth-avatar img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-accent);
+  transition: opacity .2s;
+}
+.auth-avatar img:hover { opacity: .85; }
+
+.auth-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 8px;
+  min-width: 160px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  z-index: 999;
+  flex-direction: column;
+  gap: 4px;
+}
+.auth-dropdown.open { display: flex; }
+
+.auth-dropdown span {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: 6px 10px;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 4px;
+}
+.auth-dropdown a,
+.auth-dropdown button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .15s, color .15s;
+}
+.auth-dropdown a:hover,
+.auth-dropdown button:hover {
+  background: var(--color-surface-offset);
+  color: var(--color-text);
+}
+
+/* ── HERO GHOST BUTTON ───────────────────────────────── */
+.btn-hero-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid rgba(255,255,255,.3);
+  color: #fff;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color .2s, background .2s;
+  backdrop-filter: blur(4px);
+}
+.btn-hero-ghost:hover {
+  border-color: rgba(255,255,255,.7);
+  background: rgba(255,255,255,.08);
+}
