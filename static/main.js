@@ -3,6 +3,7 @@ const translations = {
   en: {
     'nav.home': 'Home', 'nav.design': 'Design Room',
     'nav.gallery': 'Gallery', 'nav.about': 'About',
+    'nav.reviews': 'Reviews',
     'hero.eyebrow': 'AI-Powered Interior Design',
     'hero.h1': 'Design Your <em>Dream</em> Space',
     'hero.desc': 'Upload a photo of your room and let our AI reimagine it in seconds — any style, any mood.',
@@ -32,10 +33,18 @@ const translations = {
     'about.stat1': 'Model Engine', 'about.stat2': 'Design Styles',
     'about.stat3': 'Generation Time', 'about.stat4': 'PFE Project 2026',
     'ar.landscape': '16:9 — Landscape', 'ar.square': '1:1 — Square', 'ar.portrait': '9:16 — Portrait',
+    'reviews.eyebrow': 'Community', 'reviews.heading': 'What Users Say',
+    'reviews.subhead': 'Real feedback from people who used DecoGen AI.',
+    'reviews.formTitle': 'Leave a Review',
+    'reviews.namePlaceholder': 'Your name',
+    'reviews.commentPlaceholder': 'Share your experience…',
+    'reviews.submit': 'Submit Review',
+    'reviews.empty': 'No reviews yet — be the first!',
   },
   fr: {
     'nav.home': 'Accueil', 'nav.design': 'Créer',
     'nav.gallery': 'Galerie', 'nav.about': 'À propos',
+    'nav.reviews': 'Avis',
     'hero.eyebrow': "Design d'intérieur par IA",
     'hero.h1': 'Concevez votre espace <em>de rêve</em>',
     'hero.desc': 'Téléchargez une photo de votre pièce et laissez notre IA la réimaginer en quelques secondes.',
@@ -65,10 +74,18 @@ const translations = {
     'about.stat1': 'Moteur IA', 'about.stat2': 'Styles de design',
     'about.stat3': 'Temps de génération', 'about.stat4': 'Projet PFE 2026',
     'ar.landscape': '16:9 — Paysage', 'ar.square': '1:1 — Carré', 'ar.portrait': '9:16 — Portrait',
+    'reviews.eyebrow': 'Communauté', 'reviews.heading': 'Avis des utilisateurs',
+    'reviews.subhead': 'Retours réels de personnes ayant utilisé DecoGen AI.',
+    'reviews.formTitle': 'Laisser un avis',
+    'reviews.namePlaceholder': 'Votre nom',
+    'reviews.commentPlaceholder': 'Partagez votre expérience…',
+    'reviews.submit': 'Soumettre',
+    'reviews.empty': "Aucun avis pour l'instant — soyez le premier !",
   },
   ar: {
     'nav.home': 'الرئيسية', 'nav.design': 'تصميم الغرفة',
     'nav.gallery': 'المعرض', 'nav.about': 'حول',
+    'nav.reviews': 'التقييمات',
     'hero.eyebrow': 'تصميم داخلي بالذكاء الاصطناعي',
     'hero.h1': 'صمّم مساحتك <em>المثالية</em>',
     'hero.desc': 'ارفع صورة غرفتك ودع الذكاء الاصطناعي يعيد تخيّلها في ثوانٍ — أي أسلوب، أي مزاج.',
@@ -98,6 +115,13 @@ const translations = {
     'about.stat1': 'محرك الذكاء الاصطناعي', 'about.stat2': 'أنماط التصميم',
     'about.stat3': 'وقت التوليد', 'about.stat4': 'مشروع PFE 2026',
     'ar.landscape': '16:9 — أفقي', 'ar.square': '1:1 — مربع', 'ar.portrait': '9:16 — عمودي',
+    'reviews.eyebrow': 'المجتمع', 'reviews.heading': 'آراء المستخدمين',
+    'reviews.subhead': 'تقييمات حقيقية من مستخدمي DecoGen AI.',
+    'reviews.formTitle': 'اترك تقييماً',
+    'reviews.namePlaceholder': 'اسمك',
+    'reviews.commentPlaceholder': 'شاركنا تجربتك…',
+    'reviews.submit': 'إرسال التقييم',
+    'reviews.empty': 'لا توجد تقييمات بعد — كن الأول!',
   }
 };
 
@@ -193,7 +217,6 @@ function applyLang(lang) {
     uploadText.textContent = hasFile ? t['upload.done'] : t['upload.idle'];
   }
 
-  // Only reset button text if it's in idle state
   const submitBtn = document.getElementById('submitBtn');
   if (submitBtn && !submitBtn.disabled
       && !submitBtn.classList.contains('success')
@@ -553,7 +576,6 @@ form && form.addEventListener('submit', async e => {
 
   capturedBeforeURL = URL.createObjectURL(fileInput.files[0]);
 
-  // ── GENERATING STATE ──
   submitBtn.disabled = true;
   setBtnGenerating(submitBtn);
 
@@ -641,3 +663,137 @@ document.querySelectorAll('.reaction-btn').forEach(btn => {
     }
   });
 });
+
+// ── REVIEWS ───────────────────────────────────────────────────
+(function () {
+  const grid      = document.getElementById('reviewsGrid');
+  const emptyMsg  = document.getElementById('reviewsEmpty');
+  const form      = document.getElementById('reviewForm');
+  const nameInput = document.getElementById('reviewName');
+  const commentEl = document.getElementById('reviewComment');
+  const submitBtn = document.getElementById('reviewSubmitBtn');
+  const starBtns  = document.querySelectorAll('.star-btn');
+  let selectedRating = 0;
+
+  // ── Star interaction ──
+  starBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedRating = parseInt(btn.dataset.val);
+      starBtns.forEach(s => {
+        s.classList.toggle('active', parseInt(s.dataset.val) <= selectedRating);
+      });
+    });
+    btn.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') btn.click();
+    });
+  });
+
+  // ── Escape HTML ──
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // ── Render single card ──
+  function createCard(r) {
+    const card  = document.createElement('div');
+    card.className = 'review-card';
+    const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+    const date  = new Date(r.created_at).toLocaleDateString('en-GB', {
+      day: 'numeric', month: 'short', year: 'numeric'
+    });
+    card.innerHTML = `
+      <div class="review-card-header">
+        <span class="review-card-name">${escapeHtml(r.name)}</span>
+        <span class="review-card-stars" aria-label="${r.rating} out of 5 stars">${stars}</span>
+      </div>
+      <p class="review-card-comment">${escapeHtml(r.comment)}</p>
+      <span class="review-card-date">${date}</span>`;
+    return card;
+  }
+
+  // ── Load reviews from backend ──
+  async function loadReviews() {
+    try {
+      const res  = await fetch('/get-reviews');
+      const data = await res.json();
+      if (!data.reviews || data.reviews.length === 0) {
+        if (emptyMsg) emptyMsg.style.display = 'block';
+        return;
+      }
+      if (emptyMsg) emptyMsg.style.display = 'none';
+      if (grid) {
+        grid.innerHTML = '';
+        data.reviews.forEach(r => grid.appendChild(createCard(r)));
+      }
+    } catch (e) {
+      console.error('[Reviews] load failed', e);
+    }
+  }
+
+  // ── Submit review ──
+  form && form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const lang = document.documentElement.getAttribute('data-lang') || 'en';
+
+    const name    = nameInput?.value.trim();
+    const comment = commentEl?.value.trim();
+
+    if (!name)           { showToast('Please enter your name.', 'error'); return; }
+    if (!selectedRating) { showToast('Please select a star rating.', 'error'); return; }
+    if (!comment)        { showToast('Please write a comment.', 'error'); return; }
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           style="animation:spin 1s linear infinite">
+        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+      </svg> ${lang === 'fr' ? 'Envoi…' : lang === 'ar' ? '…إرسال' : 'Sending…'}`;
+
+    try {
+      const res = await fetch('/submit-review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, rating: selectedRating, comment })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) throw new Error(data.error);
+
+      submitBtn.classList.add('success');
+      submitBtn.innerHTML = `
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg> ${lang === 'fr' ? 'Envoyé !' : lang === 'ar' ? '!تم الإرسال' : 'Submitted!'}`;
+
+      showToast(lang === 'fr' ? 'Merci pour votre avis ! ✨' : lang === 'ar' ? '✨ شكراً على تقييمك' : 'Thanks for your review! ✨');
+
+      nameInput.value = '';
+      commentEl.value = '';
+      selectedRating  = 0;
+      starBtns.forEach(s => s.classList.remove('active'));
+
+      await loadReviews();
+
+    } catch (err) {
+      submitBtn.classList.add('error');
+      submitBtn.innerHTML = lang === 'fr' ? 'Réessayer' : lang === 'ar' ? 'حاول مجدداً' : 'Try Again';
+      showToast(err.message || 'Failed to submit review', 'error');
+    } finally {
+      submitBtn.disabled = false;
+      setTimeout(() => {
+        submitBtn.classList.remove('success', 'error');
+        const t = translations[lang] || translations['en'];
+        submitBtn.innerHTML = `
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/>
+          </svg>
+          <span data-i18n="reviews.submit">${t['reviews.submit']}</span>`;
+      }, 3000);
+    }
+  });
+
+  loadReviews();
+})();
