@@ -23,8 +23,8 @@
     <a href="#generate" class="nav-link" data-i18n="nav.design">Design Room</a>
     <a href="#gallery"  class="nav-link" data-i18n="nav.gallery">Gallery</a>
     <a href="#about"    class="nav-link" data-i18n="nav.about">About</a>
-    <a href="#reviews" class="nav-link" data-i18n="nav.reviews">Reviews</a>
-
+    <a href="#reviews"  class="nav-link" data-i18n="nav.reviews">Reviews</a>
+    <a href="/designs"  class="nav-link nav-link--designs" id="navDesigns" data-i18n="nav.designs" style="display:none">My Designs</a>
   </div>
 
   <div class="nav-right">
@@ -61,6 +61,26 @@
       <button class="lang-opt" data-lang="ar" role="option">AR</button>
     </div>
 
+    <!-- AUTH ICON — far right, before hamburger -->
+    <div class="nav-auth" id="navAuth">
+      <!-- Logged out: person icon button -->
+      <button class="auth-icon-btn" id="authIconBtn" aria-label="Sign in">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+      </button>
+      <!-- Logged in: avatar circle (injected by JS) -->
+      <div class="auth-avatar" id="authAvatar" style="display:none">
+        <img id="authAvatarImg" src="" alt="Profile" width="32" height="32">
+        <div class="auth-dropdown" id="authDropdown">
+          <span id="authUserName"></span>
+          <a href="/designs" data-i18n="nav.designs">My Designs</a>
+          <button id="authSignOut" data-i18n="auth.signout">Sign Out</button>
+        </div>
+      </div>
+    </div>
+
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -74,7 +94,9 @@
   <a href="#generate" data-i18n="nav.design">Design Room</a>
   <a href="#gallery"  data-i18n="nav.gallery">Gallery</a>
   <a href="#about"    data-i18n="nav.about">About</a>
-  <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
+  <a href="#reviews"  data-i18n="nav.reviews">Reviews</a>
+  <a href="/designs"  data-i18n="nav.designs" id="mobileDesignsLink" style="display:none">My Designs</a>
+  <a href="/auth/login" id="mobileSignIn" data-i18n="auth.signin">Sign In</a>
 </div>
 
 <!-- HERO -->
@@ -88,6 +110,14 @@
       <a href="#generate" class="btn-hero" data-i18n="hero.cta">
         Start Designing
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <!-- Sign In button — hidden when logged in -->
+      <a href="/auth/login" class="btn-hero-ghost" id="heroSignInBtn" data-i18n="auth.signin">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+        Sign In
       </a>
     </div>
   </div>
@@ -207,18 +237,14 @@
             </select>
           </div>
 
-          <!-- ⚡ GENERATE BUTTON — updated with animated words loader -->
+          <!-- GENERATE BUTTON -->
           <button type="submit" class="btn-submit" id="submitBtn">
-
-            <!-- DEFAULT state -->
             <span class="btn-default-content">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
               </svg>
               <span data-i18n="generate.submit">Generate Design</span>
             </span>
-
-            <!-- GENERATING state -->
             <span class="btn-generating-content">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.6">
                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
@@ -234,7 +260,6 @@
                 </div>
               </span>
             </span>
-
           </button>
 
         </form>
@@ -388,65 +413,7 @@
   </div>
 </section>
 
-<!-- REVIEWS -->
-<section id="reviews" aria-labelledby="reviews-heading">
-  <div class="reviews-inner">
-    <div class="section-header">
-      <p class="eyebrow" data-i18n="reviews.eyebrow">Community</p>
-      <h2 id="reviews-heading" data-i18n="reviews.heading">What Users Say</h2>
-      <p data-i18n="reviews.subhead">Real feedback from people who used DecoGen AI.</p>
-    </div>
-
-    <!-- Reviews Grid -->
-    <div class="reviews-grid" id="reviewsGrid">
-      <div class="reviews-empty" id="reviewsEmpty">
-        <p data-i18n="reviews.empty">No reviews yet — be the first!</p>
-      </div>
-    </div>
-
-    <!-- Submit Form -->
-    <div class="review-form-wrap">
-      <h3 data-i18n="reviews.formTitle">Leave a Review</h3>
-      <form id="reviewForm" novalidate>
-
-        <div class="review-stars-input" id="starInput" role="group" aria-label="Rating">
-          <span class="star-btn" data-val="1" role="button" tabindex="0" aria-label="1 star">★</span>
-          <span class="star-btn" data-val="2" role="button" tabindex="0" aria-label="2 stars">★</span>
-          <span class="star-btn" data-val="3" role="button" tabindex="0" aria-label="3 stars">★</span>
-          <span class="star-btn" data-val="4" role="button" tabindex="0" aria-label="4 stars">★</span>
-          <span class="star-btn" data-val="5" role="button" tabindex="0" aria-label="5 stars">★</span>
-        </div>
-        <input
-          type="text"
-          id="reviewName"
-          class="form-input"
-          maxlength="60"
-          data-i18n-placeholder="reviews.namePlaceholder"
-          placeholder="Your name"
-          required
-        />
-        <textarea
-          id="reviewComment"
-          class="form-input"
-          rows="3"
-          maxlength="500"
-          data-i18n-placeholder="reviews.commentPlaceholder"
-          placeholder="Share your experience…"
-          required
-        ></textarea>
-        <button type="submit" class="btn-review-submit" id="reviewSubmitBtn">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/>
-          </svg>
-          <span data-i18n="reviews.submit">Submit Review</span>
-        </button>
-
-      </form>
-    </div>
-  </div>
-</section>  
-
-<!-- ABOUT -->
+<!-- ABOUT — now before Reviews -->
 <section id="about" aria-labelledby="about-heading">
   <div class="about-inner">
     <div class="about-text">
@@ -456,9 +423,48 @@
     </div>
     <div class="about-stats">
       <div class="stat-card"><span class="stat-num">FLUX</span><span class="stat-label" data-i18n="about.stat1">Model Engine</span></div>
-      <div class="stat-card"><span class="stat-num">5+</span><span class="stat-label" data-i18n="about.stat2">Design Styles</span></div>
+      <div class="stat-card"><span class="stat-num">40+</span><span class="stat-label" data-i18n="about.stat2">Design Styles</span></div>
       <div class="stat-card"><span class="stat-num">&lt;30s</span><span class="stat-label" data-i18n="about.stat3">Generation Time</span></div>
       <div class="stat-card"><span class="stat-num">BTS</span><span class="stat-label" data-i18n="about.stat4">PFE Project 2026</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS — now after About -->
+<section id="reviews" aria-labelledby="reviews-heading">
+  <div class="reviews-inner">
+    <div class="section-header">
+      <p class="eyebrow" data-i18n="reviews.eyebrow">Community</p>
+      <h2 id="reviews-heading" data-i18n="reviews.heading">What Users Say</h2>
+      <p data-i18n="reviews.subhead">Real feedback from people who used DecoGen AI.</p>
+    </div>
+    <div class="reviews-grid" id="reviewsGrid">
+      <div class="reviews-empty" id="reviewsEmpty">
+        <p data-i18n="reviews.empty">No reviews yet — be the first!</p>
+      </div>
+    </div>
+    <div class="review-form-wrap">
+      <h3 data-i18n="reviews.formTitle">Leave a Review</h3>
+      <form id="reviewForm" novalidate>
+        <div class="review-stars-input" id="starInput" role="group" aria-label="Rating">
+          <span class="star-btn" data-val="1" role="button" tabindex="0" aria-label="1 star">★</span>
+          <span class="star-btn" data-val="2" role="button" tabindex="0" aria-label="2 stars">★</span>
+          <span class="star-btn" data-val="3" role="button" tabindex="0" aria-label="3 stars">★</span>
+          <span class="star-btn" data-val="4" role="button" tabindex="0" aria-label="4 stars">★</span>
+          <span class="star-btn" data-val="5" role="button" tabindex="0" aria-label="5 stars">★</span>
+        </div>
+        <input type="text" id="reviewName" class="form-input" maxlength="60"
+          data-i18n-placeholder="reviews.namePlaceholder" placeholder="Your name" required/>
+        <textarea id="reviewComment" class="form-input" rows="3" maxlength="500"
+          data-i18n-placeholder="reviews.commentPlaceholder"
+          placeholder="Share your experience…" required></textarea>
+        <button type="submit" class="btn-review-submit" id="reviewSubmitBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/>
+          </svg>
+          <span data-i18n="reviews.submit">Submit Review</span>
+        </button>
+      </form>
     </div>
   </div>
 </section>
