@@ -3,6 +3,7 @@ import io
 import uuid
 import threading
 import requests
+import sqlite3
 from flask import Flask, request, jsonify, send_file, render_template
 from room_decorator import RoomDecoratorApp
 from dotenv import load_dotenv
@@ -13,6 +14,24 @@ app = Flask(__name__, static_folder="static", static_url_path="/static")
 
 # In-memory job store: { job_id: { status, result_bytes, error, before_bytes } }
 jobs = {}
+
+# ── DATABASE SETUP ────────────────────────────────────────────
+def init_db():
+    conn = sqlite3.connect("reviews.db")
+    c = conn.cursor()
+    c.execute("""
+        CREATE TABLE IF NOT EXISTS reviews (
+            id        INTEGER PRIMARY KEY AUTOINCREMENT,
+            name      TEXT    NOT NULL,
+            rating    INTEGER NOT NULL,
+            comment   TEXT    NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+init_db()
 
 
 def get_decorator():
@@ -60,7 +79,6 @@ def decorate_room():
         decoration_prompt = request.form.get("decoration_prompt", "").strip()
         aspect_ratio      = request.form.get("aspect_ratio", "16:9")
 
-        # ── Validation ──────────────────────────────────────────
         if not room_image:
             return jsonify({"error": "No image uploaded"}), 400
         if not decoration_prompt:
@@ -70,22 +88,19 @@ def decorate_room():
         if not api_key:
             return jsonify({"error": "BFL_API_KEY not configured on server"}), 500
 
-        # ── Read image once ──────────────────────────────────────
         image_bytes = room_image.read()
         if len(image_bytes) == 0:
             return jsonify({"error": "Uploaded file is empty"}), 400
 
-        # ── Debug logs ───────────────────────────────────────────
         print(f"[DEBUG] Image size:    {len(image_bytes)/1024/1024:.2f} MB", flush=True)
         print(f"[DEBUG] Prompt:        {decoration_prompt}",                 flush=True)
         print(f"[DEBUG] Aspect ratio:  {aspect_ratio}",                      flush=True)
         print(f"[DEBUG] API key:       {'set' if api_key else 'MISSING'}",   flush=True)
 
-        # ── Create job ───────────────────────────────────────────
         job_id = str(uuid.uuid4())
         jobs[job_id] = {
             "status":       "processing",
-            "before_bytes": image_bytes   # store original for before/after
+            "before_bytes": image_bytes
         }
 
         thread = threading.Thread(
@@ -112,7 +127,6 @@ def check_status(job_id):
         return jsonify({"status": "processing"}), 200
     if job["status"] == "error":
         return jsonify({"status": "error", "error": job.get("error", "Unknown error")}), 200
-    # done
     return jsonify({"status": "done"}), 200
 
 
@@ -132,7 +146,6 @@ def get_result(job_id):
 
 @app.route("/before/<job_id>", methods=["GET"])
 def get_before(job_id):
-    """Serve the original uploaded image for the before/after comparison."""
     job = jobs.get(job_id)
     if not job or "before_bytes" not in job:
         return jsonify({"error": "Original not found"}), 404
@@ -143,6 +156,60 @@ def get_before(job_id):
         as_attachment=False,
         download_name="decogen-original.jpg"
     )
+
+
+# ── REVIEWS ROUTES ────────────────────────────────────────────
+@app.route("/submit-review", methods=["POST"])
+def submit_review():
+    try:
+        data    = request.get_json()
+        name    = data.get("name", "").strip()
+        rating  = int(data.get("rating", 0))
+        comment = data.get("comment", "").strip()
+
+        if not name or not comment:
+            return jsonify({"error": "Name and comment are required"}), 400
+        if rating < 1 or rating > 5:
+            return jsonify({"error": "Rating must be between 1 and 5"}), 400
+        if len(comment) > 500:
+            return jsonify({"error": "Comment too long (max 500 chars)"}), 400
+
+        conn = sqlite3.connect("reviews.db")
+        c    = conn.cursor()
+        c.execute(
+            "INSERT INTO reviews (name, rating, comment) VALUES (?, ?, ?)",
+            (name, rating, comment)
+        )
+        conn.commit()
+        conn.close()
+
+        return jsonify({"success": True}), 201
+
+    except Exception as e:
+        print(f"[ERROR] /submit-review: {e}", flush=True)
+        return jsonify({"error": "Failed to save review"}), 500
+
+
+@app.route("/get-reviews", methods=["GET"])
+def get_reviews():
+    try:
+        conn = sqlite3.connect("reviews.db")
+        c    = conn.cursor()
+        c.execute(
+            "SELECT name, rating, comment, created_at FROM reviews ORDER BY created_at DESC LIMIT 20"
+        )
+        rows = c.fetchall()
+        conn.close()
+
+        reviews = [
+            {"name": r[0], "rating": r[1], "comment": r[2], "created_at": r[3]}
+            for r in rows
+        ]
+        return jsonify({"reviews": reviews}), 200
+
+    except Exception as e:
+        print(f"[ERROR] /get-reviews: {e}", flush=True)
+        return jsonify({"error": "Failed to fetch reviews"}), 500
 
 
 @app.errorhandler(404)
