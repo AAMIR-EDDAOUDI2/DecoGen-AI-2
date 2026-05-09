@@ -3,7 +3,8 @@ import io
 import uuid
 import threading
 import requests
-import sqlite3
+import psycopg2
+from psycopg2.extras import RealDictCursor
 from flask import Flask, request, jsonify, send_file, render_template
 from room_decorator import RoomDecoratorApp
 from dotenv import load_dotenv
@@ -15,25 +16,35 @@ app = Flask(__name__, static_folder="static", static_url_path="/static")
 # In-memory job store: { job_id: { status, result_bytes, error, before_bytes } }
 jobs = {}
 
-# ── DATABASE SETUP ────────────────────────────────────────────
+# ── DATABASE ──────────────────────────────────────────────────
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+def get_db():
+    return psycopg2.connect(DATABASE_URL, sslmode='require')
+
 def init_db():
-    conn = sqlite3.connect("reviews.db")
-    c = conn.cursor()
-    c.execute("""
-        CREATE TABLE IF NOT EXISTS reviews (
-            id        INTEGER PRIMARY KEY AUTOINCREMENT,
-            name      TEXT    NOT NULL,
-            rating    INTEGER NOT NULL,
-            comment   TEXT    NOT NULL,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
-    conn.commit()
-    conn.close()
+    try:
+        conn = get_db()
+        c    = conn.cursor()
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS reviews (
+                id         SERIAL PRIMARY KEY,
+                name       TEXT    NOT NULL,
+                rating     INTEGER NOT NULL,
+                comment    TEXT    NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        conn.commit()
+        conn.close()
+        print("[DB] Table ready.", flush=True)
+    except Exception as e:
+        print(f"[DB ERROR] Could not init database: {e}", flush=True)
 
 init_db()
 
 
+# ── ROOM DECORATOR ────────────────────────────────────────────
 def get_decorator():
     api_key = os.getenv("BFL_API_KEY")
     if not api_key:
@@ -58,7 +69,7 @@ def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio):
         response.raise_for_status()
 
         jobs[job_id] = {
-            "status": "done",
+            "status":       "done",
             "result_bytes": response.content
         }
 
@@ -67,6 +78,7 @@ def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio):
         jobs[job_id] = {"status": "error", "error": str(e)}
 
 
+# ── ROUTES ────────────────────────────────────────────────────
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -158,7 +170,7 @@ def get_before(job_id):
     )
 
 
-# ── REVIEWS ROUTES ────────────────────────────────────────────
+# ── REVIEWS ───────────────────────────────────────────────────
 @app.route("/submit-review", methods=["POST"])
 def submit_review():
     try:
@@ -174,10 +186,10 @@ def submit_review():
         if len(comment) > 500:
             return jsonify({"error": "Comment too long (max 500 chars)"}), 400
 
-        conn = sqlite3.connect("reviews.db")
+        conn = get_db()
         c    = conn.cursor()
         c.execute(
-            "INSERT INTO reviews (name, rating, comment) VALUES (?, ?, ?)",
+            "INSERT INTO reviews (name, rating, comment) VALUES (%s, %s, %s)",
             (name, rating, comment)
         )
         conn.commit()
@@ -193,8 +205,8 @@ def submit_review():
 @app.route("/get-reviews", methods=["GET"])
 def get_reviews():
     try:
-        conn = sqlite3.connect("reviews.db")
-        c    = conn.cursor()
+        conn = get_db()
+        c    = conn.cursor(cursor_factory=RealDictCursor)
         c.execute(
             "SELECT name, rating, comment, created_at FROM reviews ORDER BY created_at DESC LIMIT 20"
         )
@@ -202,7 +214,12 @@ def get_reviews():
         conn.close()
 
         reviews = [
-            {"name": r[0], "rating": r[1], "comment": r[2], "created_at": r[3]}
+            {
+                "name":       r["name"],
+                "rating":     r["rating"],
+                "comment":    r["comment"],
+                "created_at": str(r["created_at"])
+            }
             for r in rows
         ]
         return jsonify({"reviews": reviews}), 200
@@ -212,6 +229,7 @@ def get_reviews():
         return jsonify({"error": "Failed to fetch reviews"}), 500
 
 
+# ── ERROR HANDLERS ────────────────────────────────────────────
 @app.errorhandler(404)
 def not_found(e):
     return jsonify({"error": "Route not found"}), 404
