@@ -385,6 +385,64 @@
   </div>
 </section>
 
+<!-- REVIEWS -->
+<section id="reviews" aria-labelledby="reviews-heading">
+  <div class="reviews-inner">
+    <div class="section-header">
+      <p class="eyebrow" data-i18n="reviews.eyebrow">Community</p>
+      <h2 id="reviews-heading" data-i18n="reviews.heading">What Users Say</h2>
+      <p data-i18n="reviews.subhead">Real feedback from people who used DecoGen AI.</p>
+    </div>
+
+    <!-- Reviews Grid -->
+    <div class="reviews-grid" id="reviewsGrid">
+      <div class="reviews-empty" id="reviewsEmpty">
+        <p data-i18n="reviews.empty">No reviews yet — be the first!</p>
+      </div>
+    </div>
+
+    <!-- Submit Form -->
+    <div class="review-form-wrap">
+      <h3 data-i18n="reviews.formTitle">Leave a Review</h3>
+      <form id="reviewForm" novalidate>
+
+        <div class="review-stars-input" id="starInput" role="group" aria-label="Rating">
+          <span class="star-btn" data-val="1" role="button" tabindex="0" aria-label="1 star">★</span>
+          <span class="star-btn" data-val="2" role="button" tabindex="0" aria-label="2 stars">★</span>
+          <span class="star-btn" data-val="3" role="button" tabindex="0" aria-label="3 stars">★</span>
+          <span class="star-btn" data-val="4" role="button" tabindex="0" aria-label="4 stars">★</span>
+          <span class="star-btn" data-val="5" role="button" tabindex="0" aria-label="5 stars">★</span>
+        </div>
+        <input
+          type="text"
+          id="reviewName"
+          class="form-input"
+          maxlength="60"
+          data-i18n-placeholder="reviews.namePlaceholder"
+          placeholder="Your name"
+          required
+        />
+        <textarea
+          id="reviewComment"
+          class="form-input"
+          rows="3"
+          maxlength="500"
+          data-i18n-placeholder="reviews.commentPlaceholder"
+          placeholder="Share your experience…"
+          required
+        ></textarea>
+        <button type="submit" class="btn-review-submit" id="reviewSubmitBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/>
+          </svg>
+          <span data-i18n="reviews.submit">Submit Review</span>
+        </button>
+
+      </form>
+    </div>
+  </div>
+</section>  
+
 <!-- ABOUT -->
 <section id="about" aria-labelledby="about-heading">
   <div class="about-inner">
