@@ -797,3 +797,62 @@ document.querySelectorAll('.reaction-btn').forEach(btn => {
 
   loadReviews();
 })();
+
+// ── AUTH STATE ────────────────────────────────────────────────
+(function () {
+  fetch('/auth/me')
+    .then(r => r.json())
+    .then(data => {
+      const heroSignIn     = document.getElementById('heroSignInBtn');
+      const authIconBtn    = document.getElementById('authIconBtn');
+      const authAvatar     = document.getElementById('authAvatar');
+      const authAvatarImg  = document.getElementById('authAvatarImg');
+      const authUserName   = document.getElementById('authUserName');
+      const navDesigns     = document.getElementById('navDesigns');
+      const mobileDesigns  = document.getElementById('mobileDesignsLink');
+      const mobileSignIn   = document.getElementById('mobileSignIn');
+
+      if (data.logged_in) {
+        // Show avatar, hide icon button
+        if (authIconBtn)   authIconBtn.style.display   = 'none';
+        if (authAvatar)    authAvatar.style.display     = 'flex';
+        if (authAvatarImg) authAvatarImg.src            = data.avatar;
+        if (authUserName)  authUserName.textContent     = data.name;
+        if (navDesigns)    navDesigns.style.display     = 'inline-flex';
+        if (mobileDesigns) mobileDesigns.style.display  = 'block';
+        if (heroSignIn)    heroSignIn.style.display     = 'none';
+        if (mobileSignIn)  mobileSignIn.style.display   = 'none';
+      } else {
+        if (authIconBtn)   authIconBtn.style.display   = 'flex';
+        if (authAvatar)    authAvatar.style.display     = 'none';
+        if (navDesigns)    navDesigns.style.display     = 'none';
+        if (mobileDesigns) mobileDesigns.style.display  = 'none';
+        if (heroSignIn)    heroSignIn.style.display     = 'inline-flex';
+        if (mobileSignIn)  mobileSignIn.style.display   = 'block';
+      }
+    });
+
+  // Avatar dropdown toggle
+  const avatarImg = document.getElementById('authAvatarImg');
+  const dropdown  = document.getElementById('authDropdown');
+  avatarImg && avatarImg.addEventListener('click', () => {
+    dropdown && dropdown.classList.toggle('open');
+  });
+
+  document.getElementById('authSignOut')?.addEventListener('click', () => {
+    window.location.href = '/auth/logout';
+  });
+
+  // Close dropdown on outside click
+  document.addEventListener('click', e => {
+    const avatar = document.getElementById('authAvatar');
+    if (avatar && !avatar.contains(e.target)) {
+      dropdown && dropdown.classList.remove('open');
+    }
+  });
+
+  // Auth icon button — redirect to login
+  document.getElementById('authIconBtn')?.addEventListener('click', () => {
+    window.location.href = '/auth/login';
+  });
+})();
