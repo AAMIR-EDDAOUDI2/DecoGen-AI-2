@@ -3,3 +3,4 @@ gunicorn
 requests
 Pillow
 python-dotenv
+psycopg2-binary
