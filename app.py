@@ -4,16 +4,40 @@ import uuid
 import threading
 import requests
 import psycopg2
+import cloudinary
+import cloudinary.uploader
 from psycopg2.extras import RealDictCursor
-from flask import Flask, request, jsonify, send_file, render_template
+from flask import (Flask, request, jsonify, send_file,
+                   render_template, redirect, url_for,
+                   session, abort)
+from authlib.integrations.flask_client import OAuth
 from room_decorator import RoomDecoratorApp
 from dotenv import load_dotenv
 
 load_dotenv()
 
 app = Flask(__name__, static_folder="static", static_url_path="/static")
+app.secret_key = os.getenv("SECRET_KEY", "dev-secret-change-this")
 
-# In-memory job store: { job_id: { status, result_bytes, error, before_bytes } }
+# ── CLOUDINARY ────────────────────────────────────────────────
+cloudinary.config(
+    cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key    = os.getenv("CLOUDINARY_API_KEY"),
+    api_secret = os.getenv("CLOUDINARY_API_SECRET"),
+    secure     = True
+)
+
+# ── GOOGLE OAUTH ──────────────────────────────────────────────
+oauth = OAuth(app)
+google = oauth.register(
+    name='google',
+    client_id     = os.getenv("GOOGLE_CLIENT_ID"),
+    client_secret = os.getenv("GOOGLE_CLIENT_SECRET"),
+    server_metadata_url = 'https://accounts.google.com/.well-known/openid-configuration',
+    client_kwargs = {'scope': 'openid email profile'}
+)
+
+# ── IN-MEMORY JOB STORE ───────────────────────────────────────
 jobs = {}
 
 # ── DATABASE ──────────────────────────────────────────────────
@@ -26,6 +50,29 @@ def init_db():
     try:
         conn = get_db()
         c    = conn.cursor()
+
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                id         SERIAL PRIMARY KEY,
+                google_id  TEXT UNIQUE NOT NULL,
+                name       TEXT,
+                email      TEXT,
+                avatar_url TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS designs (
+                id           SERIAL PRIMARY KEY,
+                user_id      INTEGER REFERENCES users(id) ON DELETE CASCADE,
+                prompt       TEXT,
+                style        TEXT,
+                image_url    TEXT NOT NULL,
+                created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
         c.execute("""
             CREATE TABLE IF NOT EXISTS reviews (
                 id         SERIAL PRIMARY KEY,
@@ -35,13 +82,28 @@ def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+
         conn.commit()
         conn.close()
-        print("[DB] Table ready.", flush=True)
+        print("[DB] All tables ready.", flush=True)
     except Exception as e:
-        print(f"[DB ERROR] Could not init database: {e}", flush=True)
+        print(f"[DB ERROR] {e}", flush=True)
 
 init_db()
+
+
+# ── AUTH HELPERS ──────────────────────────────────────────────
+def get_current_user():
+    return session.get('user')
+
+def login_required(f):
+    from functools import wraps
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not get_current_user():
+            return redirect(url_for('auth_login'))
+        return f(*args, **kwargs)
+    return decorated
 
 
 # ── ROOM DECORATOR ────────────────────────────────────────────
@@ -52,7 +114,7 @@ def get_decorator():
     return RoomDecoratorApp(api_key)
 
 
-def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio):
+def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio, user_id=None):
     try:
         decorator = get_decorator()
         if not decorator:
@@ -67,10 +129,36 @@ def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio):
 
         response = requests.get(result_url, timeout=120)
         response.raise_for_status()
+        result_bytes = response.content
+
+        # Upload to Cloudinary if user is logged in
+        cloudinary_url = None
+        if user_id:
+            try:
+                upload = cloudinary.uploader.upload(
+                    io.BytesIO(result_bytes),
+                    folder="decogen",
+                    public_id=f"design_{job_id}",
+                    resource_type="image"
+                )
+                cloudinary_url = upload.get("secure_url")
+
+                conn = get_db()
+                cur  = conn.cursor()
+                cur.execute(
+                    "INSERT INTO designs (user_id, prompt, image_url) VALUES (%s, %s, %s)",
+                    (user_id, decoration_prompt, cloudinary_url)
+                )
+                conn.commit()
+                conn.close()
+                print(f"[DB] Design saved for user {user_id}", flush=True)
+            except Exception as ce:
+                print(f"[CLOUDINARY ERROR] {ce}", flush=True)
 
         jobs[job_id] = {
-            "status":       "done",
-            "result_bytes": response.content
+            "status":        "done",
+            "result_bytes":  result_bytes,
+            "cloudinary_url": cloudinary_url
         }
 
     except Exception as e:
@@ -78,10 +166,11 @@ def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio):
         jobs[job_id] = {"status": "error", "error": str(e)}
 
 
-# ── ROUTES ────────────────────────────────────────────────────
+# ── MAIN ROUTES ───────────────────────────────────────────────
 @app.route("/")
 def index():
-    return render_template("index.html")
+    user = get_current_user()
+    return render_template("index.html", user=user)
 
 
 @app.route("/decorate-room", methods=["POST"])
@@ -104,25 +193,20 @@ def decorate_room():
         if len(image_bytes) == 0:
             return jsonify({"error": "Uploaded file is empty"}), 400
 
-        print(f"[DEBUG] Image size:    {len(image_bytes)/1024/1024:.2f} MB", flush=True)
-        print(f"[DEBUG] Prompt:        {decoration_prompt}",                 flush=True)
-        print(f"[DEBUG] Aspect ratio:  {aspect_ratio}",                      flush=True)
-        print(f"[DEBUG] API key:       {'set' if api_key else 'MISSING'}",   flush=True)
+        # Get user_id if logged in
+        user    = get_current_user()
+        user_id = user.get('db_id') if user else None
 
         job_id = str(uuid.uuid4())
-        jobs[job_id] = {
-            "status":       "processing",
-            "before_bytes": image_bytes
-        }
+        jobs[job_id] = {"status": "processing", "before_bytes": image_bytes}
 
         thread = threading.Thread(
             target=run_generation,
-            args=(job_id, image_bytes, decoration_prompt, aspect_ratio),
+            args=(job_id, image_bytes, decoration_prompt, aspect_ratio, user_id),
             daemon=True
         )
         thread.start()
 
-        print(f"[DEBUG] Job started: {job_id}", flush=True)
         return jsonify({"job_id": job_id}), 202
 
     except Exception as e:
@@ -130,7 +214,7 @@ def decorate_room():
         return jsonify({"error": f"Server error: {str(e)}"}), 500
 
 
-@app.route("/status/<job_id>", methods=["GET"])
+@app.route("/status/<job_id>")
 def check_status(job_id):
     job = jobs.get(job_id)
     if not job:
@@ -138,16 +222,15 @@ def check_status(job_id):
     if job["status"] == "processing":
         return jsonify({"status": "processing"}), 200
     if job["status"] == "error":
-        return jsonify({"status": "error", "error": job.get("error", "Unknown error")}), 200
+        return jsonify({"status": "error", "error": job.get("error")}), 200
     return jsonify({"status": "done"}), 200
 
 
-@app.route("/result/<job_id>", methods=["GET"])
+@app.route("/result/<job_id>")
 def get_result(job_id):
     job = jobs.get(job_id)
     if not job or job["status"] != "done":
         return jsonify({"error": "Result not ready"}), 404
-
     return send_file(
         io.BytesIO(job["result_bytes"]),
         mimetype="image/jpeg",
@@ -156,18 +239,132 @@ def get_result(job_id):
     )
 
 
-@app.route("/before/<job_id>", methods=["GET"])
+@app.route("/before/<job_id>")
 def get_before(job_id):
     job = jobs.get(job_id)
     if not job or "before_bytes" not in job:
         return jsonify({"error": "Original not found"}), 404
-
     return send_file(
         io.BytesIO(job["before_bytes"]),
         mimetype="image/jpeg",
         as_attachment=False,
         download_name="decogen-original.jpg"
     )
+
+
+# ── AUTH ROUTES ───────────────────────────────────────────────
+@app.route("/auth/login")
+def auth_login():
+    redirect_uri = url_for('auth_callback', _external=True)
+    return google.authorize_redirect(redirect_uri)
+
+
+@app.route("/auth/callback")
+def auth_callback():
+    try:
+        token    = google.authorize_access_token()
+        userinfo = token.get('userinfo')
+        if not userinfo:
+            return redirect('/')
+
+        google_id  = userinfo['sub']
+        name       = userinfo.get('name', '')
+        email      = userinfo.get('email', '')
+        avatar_url = userinfo.get('picture', '')
+
+        conn = get_db()
+        cur  = conn.cursor(cursor_factory=RealDictCursor)
+
+        # Upsert user
+        cur.execute("""
+            INSERT INTO users (google_id, name, email, avatar_url)
+            VALUES (%s, %s, %s, %s)
+            ON CONFLICT (google_id) DO UPDATE
+            SET name = EXCLUDED.name,
+                email = EXCLUDED.email,
+                avatar_url = EXCLUDED.avatar_url
+            RETURNING id
+        """, (google_id, name, email, avatar_url))
+
+        row = cur.fetchone()
+        conn.commit()
+        conn.close()
+
+        session['user'] = {
+            'db_id':     row['id'],
+            'name':      name,
+            'email':     email,
+            'avatar':    avatar_url
+        }
+
+        return redirect('/')
+
+    except Exception as e:
+        print(f"[AUTH ERROR] {e}", flush=True)
+        return redirect('/')
+
+
+@app.route("/auth/logout")
+def auth_logout():
+    session.clear()
+    return redirect('/')
+
+
+@app.route("/auth/me")
+def auth_me():
+    user = get_current_user()
+    if not user:
+        return jsonify({"logged_in": False}), 200
+    return jsonify({
+        "logged_in": True,
+        "name":      user['name'],
+        "email":     user['email'],
+        "avatar":    user['avatar']
+    }), 200
+
+
+# ── DESIGNS PAGE ──────────────────────────────────────────────
+@app.route("/designs")
+@login_required
+def designs_page():
+    user    = get_current_user()
+    user_id = user['db_id']
+    conn    = get_db()
+    cur     = conn.cursor(cursor_factory=RealDictCursor)
+    cur.execute("""
+        SELECT id, prompt, image_url, created_at
+        FROM designs
+        WHERE user_id = %s
+        ORDER BY created_at DESC
+    """, (user_id,))
+    rows = cur.fetchall()
+    conn.close()
+    designs = [
+        {
+            "id":         r["id"],
+            "prompt":     r["prompt"],
+            "image_url":  r["image_url"],
+            "created_at": str(r["created_at"])
+        }
+        for r in rows
+    ]
+    return render_template("designs.html", user=user, designs=designs)
+
+
+@app.route("/designs/delete/<int:design_id>", methods=["DELETE"])
+@login_required
+def delete_design(design_id):
+    user    = get_current_user()
+    user_id = user['db_id']
+    conn    = get_db()
+    cur     = conn.cursor()
+    cur.execute(
+        "DELETE FROM designs WHERE id = %s AND user_id = %s",
+        (design_id, user_id)
+    )
+    conn.commit()
+    conn.close()
+    return jsonify({"success": True}), 200
 
 
 # ── REVIEWS ───────────────────────────────────────────────────
@@ -194,7 +391,6 @@ def submit_review():
         )
         conn.commit()
         conn.close()
-
         return jsonify({"success": True}), 201
 
     except Exception as e:
@@ -202,7 +398,7 @@ def submit_review():
         return jsonify({"error": "Failed to save review"}), 500
 
 
-@app.route("/get-reviews", methods=["GET"])
+@app.route("/get-reviews")
 def get_reviews():
     try:
         conn = get_db()
@@ -212,7 +408,6 @@ def get_reviews():
         )
         rows = c.fetchall()
         conn.close()
-
         reviews = [
             {
                 "name":       r["name"],
@@ -233,7 +428,6 @@ def get_reviews():
 @app.errorhandler(404)
 def not_found(e):
     return jsonify({"error": "Route not found"}), 404
-
 
 @app.errorhandler(500)
 def server_error(e):
