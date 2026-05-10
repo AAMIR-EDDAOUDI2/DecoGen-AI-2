@@ -66,11 +66,10 @@ h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;text-wrap:balance}
 /* ── THEME TOGGLE SWITCH ── */
 .switch{position:relative;display:inline-flex;align-items:center;width:44px;height:26px;cursor:pointer;flex-shrink:0}
 .switch #themeInput{opacity:0;width:0;height:0;position:absolute}
-.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#2196f3;transition:0.4s;z-index:0;overflow:hidden}
-.slider.round{border-radius:26px}
+.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#1a1a2e;transition:0.4s;z-index:0;overflow:hidden}
 .slider.round .sun-moon{border-radius:50%}
 .sun-moon{position:absolute;height:20px;width:20px;left:3px;bottom:3px;background-color:yellow;transition:0.4s;z-index:1;border-radius:50%}
-#themeInput:checked + .slider{background-color:#1a1a2e}
+#themeInput:checked + .slider{background-color:#2196f3}
 #themeInput:focus + .slider{box-shadow:0 0 1px #2196f3}
 #themeInput:checked + .slider .sun-moon{transform:translateX(18px);background-color:white;animation:rotate-center 0.6s ease-in-out both}
 .moon-dot{opacity:0;transition:0.4s;fill:#9999bb}
