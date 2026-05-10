@@ -1,4 +1,5 @@
 'use strict';
+localStorage.removeItem('theme');
 
 // ── TRANSLATIONS ──────────────────────────────────────────────
 const translations = {
