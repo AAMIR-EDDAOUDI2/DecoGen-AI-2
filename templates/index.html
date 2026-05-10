@@ -55,22 +55,29 @@
       </div>
     </label>
 
+    <!-- LANG SWITCHER -->
     <div class="lang-switcher" id="langSwitcher">
-      <button class="lang-opt active" data-lang="en" role="option">EN</button>
-      <button class="lang-opt" data-lang="fr" role="option">FR</button>
-      <button class="lang-opt" data-lang="ar" role="option">AR</button>
+      <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+        <span class="lang-current">EN</span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
+      <div class="lang-dropdown" id="langDropdown">
+        <button class="lang-opt" data-lang="en">🇬🇧 English</button>
+        <button class="lang-opt" data-lang="fr">🇫🇷 Français</button>
+        <button class="lang-opt" data-lang="ar">🇲🇦 العربية</button>
+      </div>
     </div>
 
-    <!-- AUTH ICON — far right, before hamburger -->
+    <!-- AUTH ICON -->
     <div class="nav-auth" id="navAuth">
-      <!-- Logged out: person icon button -->
       <button class="auth-icon-btn" id="authIconBtn" aria-label="Sign in">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <circle cx="12" cy="8" r="4"/>
           <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
         </svg>
       </button>
-      <!-- Logged in: avatar circle (injected by JS) -->
       <div class="auth-avatar" id="authAvatar" style="display:none">
         <img id="authAvatarImg" src="" alt="Profile" width="32" height="32">
         <div class="auth-dropdown" id="authDropdown">
@@ -97,6 +104,11 @@
   <a href="#reviews"  data-i18n="nav.reviews">Reviews</a>
   <a href="/designs"  data-i18n="nav.designs" id="mobileDesignsLink" style="display:none">My Designs</a>
   <a href="/auth/login" id="mobileSignIn" data-i18n="auth.signin">Sign In</a>
+  <div class="mobile-lang-row">
+    <button class="lang-opt mobile-lang-btn" data-lang="en">🇬🇧 EN</button>
+    <button class="lang-opt mobile-lang-btn" data-lang="fr">🇫🇷 FR</button>
+    <button class="lang-opt mobile-lang-btn" data-lang="ar">🇲🇦 AR</button>
+  </div>
 </div>
 
 <!-- HERO -->
@@ -111,7 +123,6 @@
         Start Designing
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-      <!-- Sign In button — hidden when logged in -->
       <a href="/auth/login" class="btn-hero-ghost" id="heroSignInBtn" data-i18n="auth.signin">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="8" r="4"/>
@@ -358,6 +369,17 @@
               <p class="dl-title">Saved ✓</p>
             </label>
           </div>
+
+          <!-- VIEW SAVED DESIGNS BUTTON -->
+          <a href="/designs" id="viewSavedBtn" class="btn-view-saved" style="display:none" data-i18n="generate.viewsaved">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            View My Saved Designs
+          </a>
         </div>
 
         <div class="reaction-panel">
@@ -413,7 +435,7 @@
   </div>
 </section>
 
-<!-- ABOUT — now before Reviews -->
+<!-- ABOUT -->
 <section id="about" aria-labelledby="about-heading">
   <div class="about-inner">
     <div class="about-text">
@@ -430,7 +452,7 @@
   </div>
 </section>
 
-<!-- REVIEWS — now after About -->
+<!-- REVIEWS -->
 <section id="reviews" aria-labelledby="reviews-heading">
   <div class="reviews-inner">
     <div class="section-header">
