@@ -1,27 +1,29 @@
-// ── I18N / LANGUAGE SWITCHER ──────────────────────────────────
+'use strict';
+
+// ── TRANSLATIONS ──────────────────────────────────────────────
 const translations = {
   en: {
     'nav.home': 'Home', 'nav.design': 'Design Room',
     'nav.gallery': 'Gallery', 'nav.about': 'About',
-    'nav.reviews': 'Reviews',
+    'nav.reviews': 'Reviews', 'nav.designs': 'My Designs',
     'hero.eyebrow': 'AI-Powered Interior Design',
     'hero.h1': 'Design Your <em>Dream</em> Space',
     'hero.desc': 'Upload a photo of your room and let our AI reimagine it in seconds — any style, any mood.',
     'hero.cta': 'Start Designing',
+    'auth.signin': 'Sign In', 'auth.signout': 'Sign Out',
     'generate.eyebrow': 'Transform', 'generate.heading': 'Design Your Room',
     'generate.subhead': 'Upload a photo and describe the style — our AI handles the rest.',
     'generate.step1': 'Upload Room Photo', 'generate.step2': 'Choose a Style',
     'generate.step3': 'Aspect Ratio',
     'generate.placeholder': 'Or describe your own style… e.g. Scandinavian with warm oak and linen.',
     'generate.submit': 'Generate Design',
-    'pill.modern': 'Modern', 'pill.cozy': 'Cozy', 'pill.office': 'Office',
-    'pill.natural': 'Natural', 'pill.creative': 'Creative',
+    'generate.viewsaved': 'View My Saved Designs',
+    'pill.modern': 'Modern Minimalist',
     'result.placeholder': 'Your transformed room appears here',
     'result.loading': 'AI is reimagining your room — usually 10–25 seconds…',
     'result.before': 'Before', 'result.after': 'After', 'result.compare': 'Compare',
     'upload.idle': 'Click to upload image',
     'upload.done': '✓ Image uploaded — ready to generate!',
-    'lang.label': 'Language',
     'gallery.eyebrow': 'Showcase', 'gallery.heading': 'AI Design Gallery',
     'gallery.subhead': 'Rooms reimagined by DecoGen AI.',
     'gallery.item1': 'Modern Minimal', 'gallery.item2': 'Cozy Retreat',
@@ -44,25 +46,25 @@ const translations = {
   fr: {
     'nav.home': 'Accueil', 'nav.design': 'Créer',
     'nav.gallery': 'Galerie', 'nav.about': 'À propos',
-    'nav.reviews': 'Avis',
+    'nav.reviews': 'Avis', 'nav.designs': 'Mes designs',
     'hero.eyebrow': "Design d'intérieur par IA",
     'hero.h1': 'Concevez votre espace <em>de rêve</em>',
     'hero.desc': 'Téléchargez une photo de votre pièce et laissez notre IA la réimaginer en quelques secondes.',
     'hero.cta': 'Commencer',
+    'auth.signin': 'Se connecter', 'auth.signout': 'Déconnexion',
     'generate.eyebrow': 'Transformer', 'generate.heading': 'Concevez votre pièce',
     'generate.subhead': 'Téléchargez une photo et décrivez le style — notre IA fait le reste.',
     'generate.step1': 'Photo de la pièce', 'generate.step2': 'Choisir un style',
     'generate.step3': "Format d'image",
     'generate.placeholder': 'Décrivez votre style… ex : Scandinave avec chêne et lin.',
     'generate.submit': 'Générer le design',
-    'pill.modern': 'Moderne', 'pill.cozy': 'Cosy', 'pill.office': 'Bureau',
-    'pill.natural': 'Naturel', 'pill.creative': 'Créatif',
+    'generate.viewsaved': 'Voir mes designs sauvegardés',
+    'pill.modern': 'Moderne',
     'result.placeholder': 'Votre pièce transformée apparaît ici',
     'result.loading': "L'IA réimagine votre pièce — environ 10–25 secondes…",
     'result.before': 'Avant', 'result.after': 'Après', 'result.compare': 'Comparer',
     'upload.idle': 'Cliquez pour uploader une image',
     'upload.done': '✓ Image chargée — prête à générer !',
-    'lang.label': 'Langue',
     'gallery.eyebrow': 'Vitrine', 'gallery.heading': 'Galerie IA',
     'gallery.subhead': 'Pièces réimaginées par DecoGen AI.',
     'gallery.item1': 'Minimal Moderne', 'gallery.item2': 'Retraite Cosy',
@@ -85,25 +87,25 @@ const translations = {
   ar: {
     'nav.home': 'الرئيسية', 'nav.design': 'تصميم الغرفة',
     'nav.gallery': 'المعرض', 'nav.about': 'حول',
-    'nav.reviews': 'التقييمات',
+    'nav.reviews': 'التقييمات', 'nav.designs': 'تصاميمي',
     'hero.eyebrow': 'تصميم داخلي بالذكاء الاصطناعي',
     'hero.h1': 'صمّم مساحتك <em>المثالية</em>',
     'hero.desc': 'ارفع صورة غرفتك ودع الذكاء الاصطناعي يعيد تخيّلها في ثوانٍ — أي أسلوب، أي مزاج.',
     'hero.cta': 'ابدأ التصميم',
+    'auth.signin': 'تسجيل الدخول', 'auth.signout': 'تسجيل الخروج',
     'generate.eyebrow': 'حوّل', 'generate.heading': 'صمّم غرفتك',
     'generate.subhead': 'ارفع صورة وصف الأسلوب — الذكاء الاصطناعي يتولى الباقي.',
     'generate.step1': 'رفع صورة الغرفة', 'generate.step2': 'اختر أسلوباً',
     'generate.step3': 'نسبة الأبعاد',
     'generate.placeholder': 'صف أسلوبك الخاص… مثلاً: نمط اسكندنافي بخشب البلوط.',
     'generate.submit': 'توليد التصميم',
-    'pill.modern': 'عصري', 'pill.cozy': 'دافئ', 'pill.office': 'مكتبي',
-    'pill.natural': 'طبيعي', 'pill.creative': 'إبداعي',
+    'generate.viewsaved': 'عرض تصاميمي المحفوظة',
+    'pill.modern': 'عصري',
     'result.placeholder': 'غرفتك المحوّلة ستظهر هنا',
     'result.loading': 'الذكاء الاصطناعي يعيد تخيّل غرفتك — عادةً 10–25 ثانية…',
     'result.before': 'قبل', 'result.after': 'بعد', 'result.compare': 'مقارنة',
     'upload.idle': 'انقر لرفع صورة',
     'upload.done': '✓ تم رفع الصورة — جاهز للتوليد!',
-    'lang.label': 'اللغة',
     'gallery.eyebrow': 'معرض الأعمال', 'gallery.heading': 'معرض تصاميم الذكاء الاصطناعي',
     'gallery.subhead': 'غرف أعاد تخيّلها DecoGen AI.',
     'gallery.item1': 'عصري بسيط', 'gallery.item2': 'مريح ودافئ',
@@ -125,677 +127,553 @@ const translations = {
   }
 };
 
-// ── HELPERS: set button state ─────────────────────────────────
-function setBtnDefault(btn, lang) {
-  const t = translations[lang] || translations['en'];
-  btn.classList.remove('success', 'error', 'is-generating');
-  btn.innerHTML = `
-    <span class="btn-default-content">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-      </svg>
-      <span data-i18n="generate.submit">${t['generate.submit']}</span>
-    </span>
-    <span class="btn-generating-content">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.6">
-        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-      </svg>
-      <span class="btn-loader">
-        <span class="btn-loader-static">Generating</span>
-        <div class="btn-loader-words" aria-hidden="true">
-          <span class="btn-loader-word">style…</span>
-          <span class="btn-loader-word">layout…</span>
-          <span class="btn-loader-word">colors…</span>
-          <span class="btn-loader-word">details…</span>
-          <span class="btn-loader-word">style…</span>
-        </div>
-      </span>
-    </span>`;
-}
-
-function setBtnGenerating(btn) {
-  btn.classList.add('is-generating');
-}
-
-function setBtnSuccess(btn, lang) {
-  btn.classList.remove('is-generating');
-  btn.classList.add('success');
-  const msg = lang === 'fr' ? 'Design prêt !' : lang === 'ar' ? '!التصميم جاهز' : 'Design Ready!';
-  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> ${msg}`;
-}
-
-function setBtnError(btn, lang) {
-  btn.classList.remove('is-generating');
-  btn.classList.add('error');
-  const msg = lang === 'fr' ? 'Réessayer' : lang === 'ar' ? 'حاول مجدداً' : 'Try Again';
-  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ${msg}`;
-}
-
-// ── applyLang ─────────────────────────────────────────────────
+// ── APPLY LANGUAGE ────────────────────────────────────────────
 function applyLang(lang) {
-  const html = document.documentElement;
-  html.setAttribute('data-lang', lang);
-  html.setAttribute('lang', lang);
-  html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-  const t = translations[lang];
+  const t = translations[lang] || translations['en'];
+  document.documentElement.setAttribute('data-lang', lang);
+  document.documentElement.setAttribute('lang', lang);
+  document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
 
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (t[key] !== undefined) el.textContent = t[key];
   });
-
   document.querySelectorAll('[data-i18n-html]').forEach(el => {
     const key = el.getAttribute('data-i18n-html');
     if (t[key] !== undefined) el.innerHTML = t[key];
   });
-
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const key = el.getAttribute('data-i18n-placeholder');
-    if (t[key] !== undefined) el.placeholder = t[key];
+    if (t[key] !== undefined) el.setAttribute('placeholder', t[key]);
   });
 
+  // Update active state on lang buttons
   document.querySelectorAll('.lang-opt').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
   });
 
-  const hint = document.getElementById('promptHint');
-  if (hint) {
-    if (lang === 'en') {
-      hint.style.display = 'none';
-    } else {
-      hint.style.display = 'block';
-      hint.textContent = lang === 'fr'
-        ? '💡 Pour de meilleurs résultats, décrivez en anglais.'
-        : '💡 للحصول على أفضل النتائج، صِف بالإنجليزية.';
-    }
-  }
-
-  const uploadText = document.getElementById('uploadText');
-  const roomInput  = document.getElementById('room_image');
-  if (uploadText) {
-    const hasFile = roomInput && roomInput.files && roomInput.files.length > 0;
-    uploadText.textContent = hasFile ? t['upload.done'] : t['upload.idle'];
-  }
-
-  const submitBtn = document.getElementById('submitBtn');
-  if (submitBtn && !submitBtn.disabled
-      && !submitBtn.classList.contains('success')
-      && !submitBtn.classList.contains('error')
-      && !submitBtn.classList.contains('is-generating')) {
-    setBtnDefault(submitBtn, lang);
-  }
+  // Update toggle label
+  const current = document.querySelector('.lang-current');
+  if (current) current.textContent = lang.toUpperCase();
 }
 
-// ── Lang switcher init ────────────────────────────────────────
+// ── LANG SWITCHER ─────────────────────────────────────────────
 (function () {
-  let currentLang = 'en';
+  let currentLang = localStorage.getItem('lang') || 'en';
   applyLang(currentLang);
-  document.querySelectorAll('#langSwitcher .lang-opt').forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentLang = btn.getAttribute('data-lang');
-      applyLang(currentLang);
+
+  const toggle   = document.getElementById('langToggle');
+  const dropdown = document.getElementById('langDropdown');
+
+  toggle && toggle.addEventListener('click', e => {
+    e.stopPropagation();
+    dropdown.classList.toggle('open');
+  });
+
+  document.querySelectorAll('.lang-opt').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const lang = btn.getAttribute('data-lang');
+      if (!lang) return;
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      applyLang(lang);
+      dropdown && dropdown.classList.remove('open');
     });
   });
-})();
 
-// ── Upload feedback ───────────────────────────────────────────
-(function () {
-  const input       = document.getElementById('room_image');
-  const uploadText  = document.getElementById('uploadText');
-  const uploadLabel = document.getElementById('uploadLabel');
-  if (!input || !uploadText || !uploadLabel) return;
-
-  input.addEventListener('change', () => {
-    const lang = document.documentElement.getAttribute('data-lang') || 'en';
-    const t = translations[lang];
-    if (input.files && input.files.length > 0) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        let prev = uploadLabel.querySelector('.preview-img');
-        if (!prev) {
-          prev = document.createElement('img');
-          prev.className = 'preview-img';
-          prev.alt = 'Room preview';
-          uploadLabel.prepend(prev);
-        }
-        prev.src = e.target.result;
-        uploadLabel.classList.add('has-preview');
-      };
-      reader.readAsDataURL(input.files[0]);
-      uploadText.textContent = t['upload.done'];
-      uploadLabel.style.borderColor = 'var(--color-accent)';
-      uploadLabel.style.borderStyle = 'solid';
-      const iconSvg = uploadLabel.querySelector('.icon svg');
-      if (iconSvg) iconSvg.style.fill = 'var(--color-accent)';
-    } else {
-      uploadText.textContent = t['upload.idle'];
-      uploadLabel.style.borderColor = '';
-      uploadLabel.style.borderStyle = '';
-      uploadLabel.classList.remove('has-preview');
-      const prev = uploadLabel.querySelector('.preview-img');
-      if (prev) prev.remove();
-      const iconSvg = uploadLabel.querySelector('.icon svg');
-      if (iconSvg) iconSvg.style.fill = '';
-    }
+  document.addEventListener('click', () => {
+    dropdown && dropdown.classList.remove('open');
   });
 })();
 
 // ── THEME TOGGLE ──────────────────────────────────────────────
 (function () {
-  const html  = document.documentElement;
-  const input = document.getElementById('themeInput');
+  const input  = document.getElementById('themeInput');
+  const root   = document.documentElement;
+  const saved  = localStorage.getItem('theme') || 'dark';
 
-  let theme = html.getAttribute('data-theme') ||
-    (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  root.setAttribute('data-theme', saved);
+  if (input) input.checked = saved === 'light';
 
-  function applyTheme(t) {
-    html.setAttribute('data-theme', t);
-    if (input) input.checked = (t === 'dark');
-  }
-
-  applyTheme(theme);
-
-  if (input) {
-    input.addEventListener('change', () => {
-      theme = input.checked ? 'dark' : 'light';
-      applyTheme(theme);
-    });
-  }
+  input && input.addEventListener('change', () => {
+    const theme = input.checked ? 'light' : 'dark';
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  });
 })();
 
 // ── NAVBAR SCROLL ─────────────────────────────────────────────
-const navbar = document.getElementById('navbar');
-let scrollTicking = false;
-window.addEventListener('scroll', () => {
-  if (!scrollTicking) {
-    requestAnimationFrame(() => {
-      navbar.classList.toggle('scrolled', window.scrollY > 10);
-      scrollTicking = false;
+(function () {
+  const navbar = document.getElementById('navbar');
+  if (!navbar) return;
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+})();
+
+// ── MOBILE MENU ───────────────────────────────────────────────
+(function () {
+  const toggle = document.getElementById('menuToggle');
+  const nav    = document.getElementById('mobileNav');
+  if (!toggle || !nav) return;
+
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  });
+
+  nav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', false);
     });
-    scrollTicking = true;
-  }
-}, { passive: true });
+  });
+})();
 
 // ── ACTIVE NAV LINK ON SCROLL ─────────────────────────────────
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-link');
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      navLinks.forEach(l => l.classList.remove('active'));
-      const active = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
-      if (active) active.classList.add('active');
+(function () {
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  if (!sections.length || !navLinks.length) return;
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(s => observer.observe(s));
+})();
+
+// ── FILE UPLOAD PREVIEW ───────────────────────────────────────
+(function () {
+  const input      = document.getElementById('room_image');
+  const label      = document.getElementById('uploadLabel');
+  const uploadText = document.getElementById('uploadText');
+  if (!input) return;
+
+  input.addEventListener('change', () => {
+    const file = input.files[0];
+    if (!file) return;
+
+    const lang = localStorage.getItem('lang') || 'en';
+    const t    = translations[lang] || translations['en'];
+
+    if (uploadText) uploadText.textContent = t['upload.done'] || '✓ Image uploaded — ready to generate!';
+    label && label.classList.add('uploaded');
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      label.style.backgroundImage = `url(${e.target.result})`;
+      label.style.backgroundSize  = 'cover';
+      label.style.backgroundPosition = 'center';
+    };
+    reader.readAsDataURL(file);
+  });
+})();
+
+// ── STYLE CARDS ───────────────────────────────────────────────
+(function () {
+  const grid    = document.getElementById('styleGrid');
+  const textarea = document.getElementById('decoration_prompt');
+  const hint    = document.getElementById('promptHint');
+  if (!grid || !textarea) return;
+
+  grid.addEventListener('click', e => {
+    const card = e.target.closest('.style-card');
+    if (!card) return;
+
+    grid.querySelectorAll('.style-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+
+    const prompt = card.getAttribute('data-prompt');
+    if (prompt) {
+      textarea.value = prompt;
+      if (hint) {
+        hint.textContent = `Style selected: ${card.textContent.trim()}`;
+        hint.style.display = 'block';
+      }
     }
   });
-}, { threshold: 0.35 });
-sections.forEach(s => observer.observe(s));
+})();
 
-// ── MOBILE NAV ────────────────────────────────────────────────
-const menuToggle = document.getElementById('menuToggle');
-const mobileNav  = document.getElementById('mobileNav');
-menuToggle && menuToggle.addEventListener('click', () => {
-  const open = mobileNav.classList.toggle('open');
-  menuToggle.classList.toggle('open', open);
-  menuToggle.setAttribute('aria-expanded', open);
-});
-mobileNav && mobileNav.querySelectorAll('a').forEach(a =>
-  a.addEventListener('click', () => {
-    mobileNav.classList.remove('open');
-    menuToggle.classList.remove('open');
-    menuToggle.setAttribute('aria-expanded', 'false');
-  })
-);
+// ── BEFORE / AFTER TABS ───────────────────────────────────────
+(function () {
+  const tabs = document.querySelectorAll('.ba-tab');
+  const panels = document.querySelectorAll('.ba-panel');
+  if (!tabs.length) return;
 
-// ── STYLE CARD SELECTION ──────────────────────────────────────
-document.querySelectorAll('.style-card').forEach(card => {
-  card.addEventListener('click', () => {
-    document.querySelectorAll('.style-card').forEach(c => c.classList.remove('selected'));
-    card.classList.add('selected');
-    const prompt = card.getAttribute('data-prompt');
-    if (prompt) document.getElementById('decoration_prompt').value = prompt;
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      const target = document.getElementById(tab.getAttribute('aria-controls'));
+      if (target) target.classList.add('active');
+    });
   });
-});
+})();
 
-// ── TOAST ─────────────────────────────────────────────────────
-const toastEl = document.getElementById('toast');
-let toastTimer;
-function showToast(msg, type = '') {
-  if (!toastEl) return;
-  clearTimeout(toastTimer);
-  toastEl.textContent = msg;
-  toastEl.className = 'toast show' + (type ? ' toast-' + type : '');
-  toastTimer = setTimeout(() => toastEl.className = 'toast', 3500);
-}
-
-// ── BEFORE / AFTER SHOW ───────────────────────────────────────
-let capturedBeforeURL = '';
-
-function showBeforeAfter(afterURL) {
-  const resultArea        = document.getElementById('resultArea');
-  const resultPlaceholder = document.getElementById('resultPlaceholder');
-  const loadingPanel      = document.getElementById('loadingPanel');
-
-  document.getElementById('resultImage').src  = afterURL;
-  document.getElementById('beforeImage').src  = capturedBeforeURL;
-  document.getElementById('sliderAfter').src  = afterURL;
-  document.getElementById('sliderBefore').src = capturedBeforeURL;
-
-  loadingPanel.style.display      = 'none';
-  resultPlaceholder.style.display = 'none';
-  resultArea.style.display        = 'block';
-
-  switchTab('after');
-}
-
-// ── TAB SWITCHING ─────────────────────────────────────────────
-function switchTab(name) {
-  const tabs   = { before: 'tabBefore',   after: 'tabAfter',   slider: 'tabSlider'   };
-  const panels = { before: 'panelBefore', after: 'panelAfter', slider: 'panelSlider' };
-
-  Object.keys(tabs).forEach(key => {
-    const tab   = document.getElementById(tabs[key]);
-    const panel = document.getElementById(panels[key]);
-    const active = key === name;
-    tab.classList.toggle('active', active);
-    tab.setAttribute('aria-selected', active);
-    panel.classList.toggle('active', active);
-    if (active) panel.removeAttribute('hidden');
-    else panel.setAttribute('hidden', '');
-  });
-
-  if (name === 'slider') initSlider();
-}
-
-document.getElementById('tabBefore')?.addEventListener('click', () => switchTab('before'));
-document.getElementById('tabAfter')?.addEventListener('click',  () => switchTab('after'));
-document.getElementById('tabSlider')?.addEventListener('click', () => switchTab('slider'));
-
-// ── COMPARE SLIDER ────────────────────────────────────────────
-function initSlider() {
+// ── BEFORE / AFTER SLIDER ─────────────────────────────────────
+(function () {
   const wrap    = document.getElementById('baSliderWrap');
-  const clip    = document.getElementById('baClip');
   const divider = document.getElementById('baDivider');
-  if (!wrap || !clip || !divider) return;
+  const clip    = document.getElementById('baClip');
+  if (!wrap || !divider || !clip) return;
 
   let dragging = false;
 
-  function setPos(clientX) {
+  function setPosition(x) {
     const rect = wrap.getBoundingClientRect();
-    let pct = (clientX - rect.left) / rect.width;
-    pct = Math.min(1, Math.max(0, pct));
-    const perc = pct * 100;
-    clip.style.width   = perc + '%';
-    divider.style.left = perc + '%';
-    divider.setAttribute('aria-valuenow', Math.round(perc));
+    let pct = ((x - rect.left) / rect.width) * 100;
+    pct = Math.max(2, Math.min(98, pct));
+    divider.style.left = pct + '%';
+    clip.style.width   = pct + '%';
+    divider.setAttribute('aria-valuenow', Math.round(pct));
   }
 
-  wrap.addEventListener('mousedown',   e => { dragging = true; setPos(e.clientX); });
-  window.addEventListener('mousemove', e => { if (dragging) setPos(e.clientX); });
-  window.addEventListener('mouseup',   () => { dragging = false; });
-
-  wrap.addEventListener('touchstart',  e => { dragging = true; setPos(e.touches[0].clientX); }, { passive: true });
-  window.addEventListener('touchmove', e => { if (dragging) setPos(e.touches[0].clientX); },   { passive: true });
-  window.addEventListener('touchend',  () => { dragging = false; });
+  divider.addEventListener('mousedown',  () => dragging = true);
+  divider.addEventListener('touchstart', () => dragging = true, { passive: true });
+  window.addEventListener('mouseup',   () => dragging = false);
+  window.addEventListener('touchend',  () => dragging = false);
+  window.addEventListener('mousemove', e => { if (dragging) setPosition(e.clientX); });
+  window.addEventListener('touchmove', e => {
+    if (dragging && e.touches[0]) setPosition(e.touches[0].clientX);
+  }, { passive: true });
 
   divider.addEventListener('keydown', e => {
     const rect = wrap.getBoundingClientRect();
-    const cur  = parseFloat(clip.style.width) || 50;
-    if (e.key === 'ArrowLeft')  setPos(rect.left + (cur - 5) / 100 * rect.width);
-    if (e.key === 'ArrowRight') setPos(rect.left + (cur + 5) / 100 * rect.width);
+    const cur  = parseFloat(divider.style.left) || 50;
+    if (e.key === 'ArrowLeft')  setPosition(rect.left + (cur - 5) / 100 * rect.width);
+    if (e.key === 'ArrowRight') setPosition(rect.left + (cur + 5) / 100 * rect.width);
   });
-}
+})();
 
-// ── DOWNLOAD BUTTON ───────────────────────────────────────────
-const downloadCheck = document.getElementById('downloadCheck');
-downloadCheck && downloadCheck.addEventListener('change', function () {
-  if (!this.checked) return;
-  const src = document.getElementById('resultImage')?.src;
-  if (!src) return;
-  fetch(src)
-    .then(r => r.blob())
-    .then(blob => {
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'decogen-design.jpg';
-      a.click();
-      URL.revokeObjectURL(a.href);
-    })
-    .catch(() => showToast('Download failed', 'error'));
-});
+// ── GENERATE FORM ─────────────────────────────────────────────
+(function () {
+  const form        = document.getElementById('aiDesignForm');
+  const submitBtn   = document.getElementById('submitBtn');
+  const placeholder = document.getElementById('resultPlaceholder');
+  const loadingPanel = document.getElementById('loadingPanel');
+  const resultArea  = document.getElementById('resultArea');
+  const resultImage = document.getElementById('resultImage');
+  const beforeImage = document.getElementById('beforeImage');
+  const sliderBefore = document.getElementById('sliderBefore');
+  const sliderAfter  = document.getElementById('sliderAfter');
+  const loadingBar  = document.getElementById('loadingBar');
+  const downloadCheck = document.getElementById('downloadCheck');
+  if (!form) return;
 
-// ── MIC / VOICE INPUT ─────────────────────────────────────────
-const micBtn          = document.getElementById('micBtn');
-const voiceOverlay    = document.getElementById('voiceOverlay');
-const voiceCancel     = document.getElementById('voiceCancel');
-const voiceConfirm    = document.getElementById('voiceConfirm');
-const voiceLabel      = document.getElementById('voiceLabel');
-const voiceTranscript = document.getElementById('voiceTranscript');
-const promptTA        = document.getElementById('decoration_prompt');
+  let progressTimer = null;
 
-let recognition = null;
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  function startProgress() {
+    let pct = 0;
+    if (loadingBar) loadingBar.style.width = '0%';
+    progressTimer = setInterval(() => {
+      pct += Math.random() * 4;
+      if (pct > 90) pct = 90;
+      if (loadingBar) loadingBar.style.width = pct + '%';
+    }, 600);
+  }
 
-if (SpeechRecognition && micBtn) {
-  recognition = new SpeechRecognition();
-  recognition.lang = 'en-US';
-  recognition.interimResults = true;
-  recognition.continuous = false;
-
-  recognition.onstart = () => {
-    micBtn.classList.add('listening');
-    if (voiceOverlay) voiceOverlay.classList.add('active');
-    if (voiceLabel) voiceLabel.textContent = 'Listening…';
-    if (voiceTranscript) voiceTranscript.textContent = '';
-  };
-
-  recognition.onresult = e => {
-    const transcript = Array.from(e.results).map(r => r[0].transcript).join('');
-    if (voiceTranscript) voiceTranscript.textContent = transcript;
-    if (e.results[e.results.length - 1].isFinal) {
-      if (promptTA) promptTA.value = transcript;
-      stopVoice();
+  function finishProgress() {
+    clearInterval(progressTimer);
+    if (loadingBar) {
+      loadingBar.style.width = '100%';
+      setTimeout(() => { loadingBar.style.width = '0%'; }, 600);
     }
-  };
+  }
 
-  recognition.onerror = e => {
-    if (voiceLabel) voiceLabel.textContent = 'Error: ' + e.error;
-    setTimeout(stopVoice, 1500);
-  };
+  function showLoading() {
+    if (placeholder)   placeholder.style.display   = 'none';
+    if (resultArea)    resultArea.style.display     = 'none';
+    if (loadingPanel)  loadingPanel.style.display   = 'block';
+    submitBtn && submitBtn.classList.add('generating');
+    submitBtn && (submitBtn.disabled = true);
+  }
 
-  recognition.onend = () => stopVoice();
+  function showResult(resultUrl, beforeUrl) {
+    if (loadingPanel)  loadingPanel.style.display  = 'none';
+    if (resultArea)    resultArea.style.display     = 'block';
 
-  micBtn.addEventListener('click', () => {
-    try { recognition.start(); } catch { /* already running */ }
-  });
-} else if (micBtn) {
-  micBtn.title = 'Voice input not supported in this browser';
-  micBtn.style.opacity = '0.4';
-  micBtn.style.cursor  = 'not-allowed';
-}
+    if (resultImage)  resultImage.src  = resultUrl;
+    if (beforeImage)  beforeImage.src  = beforeUrl;
+    if (sliderBefore) sliderBefore.src = beforeUrl;
+    if (sliderAfter)  sliderAfter.src  = resultUrl;
 
-function stopVoice() {
-  recognition && recognition.abort();
-  micBtn && micBtn.classList.remove('listening');
-  voiceOverlay && voiceOverlay.classList.remove('active');
-}
+    // Reset to After tab
+    document.querySelectorAll('.ba-tab').forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.ba-panel').forEach(p => p.classList.remove('active'));
+    const tabAfter   = document.getElementById('tabAfter');
+    const panelAfter = document.getElementById('panelAfter');
+    if (tabAfter)   { tabAfter.classList.add('active');   tabAfter.setAttribute('aria-selected','true'); }
+    if (panelAfter)   panelAfter.classList.add('active');
 
-voiceCancel  && voiceCancel.addEventListener('click', stopVoice);
-voiceConfirm && voiceConfirm.addEventListener('click', () => {
-  if (promptTA && voiceTranscript?.textContent) promptTA.value = voiceTranscript.textContent;
-  stopVoice();
-});
+    submitBtn && submitBtn.classList.remove('generating');
+    submitBtn && (submitBtn.disabled = false);
 
-// ── POLL JOB STATUS ───────────────────────────────────────────
-function pollStatus(jobId) {
-  return new Promise((resolve, reject) => {
-    const MAX_WAIT = 120000;
-    const INTERVAL = 2500;
-    let elapsed = 0;
+    // Download
+    if (downloadCheck) {
+      downloadCheck.checked = false;
+      const newCheck = downloadCheck.cloneNode(true);
+      downloadCheck.parentNode.replaceChild(newCheck, downloadCheck);
+      newCheck.addEventListener('change', function () {
+        if (this.checked) {
+          const a = document.createElement('a');
+          a.href = resultUrl;
+          a.download = 'decogen-design.jpg';
+          a.click();
+        }
+      });
+    }
 
-    const timer = setInterval(async () => {
-      elapsed += INTERVAL;
-      if (elapsed > MAX_WAIT) {
-        clearInterval(timer);
-        reject(new Error('Generation timed out. Please try again.'));
-        return;
-      }
+    resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function showError(msg) {
+    if (loadingPanel) loadingPanel.style.display = 'none';
+    if (placeholder)  placeholder.style.display  = 'flex';
+    submitBtn && submitBtn.classList.remove('generating');
+    submitBtn && (submitBtn.disabled = false);
+    showToast(msg || 'Something went wrong. Please try again.', 'error');
+  }
+
+  function pollStatus(jobId, beforeUrl) {
+    const interval = setInterval(async () => {
       try {
         const res  = await fetch(`/status/${jobId}`);
         const data = await res.json();
+
         if (data.status === 'done') {
-          clearInterval(timer);
-          resolve(`/result/${jobId}`);
+          clearInterval(interval);
+          finishProgress();
+          showResult(`/result/${jobId}`, beforeUrl);
         } else if (data.status === 'error') {
-          clearInterval(timer);
-          reject(new Error(data.error || 'Generation failed'));
+          clearInterval(interval);
+          finishProgress();
+          showError(data.error || 'Generation failed.');
         }
-      } catch (err) {
-        clearInterval(timer);
-        reject(err);
+      } catch (e) {
+        clearInterval(interval);
+        finishProgress();
+        showError('Network error. Please try again.');
       }
-    }, INTERVAL);
-  });
-}
-
-// ── FORM ELEMENTS ─────────────────────────────────────────────
-const form              = document.getElementById('aiDesignForm');
-const submitBtn         = document.getElementById('submitBtn');
-const loadingPanel      = document.getElementById('loadingPanel');
-const resultPlaceholder = document.getElementById('resultPlaceholder');
-
-// ── FORM SUBMIT ───────────────────────────────────────────────
-form && form.addEventListener('submit', async e => {
-  e.preventDefault();
-
-  const fileInput = document.getElementById('room_image');
-  const prompt    = promptTA?.value.trim();
-  const lang      = document.documentElement.getAttribute('data-lang') || 'en';
-
-  if (!fileInput?.files[0]) { showToast('Please upload a room photo.', 'error'); return; }
-  if (!prompt)               { showToast('Please enter or choose a style.', 'error'); return; }
-
-  capturedBeforeURL = URL.createObjectURL(fileInput.files[0]);
-
-  submitBtn.disabled = true;
-  setBtnGenerating(submitBtn);
-
-  document.getElementById('resultArea').style.display = 'none';
-  resultPlaceholder.style.display = 'none';
-  loadingPanel.style.display      = 'block';
-
-  const bar = document.getElementById('loadingBar');
-  bar.style.animation = 'none';
-  bar.offsetHeight;
-  bar.style.animation = 'loadProgress 20s ease forwards';
-
-  const formData = new FormData(form);
-
-  try {
-    const res = await fetch('/decorate-room', { method: 'POST', body: formData });
-
-    const contentType = res.headers.get('content-type') || '';
-    if (!contentType.includes('application/json')) {
-      const text = await res.text();
-      console.error('Non-JSON response:', text);
-      throw new Error('Server error — check deployment logs');
-    }
-
-    const data = await res.json();
-    if (!res.ok || data.error) throw new Error(data.error || 'Request failed');
-
-    const jobId = data.job_id;
-    if (!jobId) throw new Error('No job ID returned from server');
-
-    const resultURL = await pollStatus(jobId);
-    showBeforeAfter(resultURL);
-
-    setBtnSuccess(submitBtn, lang);
-    showToast(lang === 'fr' ? 'Votre pièce a été redesignée ✨' : lang === 'ar' ? '✨ تم إعادة تصميم غرفتك' : 'Your room has been redesigned ✨');
-
-  } catch (err) {
-    loadingPanel.style.display      = 'none';
-    resultPlaceholder.style.display = 'flex';
-    setBtnError(submitBtn, lang);
-    showToast(err.message || 'Something went wrong', 'error');
-    console.error('[DecoGen Error]', err);
-
-  } finally {
-    submitBtn.disabled = false;
-    setTimeout(() => setBtnDefault(submitBtn, lang), 4000);
+    }, 2500);
   }
-});
 
-// ── SPIN KEYFRAME ─────────────────────────────────────────────
-const styleTag = document.createElement('style');
-styleTag.textContent = `@keyframes spin{to{transform:rotate(360deg)}}`;
-document.head.appendChild(styleTag);
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
 
-// ── REACTION PANEL ────────────────────────────────────────────
-document.querySelectorAll('.reaction-btn').forEach(btn => {
-  btn.addEventListener('click', function () {
-    const wasReacted = this.classList.contains('reacted');
-    document.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('reacted'));
-    if (!wasReacted) this.classList.add('reacted');
+    const imageInput  = document.getElementById('room_image');
+    const promptInput = document.getElementById('decoration_prompt');
 
-    const emoji = this.dataset.emoji;
-    const rect  = this.getBoundingClientRect();
-    const cx    = rect.left + rect.width  / 2;
-    const cy    = rect.top  + rect.height / 2;
-    const count = 6;
+    if (!imageInput?.files[0]) {
+      showToast('Please upload a room photo first.', 'error'); return;
+    }
+    if (!promptInput?.value.trim()) {
+      showToast('Please describe a style or select one above.', 'error'); return;
+    }
 
-    for (let i = 0; i < count; i++) {
-      const el = document.createElement('span');
-      el.className = 'emoji-burst';
-      el.textContent = emoji;
+    const formData = new FormData(form);
+    showLoading();
+    startProgress();
 
-      const spread = (i - (count - 1) / 2) * 22;
-      const delay  = i * 55;
+    try {
+      const res  = await fetch('/decorate-room', { method: 'POST', body: formData });
+      const data = await res.json();
 
-      el.style.cssText = `
-        left: ${cx + spread}px;
-        top:  ${cy}px;
-        animation-delay: ${delay}ms;
-        transform-origin: center bottom;
-      `;
+      if (!res.ok || data.error) {
+        showError(data.error || 'Server error.'); return;
+      }
 
-      document.body.appendChild(el);
-      el.addEventListener('animationend', () => el.remove());
+      const beforeUrl = `/before/${data.job_id}`;
+      pollStatus(data.job_id, beforeUrl);
+
+    } catch (err) {
+      showError('Could not reach server. Check your connection.');
     }
   });
-});
+})();
+
+// ── TOAST ─────────────────────────────────────────────────────
+function showToast(msg, type = 'info') {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+  toast.textContent = msg;
+  toast.className   = `toast toast--${type} show`;
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
 
 // ── REVIEWS ───────────────────────────────────────────────────
 (function () {
-  const grid      = document.getElementById('reviewsGrid');
-  const emptyMsg  = document.getElementById('reviewsEmpty');
-  const form      = document.getElementById('reviewForm');
-  const nameInput = document.getElementById('reviewName');
-  const commentEl = document.getElementById('reviewComment');
+  const grid   = document.getElementById('reviewsGrid');
+  const empty  = document.getElementById('reviewsEmpty');
+  const form   = document.getElementById('reviewForm');
+  const nameEl = document.getElementById('reviewName');
+  const commEl = document.getElementById('reviewComment');
   const submitBtn = document.getElementById('reviewSubmitBtn');
-  const starBtns  = document.querySelectorAll('.star-btn');
+  const starInput = document.getElementById('starInput');
   let selectedRating = 0;
 
-  // ── Star interaction ──
-  starBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      selectedRating = parseInt(btn.dataset.val);
-      starBtns.forEach(s => {
-        s.classList.toggle('active', parseInt(s.dataset.val) <= selectedRating);
+  // Star rating
+  starInput && starInput.querySelectorAll('.star-btn').forEach(star => {
+    star.addEventListener('click', () => {
+      selectedRating = parseInt(star.getAttribute('data-val'));
+      starInput.querySelectorAll('.star-btn').forEach((s, i) => {
+        s.classList.toggle('active', i < selectedRating);
       });
     });
-    btn.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') btn.click();
+    star.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') star.click();
     });
   });
 
-  // ── Escape HTML ──
-  function escapeHtml(str) {
-    return str
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
-  // ── Render single card ──
-  function createCard(r) {
-    const card  = document.createElement('div');
-    card.className = 'review-card';
-    const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
-    const date  = new Date(r.created_at).toLocaleDateString('en-GB', {
-      day: 'numeric', month: 'short', year: 'numeric'
+  function renderReviews(reviews) {
+    if (!grid) return;
+    grid.querySelectorAll('.review-card').forEach(c => c.remove());
+    if (!reviews.length) {
+      if (empty) empty.style.display = 'block';
+      return;
+    }
+    if (empty) empty.style.display = 'none';
+    reviews.forEach(r => {
+      const card = document.createElement('div');
+      card.className = 'review-card';
+      const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+      const date  = r.created_at ? r.created_at.slice(0, 10) : '';
+      card.innerHTML = `
+        <div class="review-header">
+          <span class="review-name">${escapeHtml(r.name)}</span>
+          <span class="review-stars">${stars}</span>
+        </div>
+        <p class="review-comment">${escapeHtml(r.comment)}</p>
+        <span class="review-date">${date}</span>
+      `;
+      grid.appendChild(card);
     });
-    card.innerHTML = `
-      <div class="review-card-header">
-        <span class="review-card-name">${escapeHtml(r.name)}</span>
-        <span class="review-card-stars" aria-label="${r.rating} out of 5 stars">${stars}</span>
-      </div>
-      <p class="review-card-comment">${escapeHtml(r.comment)}</p>
-      <span class="review-card-date">${date}</span>`;
-    return card;
   }
 
-  // ── Load reviews from backend ──
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
   async function loadReviews() {
     try {
       const res  = await fetch('/get-reviews');
       const data = await res.json();
-      if (!data.reviews || data.reviews.length === 0) {
-        if (emptyMsg) emptyMsg.style.display = 'block';
-        return;
-      }
-      if (emptyMsg) emptyMsg.style.display = 'none';
-      if (grid) {
-        grid.innerHTML = '';
-        data.reviews.forEach(r => grid.appendChild(createCard(r)));
-      }
-    } catch (e) {
-      console.error('[Reviews] load failed', e);
-    }
+      if (data.reviews) renderReviews(data.reviews);
+    } catch (e) { console.warn('Could not load reviews', e); }
   }
 
-  // ── Submit review ──
   form && form.addEventListener('submit', async e => {
     e.preventDefault();
-    const lang = document.documentElement.getAttribute('data-lang') || 'en';
+    const name    = nameEl?.value.trim();
+    const comment = commEl?.value.trim();
 
-    const name    = nameInput?.value.trim();
-    const comment = commentEl?.value.trim();
-
-    if (!name)           { showToast('Please enter your name.', 'error'); return; }
     if (!selectedRating) { showToast('Please select a star rating.', 'error'); return; }
-    if (!comment)        { showToast('Please write a comment.', 'error'); return; }
+    if (!name)            { showToast('Please enter your name.', 'error'); return; }
+    if (!comment)         { showToast('Please write a comment.', 'error'); return; }
 
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = `
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-           style="animation:spin 1s linear infinite">
-        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-      </svg> ${lang === 'fr' ? 'Envoi…' : lang === 'ar' ? '…إرسال' : 'Sending…'}`;
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.style.opacity = '.6'; }
 
     try {
-      const res = await fetch('/submit-review', {
+      const res  = await fetch('/submit-review', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, rating: selectedRating, comment })
       });
       const data = await res.json();
-      if (!res.ok || data.error) throw new Error(data.error);
 
-      submitBtn.classList.add('success');
-      submitBtn.innerHTML = `
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg> ${lang === 'fr' ? 'Envoyé !' : lang === 'ar' ? '!تم الإرسال' : 'Submitted!'}`;
-
-      showToast(lang === 'fr' ? 'Merci pour votre avis ! ✨' : lang === 'ar' ? '✨ شكراً على تقييمك' : 'Thanks for your review! ✨');
-
-      nameInput.value = '';
-      commentEl.value = '';
-      selectedRating  = 0;
-      starBtns.forEach(s => s.classList.remove('active'));
-
-      await loadReviews();
-
+      if (data.success) {
+        showToast('Review submitted — thank you! 🎉', 'success');
+        form.reset();
+        selectedRating = 0;
+        starInput && starInput.querySelectorAll('.star-btn').forEach(s => s.classList.remove('active'));
+        await loadReviews();
+      } else {
+        showToast(data.error || 'Could not submit review.', 'error');
+      }
     } catch (err) {
-      submitBtn.classList.add('error');
-      submitBtn.innerHTML = lang === 'fr' ? 'Réessayer' : lang === 'ar' ? 'حاول مجدداً' : 'Try Again';
-      showToast(err.message || 'Failed to submit review', 'error');
+      showToast('Network error. Please try again.', 'error');
     } finally {
-      submitBtn.disabled = false;
-      setTimeout(() => {
-        submitBtn.classList.remove('success', 'error');
-        const t = translations[lang] || translations['en'];
-        submitBtn.innerHTML = `
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/>
-          </svg>
-          <span data-i18n="reviews.submit">${t['reviews.submit']}</span>`;
-      }, 3000);
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.style.opacity = '1'; }
     }
   });
 
   loadReviews();
+})();
+
+// ── VOICE INPUT ───────────────────────────────────────────────
+(function () {
+  const micBtn    = document.getElementById('micBtn');
+  const overlay   = document.getElementById('voiceOverlay');
+  const label     = document.getElementById('voiceLabel');
+  const transcript = document.getElementById('voiceTranscript');
+  const confirm   = document.getElementById('voiceConfirm');
+  const cancel    = document.getElementById('voiceCancel');
+  const textarea  = document.getElementById('decoration_prompt');
+  if (!micBtn || !overlay) return;
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    micBtn.style.display = 'none'; return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.continuous     = false;
+  recognition.interimResults = true;
+  recognition.lang           = 'en-US';
+
+  let finalText = '';
+
+  micBtn.addEventListener('click', () => {
+    finalText = '';
+    if (transcript) transcript.textContent = '';
+    if (label)      label.textContent = 'Listening…';
+    overlay.classList.add('active');
+    recognition.start();
+  });
+
+  recognition.onresult = e => {
+    let interim = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const t = e.results[i][0].transcript;
+      if (e.results[i].isFinal) finalText += t;
+      else interim += t;
+    }
+    if (transcript) transcript.textContent = finalText + interim;
+  };
+
+  recognition.onend = () => {
+    if (label) label.textContent = finalText ? 'Done! Use this text?' : 'Nothing heard. Try again.';
+  };
+
+  recognition.onerror = () => {
+    if (label) label.textContent = 'Error. Please try again.';
+  };
+
+  confirm && confirm.addEventListener('click', () => {
+    if (textarea && finalText.trim()) textarea.value = finalText.trim();
+    overlay.classList.remove('active');
+  });
+
+  cancel && cancel.addEventListener('click', () => {
+    recognition.abort();
+    overlay.classList.remove('active');
+  });
 })();
 
 // ── AUTH STATE ────────────────────────────────────────────────
@@ -803,7 +681,7 @@ document.querySelectorAll('.reaction-btn').forEach(btn => {
   fetch('/auth/me')
     .then(r => r.json())
     .then(data => {
-      const heroSignIn     = document.getElementById('heroSignInBtn');
+      const heroSignInBtn  = document.getElementById('heroSignInBtn');
       const authIconBtn    = document.getElementById('authIconBtn');
       const authAvatar     = document.getElementById('authAvatar');
       const authAvatarImg  = document.getElementById('authAvatarImg');
@@ -811,26 +689,29 @@ document.querySelectorAll('.reaction-btn').forEach(btn => {
       const navDesigns     = document.getElementById('navDesigns');
       const mobileDesigns  = document.getElementById('mobileDesignsLink');
       const mobileSignIn   = document.getElementById('mobileSignIn');
+      const viewSavedBtn   = document.getElementById('viewSavedBtn');
 
       if (data.logged_in) {
-        // Show avatar, hide icon button
         if (authIconBtn)   authIconBtn.style.display   = 'none';
         if (authAvatar)    authAvatar.style.display     = 'flex';
         if (authAvatarImg) authAvatarImg.src            = data.avatar;
         if (authUserName)  authUserName.textContent     = data.name;
         if (navDesigns)    navDesigns.style.display     = 'inline-flex';
         if (mobileDesigns) mobileDesigns.style.display  = 'block';
-        if (heroSignIn)    heroSignIn.style.display     = 'none';
+        if (heroSignInBtn) heroSignInBtn.style.display  = 'none';
         if (mobileSignIn)  mobileSignIn.style.display   = 'none';
+        if (viewSavedBtn)  viewSavedBtn.style.display   = 'inline-flex';
       } else {
         if (authIconBtn)   authIconBtn.style.display   = 'flex';
         if (authAvatar)    authAvatar.style.display     = 'none';
         if (navDesigns)    navDesigns.style.display     = 'none';
         if (mobileDesigns) mobileDesigns.style.display  = 'none';
-        if (heroSignIn)    heroSignIn.style.display     = 'inline-flex';
+        if (heroSignInBtn) heroSignInBtn.style.display  = 'inline-flex';
         if (mobileSignIn)  mobileSignIn.style.display   = 'block';
+        if (viewSavedBtn)  viewSavedBtn.style.display   = 'none';
       }
-    });
+    })
+    .catch(() => {});
 
   // Avatar dropdown toggle
   const avatarImg = document.getElementById('authAvatarImg');
@@ -843,7 +724,6 @@ document.querySelectorAll('.reaction-btn').forEach(btn => {
     window.location.href = '/auth/logout';
   });
 
-  // Close dropdown on outside click
   document.addEventListener('click', e => {
     const avatar = document.getElementById('authAvatar');
     if (avatar && !avatar.contains(e.target)) {
@@ -851,7 +731,6 @@ document.querySelectorAll('.reaction-btn').forEach(btn => {
     }
   });
 
-  // Auth icon button — redirect to login
   document.getElementById('authIconBtn')?.addEventListener('click', () => {
     window.location.href = '/auth/login';
   });
