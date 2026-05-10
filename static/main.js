@@ -186,9 +186,8 @@ function applyLang(lang) {
 })();
 
 // ── THEME TOGGLE ──────────────────────────────────────────────
-// ── THEME TOGGLE ──────────────────────────────────────────────
 (function () {
-  const input = document.getElementById('input');  // ← matches your HTML id="input"
+  const input = document.getElementById('themeInput'); // FIXED: was 'input'
   const root  = document.documentElement;
 
   let theme = localStorage.getItem('theme');
@@ -199,12 +198,11 @@ function applyLang(lang) {
 
   root.setAttribute('data-theme', theme);
 
-  // unchecked = light (sun/day), checked = dark (moon/night)
-  // because your original CSS: #input:checked = dark background (black)
-  if (input) input.checked = (theme === 'dark');
+  // CSS: unchecked = dark (night sky), checked = light (blue sky)
+  if (input) input.checked = (theme === 'light'); // FIXED: was (theme === 'dark')
 
   input && input.addEventListener('change', () => {
-    const next = input.checked ? 'dark' : 'light';
+    const next = input.checked ? 'light' : 'dark'; // FIXED: was reversed
     root.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   });
@@ -276,23 +274,19 @@ function applyLang(lang) {
 
     const reader = new FileReader();
     reader.onload = e => {
-      // Remove old preview if any
       const old = label.querySelector('img.preview-img');
       if (old) old.remove();
 
-      // Hide icon and text
       const iconEl = label.querySelector('.icon');
       const textEl = label.querySelector('.text');
       if (iconEl) iconEl.style.display = 'none';
       if (textEl) textEl.style.display = 'none';
 
-      // Create preview image
       const img     = document.createElement('img');
       img.src       = e.target.result;
       img.className = 'preview-img';
       img.alt       = 'Room preview';
 
-      // Style label as image container
       label.style.height      = 'auto';
       label.style.padding     = '0';
       label.style.borderStyle = 'solid';
