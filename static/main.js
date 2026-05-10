@@ -127,7 +127,7 @@ const translations = {
   }
 };
 
-// ── APPLY LANGUAGE ────────────────────────────────────────────
+// ── APPLY LANGUAGE ─────────────────────────────────────────────
 function applyLang(lang) {
   const t = translations[lang] || translations['en'];
   document.documentElement.setAttribute('data-lang', lang);
@@ -155,7 +155,7 @@ function applyLang(lang) {
   if (current) current.textContent = lang.toUpperCase();
 }
 
-// ── LANG SWITCHER ─────────────────────────────────────────────
+// ── LANG SWITCHER ──────────────────────────────────────────────
 (function () {
   let currentLang = localStorage.getItem('lang') || 'en';
   applyLang(currentLang);
@@ -185,30 +185,25 @@ function applyLang(lang) {
   });
 })();
 
-// ── THEME TOGGLE ──────────────────────────────────────────────
+// ── THEME TOGGLE ───────────────────────────────────────────────
 (function () {
-  const input = document.getElementById('themeInput'); // FIXED: was 'input'
+  const input = document.getElementById('input'); // ✅ matches id="input" in HTML
   const root  = document.documentElement;
 
-  let theme = localStorage.getItem('theme');
-  if (!theme || (theme !== 'dark' && theme !== 'light')) {
-    theme = 'dark';
-    localStorage.setItem('theme', 'dark');
-  }
-
+  let theme = localStorage.getItem('theme') || 'dark';
   root.setAttribute('data-theme', theme);
 
-  // CSS: unchecked = dark (night sky), checked = light (blue sky)
-  if (input) input.checked = (theme === 'light'); // FIXED: was (theme === 'dark')
+  // unchecked = dark (night/stars), checked = light (day/clouds)
+  if (input) input.checked = (theme === 'light');
 
   input && input.addEventListener('change', () => {
-    const next = input.checked ? 'light' : 'dark'; // FIXED: was reversed
+    const next = input.checked ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   });
 })();
 
-// ── NAVBAR SCROLL ─────────────────────────────────────────────
+// ── NAVBAR SCROLL ──────────────────────────────────────────────
 (function () {
   const navbar = document.getElementById('navbar');
   if (!navbar) return;
@@ -217,7 +212,7 @@ function applyLang(lang) {
   }, { passive: true });
 })();
 
-// ── MOBILE MENU ───────────────────────────────────────────────
+// ── MOBILE MENU ────────────────────────────────────────────────
 (function () {
   const toggle = document.getElementById('menuToggle');
   const nav    = document.getElementById('mobileNav');
@@ -238,7 +233,7 @@ function applyLang(lang) {
   });
 })();
 
-// ── ACTIVE NAV LINK ON SCROLL ─────────────────────────────────
+// ── ACTIVE NAV LINK ON SCROLL ──────────────────────────────────
 (function () {
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link');
@@ -257,7 +252,7 @@ function applyLang(lang) {
   sections.forEach(s => observer.observe(s));
 })();
 
-// ── FILE UPLOAD PREVIEW ───────────────────────────────────────
+// ── FILE UPLOAD PREVIEW ────────────────────────────────────────
 (function () {
   const input      = document.getElementById('room_image');
   const label      = document.getElementById('uploadLabel');
@@ -299,7 +294,7 @@ function applyLang(lang) {
   });
 })();
 
-// ── STYLE CARDS ───────────────────────────────────────────────
+// ── STYLE CARDS ────────────────────────────────────────────────
 (function () {
   const grid     = document.getElementById('styleGrid');
   const textarea = document.getElementById('decoration_prompt');
@@ -324,7 +319,7 @@ function applyLang(lang) {
   });
 })();
 
-// ── BEFORE / AFTER TABS ───────────────────────────────────────
+// ── BEFORE / AFTER TABS ────────────────────────────────────────
 (function () {
   const tabs   = document.querySelectorAll('.ba-tab');
   const panels = document.querySelectorAll('.ba-panel');
@@ -342,7 +337,7 @@ function applyLang(lang) {
   });
 })();
 
-// ── BEFORE / AFTER SLIDER ─────────────────────────────────────
+// ── BEFORE / AFTER SLIDER ──────────────────────────────────────
 (function () {
   const wrap    = document.getElementById('baSliderWrap');
   const divider = document.getElementById('baDivider');
@@ -377,7 +372,7 @@ function applyLang(lang) {
   });
 })();
 
-// ── GENERATE FORM ─────────────────────────────────────────────
+// ── GENERATE FORM ──────────────────────────────────────────────
 (function () {
   const form          = document.getElementById('aiDesignForm');
   const submitBtn     = document.getElementById('submitBtn');
@@ -436,7 +431,7 @@ function applyLang(lang) {
     document.querySelectorAll('.ba-panel').forEach(p => p.classList.remove('active'));
     const tabAfter   = document.getElementById('tabAfter');
     const panelAfter = document.getElementById('panelAfter');
-    if (tabAfter)   { tabAfter.classList.add('active');   tabAfter.setAttribute('aria-selected', 'true'); }
+    if (tabAfter)   { tabAfter.classList.add('active'); tabAfter.setAttribute('aria-selected', 'true'); }
     if (panelAfter)   panelAfter.classList.add('active');
 
     submitBtn && submitBtn.classList.remove('generating');
@@ -448,9 +443,9 @@ function applyLang(lang) {
       downloadCheck.parentNode.replaceChild(newCheck, downloadCheck);
       newCheck.addEventListener('change', function () {
         if (this.checked) {
-          const a      = document.createElement('a');
-          a.href       = resultUrl;
-          a.download   = 'decogen-design.jpg';
+          const a    = document.createElement('a');
+          a.href     = resultUrl;
+          a.download = 'decogen-design.jpg';
           a.click();
         }
       });
@@ -521,7 +516,7 @@ function applyLang(lang) {
   });
 })();
 
-// ── TOAST ─────────────────────────────────────────────────────
+// ── TOAST ──────────────────────────────────────────────────────
 function showToast(msg, type = 'info') {
   const toast = document.getElementById('toast');
   if (!toast) return;
@@ -530,7 +525,7 @@ function showToast(msg, type = 'info') {
   setTimeout(() => toast.classList.remove('show'), 3500);
 }
 
-// ── REVIEWS ───────────────────────────────────────────────────
+// ── REVIEWS ────────────────────────────────────────────────────
 (function () {
   const grid      = document.getElementById('reviewsGrid');
   const empty     = document.getElementById('reviewsEmpty');
@@ -630,7 +625,7 @@ function showToast(msg, type = 'info') {
   loadReviews();
 })();
 
-// ── VOICE INPUT ───────────────────────────────────────────────
+// ── VOICE INPUT ────────────────────────────────────────────────
 (function () {
   const micBtn     = document.getElementById('micBtn');
   const overlay    = document.getElementById('voiceOverlay');
@@ -688,7 +683,7 @@ function showToast(msg, type = 'info') {
   });
 })();
 
-// ── AUTH STATE ────────────────────────────────────────────────
+// ── AUTH STATE ─────────────────────────────────────────────────
 (function () {
   fetch('/auth/me')
     .then(r => r.json())
