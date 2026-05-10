@@ -186,11 +186,11 @@ function applyLang(lang) {
 })();
 
 // ── THEME TOGGLE ──────────────────────────────────────────────
+// ── THEME TOGGLE ──────────────────────────────────────────────
 (function () {
-  const input = document.getElementById('themeInput');
+  const input = document.getElementById('input');  // ← matches your HTML id="input"
   const root  = document.documentElement;
 
-  // Force clear any bad cached value, always default to dark
   let theme = localStorage.getItem('theme');
   if (!theme || (theme !== 'dark' && theme !== 'light')) {
     theme = 'dark';
@@ -199,11 +199,12 @@ function applyLang(lang) {
 
   root.setAttribute('data-theme', theme);
 
-  // unchecked = dark, checked = light
-  if (input) input.checked = (theme === 'light');
+  // unchecked = light (sun/day), checked = dark (moon/night)
+  // because your original CSS: #input:checked = dark background (black)
+  if (input) input.checked = (theme === 'dark');
 
   input && input.addEventListener('change', () => {
-    const next = input.checked ? 'light' : 'dark';
+    const next = input.checked ? 'dark' : 'light';
     root.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   });
