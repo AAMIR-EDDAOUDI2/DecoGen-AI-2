@@ -147,12 +147,10 @@ function applyLang(lang) {
     if (t[key] !== undefined) el.setAttribute('placeholder', t[key]);
   });
 
-  // Update active state on lang buttons
   document.querySelectorAll('.lang-opt').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
   });
 
-  // Update toggle label
   const current = document.querySelector('.lang-current');
   if (current) current.textContent = lang.toUpperCase();
 }
@@ -187,19 +185,26 @@ function applyLang(lang) {
   });
 })();
 
-// ── THEME TOGGLE ──────────────────────────────────────────────
+// ── THEME TOGGLE — FIX: dark is default, checked = light ──────
 (function () {
-  const input  = document.getElementById('themeInput');
-  const root   = document.documentElement;
-  const saved  = localStorage.getItem('theme') || 'dark';
+  const input = document.getElementById('themeInput');
+  const root  = document.documentElement;
 
-  root.setAttribute('data-theme', saved);
-  if (input) input.checked = saved === 'light';
+  // Read saved theme, default to dark
+  const saved = localStorage.getItem('theme');
+  const theme = saved || 'dark';
+
+  // Apply it
+  root.setAttribute('data-theme', theme);
+  if (!saved) localStorage.setItem('theme', 'dark');
+
+  // checked = light (sun), unchecked = dark (moon)
+  if (input) input.checked = (theme === 'light');
 
   input && input.addEventListener('change', () => {
-    const theme = input.checked ? 'light' : 'dark';
-    root.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+    const next = input.checked ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
   });
 })();
 
@@ -252,12 +257,12 @@ function applyLang(lang) {
   sections.forEach(s => observer.observe(s));
 })();
 
-// ── FILE UPLOAD PREVIEW ───────────────────────────────────────
+// ── FILE UPLOAD PREVIEW — FIX: hide hero text when img uploaded
 (function () {
   const input      = document.getElementById('room_image');
   const label      = document.getElementById('uploadLabel');
   const uploadText = document.getElementById('uploadText');
-  if (!input) return;
+  if (!input || !label) return;
 
   input.addEventListener('change', () => {
     const file = input.files[0];
@@ -265,15 +270,35 @@ function applyLang(lang) {
 
     const lang = localStorage.getItem('lang') || 'en';
     const t    = translations[lang] || translations['en'];
-
     if (uploadText) uploadText.textContent = t['upload.done'] || '✓ Image uploaded — ready to generate!';
-    label && label.classList.add('uploaded');
 
     const reader = new FileReader();
     reader.onload = e => {
-      label.style.backgroundImage = `url(${e.target.result})`;
-      label.style.backgroundSize  = 'cover';
-      label.style.backgroundPosition = 'center';
+      // Remove old preview if any
+      const old = label.querySelector('img.preview-img');
+      if (old) old.remove();
+
+      // Hide icon and text divs
+      const iconEl = label.querySelector('.icon');
+      const textEl = label.querySelector('.text');
+      if (iconEl) iconEl.style.display = 'none';
+      if (textEl) textEl.style.display = 'none';
+
+      // Create preview image
+      const img = document.createElement('img');
+      img.src       = e.target.result;
+      img.className = 'preview-img';
+      img.alt       = 'Room preview';
+
+      // Style the label as a clean image container
+      label.style.height      = 'auto';
+      label.style.padding     = '0';
+      label.style.borderStyle = 'solid';
+      label.style.borderColor = 'var(--color-accent)';
+
+      // Insert before the hidden file input
+      const fileInput = label.querySelector('input[type="file"]');
+      label.insertBefore(img, fileInput);
     };
     reader.readAsDataURL(file);
   });
@@ -281,9 +306,9 @@ function applyLang(lang) {
 
 // ── STYLE CARDS ───────────────────────────────────────────────
 (function () {
-  const grid    = document.getElementById('styleGrid');
+  const grid     = document.getElementById('styleGrid');
   const textarea = document.getElementById('decoration_prompt');
-  const hint    = document.getElementById('promptHint');
+  const hint     = document.getElementById('promptHint');
   if (!grid || !textarea) return;
 
   grid.addEventListener('click', e => {
@@ -306,7 +331,7 @@ function applyLang(lang) {
 
 // ── BEFORE / AFTER TABS ───────────────────────────────────────
 (function () {
-  const tabs = document.querySelectorAll('.ba-tab');
+  const tabs   = document.querySelectorAll('.ba-tab');
   const panels = document.querySelectorAll('.ba-panel');
   if (!tabs.length) return;
 
@@ -359,16 +384,16 @@ function applyLang(lang) {
 
 // ── GENERATE FORM ─────────────────────────────────────────────
 (function () {
-  const form        = document.getElementById('aiDesignForm');
-  const submitBtn   = document.getElementById('submitBtn');
-  const placeholder = document.getElementById('resultPlaceholder');
+  const form         = document.getElementById('aiDesignForm');
+  const submitBtn    = document.getElementById('submitBtn');
+  const placeholder  = document.getElementById('resultPlaceholder');
   const loadingPanel = document.getElementById('loadingPanel');
-  const resultArea  = document.getElementById('resultArea');
-  const resultImage = document.getElementById('resultImage');
-  const beforeImage = document.getElementById('beforeImage');
+  const resultArea   = document.getElementById('resultArea');
+  const resultImage  = document.getElementById('resultImage');
+  const beforeImage  = document.getElementById('beforeImage');
   const sliderBefore = document.getElementById('sliderBefore');
   const sliderAfter  = document.getElementById('sliderAfter');
-  const loadingBar  = document.getElementById('loadingBar');
+  const loadingBar   = document.getElementById('loadingBar');
   const downloadCheck = document.getElementById('downloadCheck');
   if (!form) return;
 
@@ -393,16 +418,16 @@ function applyLang(lang) {
   }
 
   function showLoading() {
-    if (placeholder)   placeholder.style.display   = 'none';
-    if (resultArea)    resultArea.style.display     = 'none';
-    if (loadingPanel)  loadingPanel.style.display   = 'block';
+    if (placeholder)   placeholder.style.display  = 'none';
+    if (resultArea)    resultArea.style.display    = 'none';
+    if (loadingPanel)  loadingPanel.style.display  = 'block';
     submitBtn && submitBtn.classList.add('generating');
     submitBtn && (submitBtn.disabled = true);
   }
 
   function showResult(resultUrl, beforeUrl) {
-    if (loadingPanel)  loadingPanel.style.display  = 'none';
-    if (resultArea)    resultArea.style.display     = 'block';
+    if (loadingPanel) loadingPanel.style.display = 'none';
+    if (resultArea)   resultArea.style.display   = 'block';
 
     if (resultImage)  resultImage.src  = resultUrl;
     if (beforeImage)  beforeImage.src  = beforeUrl;
@@ -417,7 +442,7 @@ function applyLang(lang) {
     document.querySelectorAll('.ba-panel').forEach(p => p.classList.remove('active'));
     const tabAfter   = document.getElementById('tabAfter');
     const panelAfter = document.getElementById('panelAfter');
-    if (tabAfter)   { tabAfter.classList.add('active');   tabAfter.setAttribute('aria-selected','true'); }
+    if (tabAfter)   { tabAfter.classList.add('active');   tabAfter.setAttribute('aria-selected', 'true'); }
     if (panelAfter)   panelAfter.classList.add('active');
 
     submitBtn && submitBtn.classList.remove('generating');
@@ -517,16 +542,15 @@ function showToast(msg, type = 'info') {
 
 // ── REVIEWS ───────────────────────────────────────────────────
 (function () {
-  const grid   = document.getElementById('reviewsGrid');
-  const empty  = document.getElementById('reviewsEmpty');
-  const form   = document.getElementById('reviewForm');
-  const nameEl = document.getElementById('reviewName');
-  const commEl = document.getElementById('reviewComment');
+  const grid      = document.getElementById('reviewsGrid');
+  const empty     = document.getElementById('reviewsEmpty');
+  const form      = document.getElementById('reviewForm');
+  const nameEl    = document.getElementById('reviewName');
+  const commEl    = document.getElementById('reviewComment');
   const submitBtn = document.getElementById('reviewSubmitBtn');
   const starInput = document.getElementById('starInput');
   let selectedRating = 0;
 
-  // Star rating
   starInput && starInput.querySelectorAll('.star-btn').forEach(star => {
     star.addEventListener('click', () => {
       selectedRating = parseInt(star.getAttribute('data-val'));
@@ -548,7 +572,7 @@ function showToast(msg, type = 'info') {
     }
     if (empty) empty.style.display = 'none';
     reviews.forEach(r => {
-      const card = document.createElement('div');
+      const card  = document.createElement('div');
       card.className = 'review-card';
       const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
       const date  = r.created_at ? r.created_at.slice(0, 10) : '';
@@ -566,8 +590,8 @@ function showToast(msg, type = 'info') {
 
   function escapeHtml(str) {
     return String(str)
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
   async function loadReviews() {
@@ -618,13 +642,13 @@ function showToast(msg, type = 'info') {
 
 // ── VOICE INPUT ───────────────────────────────────────────────
 (function () {
-  const micBtn    = document.getElementById('micBtn');
-  const overlay   = document.getElementById('voiceOverlay');
-  const label     = document.getElementById('voiceLabel');
+  const micBtn     = document.getElementById('micBtn');
+  const overlay    = document.getElementById('voiceOverlay');
+  const label      = document.getElementById('voiceLabel');
   const transcript = document.getElementById('voiceTranscript');
-  const confirm   = document.getElementById('voiceConfirm');
-  const cancel    = document.getElementById('voiceCancel');
-  const textarea  = document.getElementById('decoration_prompt');
+  const confirm    = document.getElementById('voiceConfirm');
+  const cancel     = document.getElementById('voiceCancel');
+  const textarea   = document.getElementById('decoration_prompt');
   if (!micBtn || !overlay) return;
 
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -632,7 +656,7 @@ function showToast(msg, type = 'info') {
     micBtn.style.display = 'none'; return;
   }
 
-  const recognition = new SpeechRecognition();
+  const recognition      = new SpeechRecognition();
   recognition.continuous     = false;
   recognition.interimResults = true;
   recognition.lang           = 'en-US';
@@ -713,7 +737,6 @@ function showToast(msg, type = 'info') {
     })
     .catch(() => {});
 
-  // Avatar dropdown toggle
   const avatarImg = document.getElementById('authAvatarImg');
   const dropdown  = document.getElementById('authDropdown');
   avatarImg && avatarImg.addEventListener('click', () => {
