@@ -187,13 +187,12 @@ function applyLang(lang) {
 
 // ── THEME TOGGLE ───────────────────────────────────────────────
 (function () {
-  const input = document.getElementById('input'); // ✅ matches id="input" in HTML
+  const input = document.getElementById('input'); // ✅ matches your HTML id="input"
   const root  = document.documentElement;
 
   let theme = localStorage.getItem('theme') || 'dark';
   root.setAttribute('data-theme', theme);
 
-  // unchecked = dark (night/stars), checked = light (day/clouds)
   if (input) input.checked = (theme === 'light');
 
   input && input.addEventListener('change', () => {
