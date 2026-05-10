@@ -621,3 +621,12 @@ footer a:hover{opacity:.75}
 @media(prefers-reduced-motion:reduce){
   .btn-loader-word{animation:none}
 }
+
+.custum-file-upload .preview-img {
+  width: 100%;
+  height: auto;
+  max-height: 240px;
+  object-fit: cover;
+  border-radius: calc(var(--radius-lg) - 2px);
+  display: block;
+}
