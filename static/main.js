@@ -1,5 +1,4 @@
 'use strict';
-localStorage.removeItem('theme');
 
 // ── TRANSLATIONS ──────────────────────────────────────────────
 const translations = {
@@ -186,20 +185,21 @@ function applyLang(lang) {
   });
 })();
 
-// ── THEME TOGGLE — FIX: dark is default, checked = light ──────
+// ── THEME TOGGLE ──────────────────────────────────────────────
 (function () {
   const input = document.getElementById('themeInput');
   const root  = document.documentElement;
 
-  // Read saved theme, default to dark
-  const saved = localStorage.getItem('theme');
-  const theme = saved || 'dark';
+  // Force clear any bad cached value, always default to dark
+  let theme = localStorage.getItem('theme');
+  if (!theme || (theme !== 'dark' && theme !== 'light')) {
+    theme = 'dark';
+    localStorage.setItem('theme', 'dark');
+  }
 
-  // Apply it
   root.setAttribute('data-theme', theme);
-  if (!saved) localStorage.setItem('theme', 'dark');
 
-  // checked = light (sun), unchecked = dark (moon)
+  // unchecked = dark, checked = light
   if (input) input.checked = (theme === 'light');
 
   input && input.addEventListener('change', () => {
@@ -258,7 +258,7 @@ function applyLang(lang) {
   sections.forEach(s => observer.observe(s));
 })();
 
-// ── FILE UPLOAD PREVIEW — FIX: hide hero text when img uploaded
+// ── FILE UPLOAD PREVIEW ───────────────────────────────────────
 (function () {
   const input      = document.getElementById('room_image');
   const label      = document.getElementById('uploadLabel');
@@ -279,25 +279,24 @@ function applyLang(lang) {
       const old = label.querySelector('img.preview-img');
       if (old) old.remove();
 
-      // Hide icon and text divs
+      // Hide icon and text
       const iconEl = label.querySelector('.icon');
       const textEl = label.querySelector('.text');
       if (iconEl) iconEl.style.display = 'none';
       if (textEl) textEl.style.display = 'none';
 
       // Create preview image
-      const img = document.createElement('img');
+      const img     = document.createElement('img');
       img.src       = e.target.result;
       img.className = 'preview-img';
       img.alt       = 'Room preview';
 
-      // Style the label as a clean image container
+      // Style label as image container
       label.style.height      = 'auto';
       label.style.padding     = '0';
       label.style.borderStyle = 'solid';
       label.style.borderColor = 'var(--color-accent)';
 
-      // Insert before the hidden file input
       const fileInput = label.querySelector('input[type="file"]');
       label.insertBefore(img, fileInput);
     };
@@ -323,7 +322,7 @@ function applyLang(lang) {
     if (prompt) {
       textarea.value = prompt;
       if (hint) {
-        hint.textContent = `Style selected: ${card.textContent.trim()}`;
+        hint.textContent   = `Style selected: ${card.textContent.trim()}`;
         hint.style.display = 'block';
       }
     }
@@ -385,16 +384,16 @@ function applyLang(lang) {
 
 // ── GENERATE FORM ─────────────────────────────────────────────
 (function () {
-  const form         = document.getElementById('aiDesignForm');
-  const submitBtn    = document.getElementById('submitBtn');
-  const placeholder  = document.getElementById('resultPlaceholder');
-  const loadingPanel = document.getElementById('loadingPanel');
-  const resultArea   = document.getElementById('resultArea');
-  const resultImage  = document.getElementById('resultImage');
-  const beforeImage  = document.getElementById('beforeImage');
-  const sliderBefore = document.getElementById('sliderBefore');
-  const sliderAfter  = document.getElementById('sliderAfter');
-  const loadingBar   = document.getElementById('loadingBar');
+  const form          = document.getElementById('aiDesignForm');
+  const submitBtn     = document.getElementById('submitBtn');
+  const placeholder   = document.getElementById('resultPlaceholder');
+  const loadingPanel  = document.getElementById('loadingPanel');
+  const resultArea    = document.getElementById('resultArea');
+  const resultImage   = document.getElementById('resultImage');
+  const beforeImage   = document.getElementById('beforeImage');
+  const sliderBefore  = document.getElementById('sliderBefore');
+  const sliderAfter   = document.getElementById('sliderAfter');
+  const loadingBar    = document.getElementById('loadingBar');
   const downloadCheck = document.getElementById('downloadCheck');
   if (!form) return;
 
@@ -419,9 +418,9 @@ function applyLang(lang) {
   }
 
   function showLoading() {
-    if (placeholder)   placeholder.style.display  = 'none';
-    if (resultArea)    resultArea.style.display    = 'none';
-    if (loadingPanel)  loadingPanel.style.display  = 'block';
+    if (placeholder)  placeholder.style.display  = 'none';
+    if (resultArea)   resultArea.style.display    = 'none';
+    if (loadingPanel) loadingPanel.style.display  = 'block';
     submitBtn && submitBtn.classList.add('generating');
     submitBtn && (submitBtn.disabled = true);
   }
@@ -435,7 +434,6 @@ function applyLang(lang) {
     if (sliderBefore) sliderBefore.src = beforeUrl;
     if (sliderAfter)  sliderAfter.src  = resultUrl;
 
-    // Reset to After tab
     document.querySelectorAll('.ba-tab').forEach(t => {
       t.classList.remove('active');
       t.setAttribute('aria-selected', 'false');
@@ -449,16 +447,15 @@ function applyLang(lang) {
     submitBtn && submitBtn.classList.remove('generating');
     submitBtn && (submitBtn.disabled = false);
 
-    // Download
     if (downloadCheck) {
       downloadCheck.checked = false;
       const newCheck = downloadCheck.cloneNode(true);
       downloadCheck.parentNode.replaceChild(newCheck, downloadCheck);
       newCheck.addEventListener('change', function () {
         if (this.checked) {
-          const a = document.createElement('a');
-          a.href = resultUrl;
-          a.download = 'decogen-design.jpg';
+          const a      = document.createElement('a');
+          a.href       = resultUrl;
+          a.download   = 'decogen-design.jpg';
           a.click();
         }
       });
@@ -480,7 +477,6 @@ function applyLang(lang) {
       try {
         const res  = await fetch(`/status/${jobId}`);
         const data = await res.json();
-
         if (data.status === 'done') {
           clearInterval(interval);
           finishProgress();
@@ -523,9 +519,7 @@ function applyLang(lang) {
         showError(data.error || 'Server error.'); return;
       }
 
-      const beforeUrl = `/before/${data.job_id}`;
-      pollStatus(data.job_id, beforeUrl);
-
+      pollStatus(data.job_id, `/before/${data.job_id}`);
     } catch (err) {
       showError('Could not reach server. Check your connection.');
     }
@@ -573,10 +567,10 @@ function showToast(msg, type = 'info') {
     }
     if (empty) empty.style.display = 'none';
     reviews.forEach(r => {
-      const card  = document.createElement('div');
+      const card     = document.createElement('div');
       card.className = 'review-card';
-      const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
-      const date  = r.created_at ? r.created_at.slice(0, 10) : '';
+      const stars    = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+      const date     = r.created_at ? r.created_at.slice(0, 10) : '';
       card.innerHTML = `
         <div class="review-header">
           <span class="review-name">${escapeHtml(r.name)}</span>
@@ -653,11 +647,9 @@ function showToast(msg, type = 'info') {
   if (!micBtn || !overlay) return;
 
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) {
-    micBtn.style.display = 'none'; return;
-  }
+  if (!SpeechRecognition) { micBtn.style.display = 'none'; return; }
 
-  const recognition      = new SpeechRecognition();
+  const recognition          = new SpeechRecognition();
   recognition.continuous     = false;
   recognition.interimResults = true;
   recognition.lang           = 'en-US';
@@ -667,7 +659,7 @@ function showToast(msg, type = 'info') {
   micBtn.addEventListener('click', () => {
     finalText = '';
     if (transcript) transcript.textContent = '';
-    if (label)      label.textContent = 'Listening…';
+    if (label)      label.textContent      = 'Listening…';
     overlay.classList.add('active');
     recognition.start();
   });
@@ -706,15 +698,15 @@ function showToast(msg, type = 'info') {
   fetch('/auth/me')
     .then(r => r.json())
     .then(data => {
-      const heroSignInBtn  = document.getElementById('heroSignInBtn');
-      const authIconBtn    = document.getElementById('authIconBtn');
-      const authAvatar     = document.getElementById('authAvatar');
-      const authAvatarImg  = document.getElementById('authAvatarImg');
-      const authUserName   = document.getElementById('authUserName');
-      const navDesigns     = document.getElementById('navDesigns');
-      const mobileDesigns  = document.getElementById('mobileDesignsLink');
-      const mobileSignIn   = document.getElementById('mobileSignIn');
-      const viewSavedBtn   = document.getElementById('viewSavedBtn');
+      const heroSignInBtn = document.getElementById('heroSignInBtn');
+      const authIconBtn   = document.getElementById('authIconBtn');
+      const authAvatar    = document.getElementById('authAvatar');
+      const authAvatarImg = document.getElementById('authAvatarImg');
+      const authUserName  = document.getElementById('authUserName');
+      const navDesigns    = document.getElementById('navDesigns');
+      const mobileDesigns = document.getElementById('mobileDesignsLink');
+      const mobileSignIn  = document.getElementById('mobileSignIn');
+      const viewSavedBtn  = document.getElementById('viewSavedBtn');
 
       if (data.logged_in) {
         if (authIconBtn)   authIconBtn.style.display   = 'none';
@@ -740,6 +732,7 @@ function showToast(msg, type = 'info') {
 
   const avatarImg = document.getElementById('authAvatarImg');
   const dropdown  = document.getElementById('authDropdown');
+
   avatarImg && avatarImg.addEventListener('click', () => {
     dropdown && dropdown.classList.toggle('open');
   });
