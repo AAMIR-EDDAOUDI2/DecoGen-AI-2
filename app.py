@@ -131,7 +131,6 @@ def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio, user_id
         response.raise_for_status()
         result_bytes = response.content
 
-        # Upload to Cloudinary if user is logged in
         cloudinary_url = None
         if user_id:
             try:
@@ -156,8 +155,8 @@ def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio, user_id
                 print(f"[CLOUDINARY ERROR] {ce}", flush=True)
 
         jobs[job_id] = {
-            "status":        "done",
-            "result_bytes":  result_bytes,
+            "status":         "done",
+            "result_bytes":   result_bytes,
             "cloudinary_url": cloudinary_url
         }
 
@@ -193,7 +192,6 @@ def decorate_room():
         if len(image_bytes) == 0:
             return jsonify({"error": "Uploaded file is empty"}), 400
 
-        # Get user_id if logged in
         user    = get_current_user()
         user_id = user.get('db_id') if user else None
 
@@ -290,10 +288,10 @@ def auth_callback():
         conn.close()
 
         session['user'] = {
-            'db_id':     row['id'],
-            'name':      name,
-            'email':     email,
-            'avatar':    avatar_url
+            'db_id':  row['id'],
+            'name':   name,
+            'email':  email,
+            'avatar': avatar_url
         }
 
         return redirect('/')
@@ -313,12 +311,12 @@ def auth_logout():
 def auth_me():
     user = get_current_user()
     if not user:
-        return jsonify({"loggedin": False}), 200
+        return jsonify({"logged_in": False}), 200
     return jsonify({
-        "loggedin": True,
-        "name":     user['name'],
-        "email":    user['email'],
-        "avatar":   user['avatar']
+        "logged_in": True,
+        "name":      user['name'],
+        "email":     user['email'],
+        "avatar":    user['avatar']
     }), 200
 
 
