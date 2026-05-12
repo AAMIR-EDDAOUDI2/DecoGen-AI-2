@@ -175,10 +175,10 @@ def index():
 @app.route("/decorate-room", methods=["POST"])
 def decorate_room():
     try:
+        ar_map = {"169": "16:9", "11": "1:1", "916": "9:16"}
         room_image        = request.files.get("roomimage")
         decoration_prompt = request.form.get("decorationprompt", "").strip()
-        ar_map = {"169": "16:9", "11": "1:1", "916": "9:16"}
-aspect_ratio = ar_map.get(request.form.get("aspectratio", "169"), "16:9")
+        aspect_ratio      = ar_map.get(request.form.get("aspectratio", "169"), "16:9")
 
         if not room_image:
             return jsonify({"error": "No image uploaded"}), 400
