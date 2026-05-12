@@ -279,7 +279,11 @@ function applyLang(lang) {
       img.className = 'preview-img';
       img.alt = 'Room preview';
       img.style.cssText = 'width:100%;height:auto;max-height:240px;object-fit:cover;border-radius:calc(var(--radius-lg) - 2px);display:block;pointer-events:none;';
-      label.style.cssText += ';height:auto;padding:0;border-style:solid;border-color:var(--color-accent)';
+      label.style.height = 'auto';
+label.style.minHeight = '160px';
+label.style.padding = '0';
+label.style.borderStyle = 'solid';
+label.style.borderColor = 'var(--color-accent)';
       const fileInput = label.querySelector('input[type="file"]');
       fileInput ? label.insertBefore(img, fileInput) : label.appendChild(img);
     };
