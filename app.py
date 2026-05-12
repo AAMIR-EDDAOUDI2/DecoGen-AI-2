@@ -177,7 +177,8 @@ def decorate_room():
     try:
         room_image        = request.files.get("roomimage")
         decoration_prompt = request.form.get("decorationprompt", "").strip()
-        aspect_ratio      = request.form.get("aspectratio", "16:9")
+        ar_map = {"169": "16:9", "11": "1:1", "916": "9:16"}
+aspect_ratio = ar_map.get(request.form.get("aspectratio", "169"), "16:9")
 
         if not room_image:
             return jsonify({"error": "No image uploaded"}), 400
