@@ -175,7 +175,7 @@ def index():
 @app.route("/decorate-room", methods=["POST"])
 def decorate_room():
     try:
-        ar_map = {"169": "169", "11": "11", "916": "916"}
+        ar_map = {"169": "169", "11": "11", "916": "916"}  # ← WRONG, no colons
         room_image        = request.files.get("roomimage")
         decoration_prompt = request.form.get("decorationprompt", "").strip()
         aspect_ratio      = ar_map.get(request.form.get("aspectratio", "169"), "16:9")
