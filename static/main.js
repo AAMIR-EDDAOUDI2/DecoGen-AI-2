@@ -185,29 +185,27 @@ function applyLang(lang) {
   });
 })();
 
-// ── THEME TOGGLE ──────────────────────────────────────────────
-// FIX 1: uses id="input" to match your HTML exactly
-// FIX 2: checked = dark (moon/night), unchecked = light (sun/day)
+// THEME TOGGLE
 (function () {
   const input = document.getElementById('input');
-  const root  = document.documentElement;
+  const root = document.documentElement;
 
+  // Read saved theme, default to dark
   let theme = localStorage.getItem('theme');
-  if (!theme || (theme !== 'dark' && theme !== 'light')) {
-    theme = 'dark';
-    localStorage.setItem('theme', 'dark');
-  }
+  if (theme !== 'dark' && theme !== 'light') theme = 'dark';
 
+  // Apply theme on load
   root.setAttribute('data-theme', theme);
-  if (input) input.checked = (theme === 'dark');
+  if (input) input.checked = (theme === 'light');
 
-  input && input.addEventListener('change', () => {
-    const next = input.checked ? 'dark' : 'light';
-    root.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
+  if (!input) return;
+
+  input.addEventListener('change', function () {
+    theme = input.checked ? 'light' : 'dark';
+    root.setAttribute('data-theme', theme);
+    try { localStorage.setItem('theme', theme); } catch (e) {}
   });
 })();
-
 // ── NAVBAR SCROLL ─────────────────────────────────────────────
 (function () {
   const navbar = document.getElementById('navbar');
