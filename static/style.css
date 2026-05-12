@@ -445,9 +445,43 @@ textarea.form-input{resize:vertical;min-height:90px}
 .loading-bar-fill{height:100%;background:var(--color-accent);border-radius:var(--radius-full);width:0%;animation:loadProgress 20s ease forwards}
 .loader-container{aspect-ratio:16/9;background:var(--color-surface-offset);border-radius:var(--radius-xl);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-6)}
 .loader-subtext{font-size:var(--text-sm);color:var(--color-text-muted);text-align:center;letter-spacing:.04em}
-.loader-svg{width:8em;height:8em;transform:translateZ(0)}
-.loader-svg path{stroke-width:0.6px;fill:none;animation:dashArray 4s ease-in-out infinite,dashOffset 4s linear infinite}
-[data-theme="light"] .loader-svg path{stroke:var(--color-primary)}
+.loader-svg {
+  width: 8em;
+  height: 8em;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.loader-svg path {
+  fill: none;
+  stroke-width: 0.8px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  will-change: stroke-dasharray, stroke-dashoffset;
+  transform: translateZ(0);
+  animation: dashArray 4s ease-in-out infinite,
+             dashOffset 4s linear infinite;
+}
+
+[data-theme="light"] .loader-svg path {
+  stroke: var(--color-primary);
+}
+
+[data-theme="dark"] .loader-svg path {
+  stroke: var(--color-accent);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .loader-svg path {
+    stroke: var(--color-primary);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .loader-svg path {
+    stroke: var(--color-accent);
+  }
+}[data-theme="light"] .loader-svg path{stroke:var(--color-primary)}
 [data-theme="dark"] .loader-svg path{stroke:var(--color-accent)}
 
 /* ── RESULT AREA ── */
