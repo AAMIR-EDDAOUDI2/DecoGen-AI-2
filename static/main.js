@@ -259,8 +259,8 @@ function applyLang(lang) {
 
 // ── FILE UPLOAD PREVIEW ───────────────────────────────────────
 (function () {
-  const input      = document.getElementById('roomimage');
-  const label      = document.getElementById('uploadLabel');
+  const input = document.getElementById('roomimage');
+  const label = document.getElementById('uploadLabel');
   const uploadText = document.getElementById('uploadText');
   if (!input || !label) return;
 
@@ -268,34 +268,43 @@ function applyLang(lang) {
     const file = input.files[0];
     if (!file) return;
 
-    const lang = localStorage.getItem('lang') || 'en';
-    const t    = translations[lang] || translations['en'];
-    if (uploadText) uploadText.textContent = t['upload.done'] || '✓ Image uploaded — ready to generate!';
+    const lang = document.documentElement.getAttribute('data-lang') || 'en';
+    const t = translations[lang] || translations['en'];
+
+    if (uploadText) {
+      uploadText.textContent = t['upload.done'] || '✓ Image uploaded — ready to generate!';
+    }
 
     const reader = new FileReader();
     reader.onload = e => {
-      const old = label.querySelector('img.preview-img');
-      if (old) old.remove();
+      const oldPreview = label.querySelector('img.preview-img');
+      if (oldPreview) oldPreview.remove();
 
-      const iconEl = label.querySelector('.icon');
-      const textEl = label.querySelector('.text');
+      const iconEl = label.querySelector('div.icon, .icon');
+      const textEl = label.querySelector('div.text, .text');
+
       if (iconEl) iconEl.style.display = 'none';
       if (textEl) textEl.style.display = 'none';
 
-      const img     = document.createElement('img');
-      img.src       = e.target.result;
+      const img = document.createElement('img');
+      img.src = e.target.result;
       img.className = 'preview-img';
-      img.alt       = 'Room preview';
-      img.style.cssText = 'width:100%;height:auto;max-height:240px;object-fit:cover;border-radius:calc(var(--radius-lg) - 2px);display:block;';
+      img.alt = 'Room preview';
+      img.style.cssText = 'width:100%;height:auto;max-height:240px;object-fit:cover;border-radius:calc(var(--radius-lg) - 2px);display:block;pointer-events:none;';
 
-      label.style.height      = 'auto';
-      label.style.padding     = '0';
+      label.style.height = 'auto';
+      label.style.padding = '0';
       label.style.borderStyle = 'solid';
       label.style.borderColor = 'var(--color-accent)';
 
       const fileInput = label.querySelector('input[type="file"]');
-      label.insertBefore(img, fileInput);
+      if (fileInput) {
+        label.insertBefore(img, fileInput);
+      } else {
+        label.appendChild(img);
+      }
     };
+
     reader.readAsDataURL(file);
   });
 })();
