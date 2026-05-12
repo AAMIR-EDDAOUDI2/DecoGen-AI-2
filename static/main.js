@@ -263,52 +263,29 @@ function applyLang(lang) {
   const label = document.getElementById('uploadLabel');
   const uploadText = document.getElementById('uploadText');
   if (!input || !label) return;
-
   input.addEventListener('change', () => {
     const file = input.files[0];
     if (!file) return;
-
     const lang = document.documentElement.getAttribute('data-lang') || 'en';
     const t = translations[lang] || translations['en'];
-
-    if (uploadText) {
-      uploadText.textContent = t['upload.done'] || '✓ Image uploaded — ready to generate!';
-    }
-
+    if (uploadText) uploadText.textContent = t['upload.done'] || '✓ Image uploaded — ready to generate!';
     const reader = new FileReader();
-    reader.onload = e => {
+    reader.onload = ev => {
+      label.querySelectorAll('div').forEach(d => d.style.display = 'none');
       const oldPreview = label.querySelector('img.preview-img');
       if (oldPreview) oldPreview.remove();
-
-      const iconEl = label.querySelector('div.icon, .icon');
-      const textEl = label.querySelector('div.text, .text');
-
-      if (iconEl) iconEl.style.display = 'none';
-      if (textEl) textEl.style.display = 'none';
-
       const img = document.createElement('img');
-      img.src = e.target.result;
+      img.src = ev.target.result;
       img.className = 'preview-img';
       img.alt = 'Room preview';
       img.style.cssText = 'width:100%;height:auto;max-height:240px;object-fit:cover;border-radius:calc(var(--radius-lg) - 2px);display:block;pointer-events:none;';
-
-      label.style.height = 'auto';
-      label.style.padding = '0';
-      label.style.borderStyle = 'solid';
-      label.style.borderColor = 'var(--color-accent)';
-
+      label.style.cssText += ';height:auto;padding:0;border-style:solid;border-color:var(--color-accent)';
       const fileInput = label.querySelector('input[type="file"]');
-      if (fileInput) {
-        label.insertBefore(img, fileInput);
-      } else {
-        label.appendChild(img);
-      }
+      fileInput ? label.insertBefore(img, fileInput) : label.appendChild(img);
     };
-
     reader.readAsDataURL(file);
   });
 })();
-
 // ── STYLE CARDS ───────────────────────────────────────────────
 (function () {
   const grid     = document.getElementById('styleGrid');
