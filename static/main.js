@@ -186,11 +186,12 @@ function applyLang(lang) {
 })();
 
 // ── THEME TOGGLE ──────────────────────────────────────────────
+// FIX 1: uses id="input" to match your HTML exactly
+// FIX 2: checked = dark (moon/night), unchecked = light (sun/day)
 (function () {
-  const input = document.getElementById('themeInput');
+  const input = document.getElementById('input');
   const root  = document.documentElement;
 
-  // Force clear any bad cached value, always default to dark
   let theme = localStorage.getItem('theme');
   if (!theme || (theme !== 'dark' && theme !== 'light')) {
     theme = 'dark';
@@ -198,12 +199,10 @@ function applyLang(lang) {
   }
 
   root.setAttribute('data-theme', theme);
-
-  // unchecked = dark, checked = light
-  if (input) input.checked = (theme === 'light');
+  if (input) input.checked = (theme === 'dark');
 
   input && input.addEventListener('change', () => {
-    const next = input.checked ? 'light' : 'dark';
+    const next = input.checked ? 'dark' : 'light';
     root.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   });
@@ -275,23 +274,20 @@ function applyLang(lang) {
 
     const reader = new FileReader();
     reader.onload = e => {
-      // Remove old preview if any
       const old = label.querySelector('img.preview-img');
       if (old) old.remove();
 
-      // Hide icon and text
       const iconEl = label.querySelector('.icon');
       const textEl = label.querySelector('.text');
       if (iconEl) iconEl.style.display = 'none';
       if (textEl) textEl.style.display = 'none';
 
-      // Create preview image
       const img     = document.createElement('img');
       img.src       = e.target.result;
       img.className = 'preview-img';
       img.alt       = 'Room preview';
+      img.style.cssText = 'width:100%;height:auto;max-height:240px;object-fit:cover;border-radius:calc(var(--radius-lg) - 2px);display:block;';
 
-      // Style label as image container
       label.style.height      = 'auto';
       label.style.padding     = '0';
       label.style.borderStyle = 'solid';
@@ -348,37 +344,55 @@ function applyLang(lang) {
 })();
 
 // ── BEFORE / AFTER SLIDER ─────────────────────────────────────
+// FIX 3: re-initialises on every tab switch so it works when Compare tab is revealed
 (function () {
-  const wrap    = document.getElementById('baSliderWrap');
-  const divider = document.getElementById('baDivider');
-  const clip    = document.getElementById('baClip');
-  if (!wrap || !divider || !clip) return;
+  function initSlider() {
+    const wrap    = document.getElementById('baSliderWrap');
+    const divider = document.getElementById('baDivider');
+    const clip    = document.getElementById('baClip');
+    if (!wrap || !divider || !clip) return;
 
-  let dragging = false;
+    let dragging = false;
 
-  function setPosition(x) {
-    const rect = wrap.getBoundingClientRect();
-    let pct = ((x - rect.left) / rect.width) * 100;
-    pct = Math.max(2, Math.min(98, pct));
-    divider.style.left = pct + '%';
-    clip.style.width   = pct + '%';
-    divider.setAttribute('aria-valuenow', Math.round(pct));
+    // Start at 50 %
+    divider.style.left = '50%';
+    clip.style.width   = '50%';
+
+    function setPosition(x) {
+      const rect = wrap.getBoundingClientRect();
+      let pct = ((x - rect.left) / rect.width) * 100;
+      pct = Math.max(2, Math.min(98, pct));
+      divider.style.left = pct + '%';
+      clip.style.width   = pct + '%';
+      divider.setAttribute('aria-valuenow', Math.round(pct));
+    }
+
+    divider.addEventListener('mousedown',  () => dragging = true);
+    divider.addEventListener('touchstart', () => dragging = true, { passive: true });
+    window.addEventListener('mouseup',   () => dragging = false);
+    window.addEventListener('touchend',  () => dragging = false);
+    window.addEventListener('mousemove', e => { if (dragging) setPosition(e.clientX); });
+    window.addEventListener('touchmove', e => {
+      if (dragging && e.touches[0]) setPosition(e.touches[0].clientX);
+    }, { passive: true });
+
+    divider.addEventListener('keydown', e => {
+      const rect = wrap.getBoundingClientRect();
+      const cur  = parseFloat(divider.style.left) || 50;
+      if (e.key === 'ArrowLeft')  setPosition(rect.left + (cur - 5) / 100 * rect.width);
+      if (e.key === 'ArrowRight') setPosition(rect.left + (cur + 5) / 100 * rect.width);
+    });
   }
 
-  divider.addEventListener('mousedown',  () => dragging = true);
-  divider.addEventListener('touchstart', () => dragging = true, { passive: true });
-  window.addEventListener('mouseup',   () => dragging = false);
-  window.addEventListener('touchend',  () => dragging = false);
-  window.addEventListener('mousemove', e => { if (dragging) setPosition(e.clientX); });
-  window.addEventListener('touchmove', e => {
-    if (dragging && e.touches[0]) setPosition(e.touches[0].clientX);
-  }, { passive: true });
+  // Init on load
+  initSlider();
 
-  divider.addEventListener('keydown', e => {
-    const rect = wrap.getBoundingClientRect();
-    const cur  = parseFloat(divider.style.left) || 50;
-    if (e.key === 'ArrowLeft')  setPosition(rect.left + (cur - 5) / 100 * rect.width);
-    if (e.key === 'ArrowRight') setPosition(rect.left + (cur + 5) / 100 * rect.width);
+  // Re-init when Compare tab is clicked
+  document.addEventListener('click', e => {
+    const tab = e.target.closest('.ba-tab');
+    if (tab && tab.getAttribute('aria-controls') === 'panelSlider') {
+      setTimeout(initSlider, 50);
+    }
   });
 })();
 
@@ -394,9 +408,9 @@ function applyLang(lang) {
   const sliderBefore  = document.getElementById('sliderBefore');
   const sliderAfter   = document.getElementById('sliderAfter');
   const loadingBar    = document.getElementById('loadingBar');
-  const downloadCheck = document.getElementById('downloadCheck');
   if (!form) return;
 
+  let downloadCheck = document.getElementById('downloadCheck');
   let progressTimer = null;
 
   function startProgress() {
@@ -421,8 +435,10 @@ function applyLang(lang) {
     if (placeholder)  placeholder.style.display  = 'none';
     if (resultArea)   resultArea.style.display    = 'none';
     if (loadingPanel) loadingPanel.style.display  = 'block';
-    submitBtn && submitBtn.classList.add('generating');
-    submitBtn && (submitBtn.disabled = true);
+    if (submitBtn) {
+      submitBtn.classList.add('is-generating');
+      submitBtn.disabled = true;
+    }
   }
 
   function showResult(resultUrl, beforeUrl) {
@@ -444,18 +460,23 @@ function applyLang(lang) {
     if (tabAfter)   { tabAfter.classList.add('active');   tabAfter.setAttribute('aria-selected', 'true'); }
     if (panelAfter)   panelAfter.classList.add('active');
 
-    submitBtn && submitBtn.classList.remove('generating');
-    submitBtn && (submitBtn.disabled = false);
+    if (submitBtn) {
+      submitBtn.classList.remove('is-generating');
+      submitBtn.disabled = false;
+    }
 
+    // Re-query downloadCheck in case it was replaced by a previous cloneNode
+    downloadCheck = document.getElementById('downloadCheck');
     if (downloadCheck) {
       downloadCheck.checked = false;
       const newCheck = downloadCheck.cloneNode(true);
       downloadCheck.parentNode.replaceChild(newCheck, downloadCheck);
+      downloadCheck = newCheck;
       newCheck.addEventListener('change', function () {
         if (this.checked) {
-          const a      = document.createElement('a');
-          a.href       = resultUrl;
-          a.download   = 'decogen-design.jpg';
+          const a    = document.createElement('a');
+          a.href     = resultUrl;
+          a.download = 'decogen-design.jpg';
           a.click();
         }
       });
@@ -467,8 +488,10 @@ function applyLang(lang) {
   function showError(msg) {
     if (loadingPanel) loadingPanel.style.display = 'none';
     if (placeholder)  placeholder.style.display  = 'flex';
-    submitBtn && submitBtn.classList.remove('generating');
-    submitBtn && (submitBtn.disabled = false);
+    if (submitBtn) {
+      submitBtn.classList.remove('is-generating');
+      submitBtn.disabled = false;
+    }
     showToast(msg || 'Something went wrong. Please try again.', 'error');
   }
 
@@ -514,11 +537,9 @@ function applyLang(lang) {
     try {
       const res  = await fetch('/decorate-room', { method: 'POST', body: formData });
       const data = await res.json();
-
       if (!res.ok || data.error) {
         showError(data.error || 'Server error.'); return;
       }
-
       pollStatus(data.job_id, `/before/${data.job_id}`);
     } catch (err) {
       showError('Could not reach server. Check your connection.');
@@ -534,6 +555,24 @@ function showToast(msg, type = 'info') {
   toast.className   = `toast toast--${type} show`;
   setTimeout(() => toast.classList.remove('show'), 3500);
 }
+
+// ── REACTION BUTTONS ──────────────────────────────────────────
+(function () {
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.reaction-btn');
+    if (!btn) return;
+    const emoji = btn.getAttribute('data-emoji');
+    btn.classList.toggle('reacted');
+
+    // Burst animation
+    const burst     = document.createElement('span');
+    burst.className = 'emoji-burst';
+    burst.textContent = emoji;
+    burst.style.cssText = `left:${e.clientX - 12}px;top:${e.clientY - 12}px;`;
+    document.body.appendChild(burst);
+    burst.addEventListener('animationend', () => burst.remove());
+  });
+})();
 
 // ── REVIEWS ───────────────────────────────────────────────────
 (function () {
@@ -636,6 +675,7 @@ function showToast(msg, type = 'info') {
 })();
 
 // ── VOICE INPUT ───────────────────────────────────────────────
+// FIX 4: voice orb animation driven purely by CSS — no broken SVG injection needed
 (function () {
   const micBtn     = document.getElementById('micBtn');
   const overlay    = document.getElementById('voiceOverlay');
@@ -652,16 +692,23 @@ function showToast(msg, type = 'info') {
   const recognition          = new SpeechRecognition();
   recognition.continuous     = false;
   recognition.interimResults = true;
-  recognition.lang           = 'en-US';
+
+  // Use the current page language for recognition
+  function getRecognitionLang() {
+    const lang = localStorage.getItem('lang') || 'en';
+    return lang === 'ar' ? 'ar-MA' : lang === 'fr' ? 'fr-FR' : 'en-US';
+  }
 
   let finalText = '';
 
   micBtn.addEventListener('click', () => {
     finalText = '';
+    recognition.lang = getRecognitionLang();
     if (transcript) transcript.textContent = '';
     if (label)      label.textContent      = 'Listening…';
     overlay.classList.add('active');
-    recognition.start();
+    micBtn.classList.add('listening');
+    try { recognition.start(); } catch (err) { /* already started */ }
   });
 
   recognition.onresult = e => {
@@ -675,21 +722,25 @@ function showToast(msg, type = 'info') {
   };
 
   recognition.onend = () => {
+    micBtn.classList.remove('listening');
     if (label) label.textContent = finalText ? 'Done! Use this text?' : 'Nothing heard. Try again.';
   };
 
   recognition.onerror = () => {
+    micBtn.classList.remove('listening');
     if (label) label.textContent = 'Error. Please try again.';
   };
 
   confirm && confirm.addEventListener('click', () => {
     if (textarea && finalText.trim()) textarea.value = finalText.trim();
     overlay.classList.remove('active');
+    micBtn.classList.remove('listening');
   });
 
   cancel && cancel.addEventListener('click', () => {
     recognition.abort();
     overlay.classList.remove('active');
+    micBtn.classList.remove('listening');
   });
 })();
 
