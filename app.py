@@ -177,8 +177,8 @@ def index():
 def decorate_room():
     try:
         room_image        = request.files.get("roomimage")
-decoration_prompt = request.form.get("decorationprompt", "").strip()
-aspect_ratio      = request.form.get("aspectratio", "16:9")
+        decoration_prompt = request.form.get("decorationprompt", "").strip()
+        aspect_ratio      = request.form.get("aspectratio", "16:9")
 
         if not room_image:
             return jsonify({"error": "No image uploaded"}), 400
@@ -275,7 +275,6 @@ def auth_callback():
         conn = get_db()
         cur  = conn.cursor(cursor_factory=RealDictCursor)
 
-        # Upsert user
         cur.execute("""
             INSERT INTO users (google_id, name, email, avatar_url)
             VALUES (%s, %s, %s, %s)
@@ -314,12 +313,12 @@ def auth_logout():
 def auth_me():
     user = get_current_user()
     if not user:
-        return jsonify({"logged_in": False}), 200
+        return jsonify({"loggedin": False}), 200
     return jsonify({
-        "logged_in": True,
-        "name":      user['name'],
-        "email":     user['email'],
-        "avatar":    user['avatar']
+        "loggedin": True,
+        "name":     user['name'],
+        "email":    user['email'],
+        "avatar":   user['avatar']
     }), 200
 
 
