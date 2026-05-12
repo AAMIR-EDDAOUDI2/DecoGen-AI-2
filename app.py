@@ -176,9 +176,9 @@ def index():
 @app.route("/decorate-room", methods=["POST"])
 def decorate_room():
     try:
-        room_image        = request.files.get("room_image")
-        decoration_prompt = request.form.get("decoration_prompt", "").strip()
-        aspect_ratio      = request.form.get("aspect_ratio", "16:9")
+        room_image        = request.files.get("roomimage")
+decoration_prompt = request.form.get("decorationprompt", "").strip()
+aspect_ratio      = request.form.get("aspectratio", "16:9")
 
         if not room_image:
             return jsonify({"error": "No image uploaded"}), 400
