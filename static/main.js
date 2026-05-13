@@ -745,7 +745,7 @@ function showToast(msg, type = 'info') {
       const mobileSignIn  = document.getElementById('mobileSignIn');
       const viewSavedBtn  = document.getElementById('viewSavedBtn');
 
-      if (data.logged_in) {
+      if (data.loggedin) {
         if (authIconBtn)   authIconBtn.style.display   = 'none';
         if (authAvatar)    authAvatar.style.display     = 'flex';
         if (authAvatarImg) authAvatarImg.src            = data.avatar;
