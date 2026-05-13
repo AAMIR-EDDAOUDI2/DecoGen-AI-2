@@ -21,9 +21,10 @@ app.secret_key = os.getenv("SECRET_KEY", "dev-secret-change-this")
 
 
 # ADD THESE 3 LINES:
-app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_SECURE']   = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 # ── CLOUDINARY ────────────────────────────────────────────────
 cloudinary.config(
