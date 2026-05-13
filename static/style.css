@@ -84,7 +84,7 @@ h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;text-wrap:balance}
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #2196f3;
+  background-color: black;
   -webkit-transition: 0.4s;
   transition: 0.4s;
   z-index: 0;
@@ -98,13 +98,13 @@ h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;text-wrap:balance}
   width: 20px;
   left: 3px;
   bottom: 3px;
-  background-color: yellow;
+  background-color: white;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
 
 #input:checked + .slider {
-  background-color: black;
+  background-color: #2196f3;
 }
 
 #input:focus + .slider {
@@ -115,19 +115,19 @@ h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;text-wrap:balance}
   -webkit-transform: translateX(20px);
   -ms-transform: translateX(20px);
   transform: translateX(20px);
-  background-color: white;
+  background-color: yellow;
   -webkit-animation: rotate-center 0.6s ease-in-out both;
   animation: rotate-center 0.6s ease-in-out both;
 }
 
 .moon-dot {
-  opacity: 0;
+  opacity: 1;
   transition: 0.4s;
   fill: gray;
 }
 
 #input:checked + .slider .sun-moon .moon-dot {
-  opacity: 1;
+  opacity: 0;
 }
 
 .slider.round {
@@ -270,8 +270,8 @@ h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;text-wrap:balance}
 }
 
 .stars {
-  transform: translateY(-26px);
-  opacity: 0;
+  transform: translateY(0);
+  opacity: 1;
   transition: 0.4s;
 }
 
@@ -286,10 +286,10 @@ h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;text-wrap:balance}
 }
 
 #input:checked + .slider .stars {
-  -webkit-transform: translateY(0);
-  -ms-transform: translateY(0);
-  transform: translateY(0);
-  opacity: 1;
+  -webkit-transform: translateY(-26px);
+  -ms-transform: translateY(-26px);
+  transform: translateY(-26px);
+  opacity: 0;
 }
 
 #star-1 {
@@ -334,6 +334,15 @@ h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;text-wrap:balance}
 
   100% {
     transform: scale(1);
+  }
+}
+
+@keyframes rotate-center {
+  0% {
+    transform: translateX(20px) rotate(0deg);
+  }
+  100% {
+    transform: translateX(20px) rotate(360deg);
   }
 }
 
