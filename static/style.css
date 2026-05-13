@@ -63,219 +63,176 @@ h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;text-wrap:balance}
 .nav-link:hover,.nav-link.active{color:var(--color-text);border-bottom-color:var(--color-accent)}
 .nav-right{display:flex;align-items:center;gap:var(--space-3)}
 
-/* THEME TOGGLE SWITCH */
+/* SWITCH WRAPPER */
 .switch {
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  width: 44px;
-  height: 26px;
-  cursor: pointer;
-  flex-shrink: 0;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
 }
 
 .switch #input {
   opacity: 0;
   width: 0;
   height: 0;
-  position: absolute;
 }
 
+/* TRACK */
+/* unchecked = dark mode → dark track */
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #1a1a2e;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #1a1814; /* dark — matches your --color-surface */
+  border: 1px solid rgba(200, 198, 190, 0.15);
   transition: 0.4s;
   z-index: 0;
   overflow: hidden;
 }
 
+/* checked = light mode → warm light track */
 #input:checked + .slider {
-  background-color: #2196f3;
+  background-color: #d4cfc4;
+  border-color: rgba(40, 37, 29, 0.2);
 }
 
 #input:focus + .slider {
-  box-shadow: 0 0 1px #2196f3;
+  box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.3);
 }
 
 .slider.round {
-  border-radius: 26px;
+  border-radius: 34px;
 }
 
 .slider.round .sun-moon {
   border-radius: 50%;
 }
 
-/* SUN/MOON BALL */
+/* BALL */
+/* unchecked = dark mode → gold ball (moon) */
 .sun-moon {
   position: absolute;
-  height: 20px;
-  width: 20px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #c8a96e; /* your gold accent */
   transition: 0.4s;
-  z-index: 1;
   border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
 }
 
+/* checked = light mode → ball slides right, stays gold (sun) */
 #input:checked + .slider .sun-moon {
-  transform: translateX(18px);
-  background-color: yellow;
+  transform: translateX(26px);
+  background-color: #c8a96e;
   animation: rotate-center 0.6s ease-in-out both;
 }
 
-/* MOON DOTS — visible in dark mode (unchecked) */
+@keyframes rotate-center {
+  0%   { transform: translateX(26px) rotate(0deg); }
+  100% { transform: translateX(26px) rotate(360deg); }
+}
+
+/* MOON DOTS */
+/* unchecked = dark mode → dots VISIBLE (it's a moon) */
 .moon-dot {
   opacity: 1;
   transition: 0.4s;
-  fill: #9999bb;
+  fill: rgba(26, 24, 20, 0.45); /* dark craters on gold ball */
 }
 
+/* checked = light mode → dots hidden (it's a sun) */
 #input:checked + .slider .sun-moon .moon-dot {
   opacity: 0;
 }
 
-#moon-dot-1 {
-  left: 7px;
-  top: 2px;
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  z-index: 4;
+#moon-dot-1 { left: 10px; top: 3px;  position: absolute; width: 6px;  height: 6px;  z-index: 4; }
+#moon-dot-2 { left: 2px;  top: 10px; position: absolute; width: 10px; height: 10px; z-index: 4; }
+#moon-dot-3 { left: 16px; top: 18px; position: absolute; width: 3px;  height: 3px;  z-index: 4; }
+
+/* LIGHT RAYS (inside sun ball in light mode) */
+#light-ray-1 { left: -8px;  top: -8px;  position: absolute; width: 43px; height: 43px; z-index: -1; fill: rgba(200,169,110,0.25); opacity: 0; transition: 0.4s; }
+#light-ray-2 { left: -50%;  top: -50%;  position: absolute; width: 55px; height: 55px; z-index: -1; fill: rgba(200,169,110,0.2);  opacity: 0; transition: 0.4s; }
+#light-ray-3 { left: -18px; top: -18px; position: absolute; width: 60px; height: 60px; z-index: -1; fill: rgba(200,169,110,0.15); opacity: 0; transition: 0.4s; }
+
+#input:checked + .slider #light-ray-1,
+#input:checked + .slider #light-ray-2,
+#input:checked + .slider #light-ray-3 {
+  opacity: 1;
 }
 
-#moon-dot-2 {
-  left: 1px;
-  top: 7px;
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  z-index: 4;
-}
-
-#moon-dot-3 {
-  left: 12px;
-  top: 14px;
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  z-index: 4;
-}
-
-/* LIGHT RAYS — visible in light mode (checked) */
-#light-ray-1 {
-  left: -6px;
-  top: -6px;
-  position: absolute;
-  width: 32px;
-  height: 32px;
-  z-index: -1;
-  fill: white;
-  opacity: 0.1;
-}
-
-#light-ray-2 {
-  left: -50%;
-  top: -50%;
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  z-index: -1;
-  fill: white;
-  opacity: 0.1;
-}
-
-#light-ray-3 {
-  left: -14px;
-  top: -14px;
-  position: absolute;
-  width: 46px;
-  height: 46px;
-  z-index: -1;
-  fill: white;
-  opacity: 0.1;
-}
-
-/* CLOUDS — visible in light mode (checked), hidden in dark */
+/* CLOUDS (hidden in dark, visible in light) */
 .cloud-light {
   position: absolute;
-  fill: #eee;
+  fill: rgba(200, 169, 110, 0.18);
   animation: cloud-move 6s infinite;
 }
 
 .cloud-dark {
   position: absolute;
-  fill: #ccc;
+  fill: rgba(40, 37, 29, 0.2);
   animation: cloud-move 6s infinite;
   animation-delay: 1s;
 }
 
-/* Hide clouds in dark mode (unchecked) */
+/* hidden by default (dark mode) */
 .slider .cloud-light,
 .slider .cloud-dark {
   opacity: 0;
   transition: opacity 0.4s;
 }
 
+/* visible in light mode */
 #input:checked + .slider .cloud-light,
 #input:checked + .slider .cloud-dark {
   opacity: 1;
 }
 
-#cloud-1 { left: 22px; top: 11px; width: 30px; }
-#cloud-2 { left: 32px; top: 7px;  width: 15px; }
-#cloud-3 { left: 13px; top: 17px; width: 22px; }
-#cloud-4 { left: 26px; top: 13px; width: 30px; }
-#cloud-5 { left: 35px; top: 10px; width: 15px; }
-#cloud-6 { left: 16px; top: 19px; width: 22px; }
+#cloud-1 { left: 30px; top: 15px; width: 40px; }
+#cloud-2 { left: 44px; top: 10px; width: 20px; }
+#cloud-3 { left: 18px; top: 24px; width: 30px; }
+#cloud-4 { left: 36px; top: 18px; width: 40px; }
+#cloud-5 { left: 48px; top: 14px; width: 20px; }
+#cloud-6 { left: 22px; top: 26px; width: 30px; }
 
 @keyframes cloud-move {
-  0%   { transform: translateX(0); }
-  40%  { transform: translateX(3px); }
-  80%  { transform: translateX(-3px); }
-  100% { transform: translateX(0); }
+  0%   { transform: translateX(0px);  }
+  40%  { transform: translateX(4px);  }
+  80%  { transform: translateX(-4px); }
+  100% { transform: translateX(0px);  }
 }
 
-/* STARS — visible in dark mode (unchecked) */
+/* STARS (visible in dark, hidden in light) */
 .stars {
-  transform: translateY(0);
+  transform: translateY(0);  /* visible by default (dark mode) */
   opacity: 1;
   transition: 0.4s;
 }
 
 .star {
-  fill: white;
+  fill: rgba(200, 169, 110, 0.75); /* gold-tinted stars */
   position: absolute;
   transition: 0.4s;
   animation: star-twinkle 2s infinite;
 }
 
-/* Hide stars in light mode (checked) */
+/* hide stars in light mode */
 #input:checked + .slider .stars {
-  transform: translateY(-26px);
+  transform: translateY(-34px);
   opacity: 0;
 }
 
-#star-1 { width: 14px; top: 1px;  left: 2px;  animation-delay: 0.3s; }
-#star-2 { width: 5px;  top: 12px; left: 2px; }
-#star-3 { width: 9px;  top: 15px; left: 8px;  animation-delay: 0.6s; }
-#star-4 { width: 13px; top: 0px;  left: 14px; animation-delay: 1.3s; }
+#star-1 { width: 20px; top: 2px;  left: 3px;  animation-delay: 0.3s; }
+#star-2 { width: 6px;  top: 16px; left: 3px;  }
+#star-3 { width: 12px; top: 20px; left: 10px; animation-delay: 0.6s; }
+#star-4 { width: 18px; top: 0px;  left: 18px; animation-delay: 1.3s; }
 
 @keyframes star-twinkle {
-  0%   { transform: scale(1); }
+  0%   { transform: scale(1);   }
   40%  { transform: scale(1.2); }
   80%  { transform: scale(0.8); }
-  100% { transform: scale(1); }
-}
-
-@keyframes rotate-center {
-  0%   { transform: translateX(18px) rotate(0deg); }
-  100% { transform: translateX(18px) rotate(360deg); }
+  100% { transform: scale(1);   }
 }
 /* ── LANG SWITCHER ── */
 .lang-switcher{position:relative;display:flex;align-items:center}
