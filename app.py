@@ -21,7 +21,7 @@ app.secret_key = os.getenv("SECRET_KEY", "dev-secret-change-this")
 
 
 # ADD THESE 3 LINES:
-app.config['SESSION_COOKIE_SECURE']   = True
+app.config['SESSION_COOKIE_SECURE'] = os.getenv('FLASK_ENV') == 'production'
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 
