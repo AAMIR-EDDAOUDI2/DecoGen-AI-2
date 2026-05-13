@@ -7,40 +7,38 @@ import psycopg2
 import cloudinary
 import cloudinary.uploader
 from psycopg2.extras import RealDictCursor
-from flask import (Flask, request, jsonify, send_file,
-                   render_template, redirect, url_for,
-                   session, abort)
+from flask import Flask, request, jsonify, send_file, render_template, redirect, url_for, session, abort
 from authlib.integrations.flask_client import OAuth
 from room_decorator import RoomDecoratorApp
 from dotenv import load_dotenv
 
 load_dotenv()
 
-app = Flask(__name__, static_folder="static", static_url_path="/static")
+app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.secret_key = os.getenv("SECRET_KEY", "dev-secret-change-this")
 
-# ── CLOUDINARY ────────────────────────────────────────────────
+# ── CLOUDINARY ──────────────────────────────────────────────────
 cloudinary.config(
-    cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME"),
-    api_key    = os.getenv("CLOUDINARY_API_KEY"),
-    api_secret = os.getenv("CLOUDINARY_API_SECRET"),
-    secure     = True
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
+    secure=True
 )
 
-# ── GOOGLE OAUTH ──────────────────────────────────────────────
+# ── GOOGLE OAUTH ────────────────────────────────────────────────
 oauth = OAuth(app)
 google = oauth.register(
     name='google',
-    client_id     = os.getenv("GOOGLE_CLIENT_ID"),
-    client_secret = os.getenv("GOOGLE_CLIENT_SECRET"),
-    server_metadata_url = 'https://accounts.google.com/.well-known/openid-configuration',
-    client_kwargs = {'scope': 'openid email profile'}
+    client_id=os.getenv("GOOGLE_CLIENT_ID"),
+    client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+    client_kwargs={'scope': 'openid email profile'}
 )
 
-# ── IN-MEMORY JOB STORE ───────────────────────────────────────
+# ── IN-MEMORY JOB STORE ─────────────────────────────────────────
 jobs = {}
 
-# ── DATABASE ──────────────────────────────────────────────────
+# ── DATABASE ────────────────────────────────────────────────────
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_db():
@@ -49,50 +47,34 @@ def get_db():
 def init_db():
     try:
         conn = get_db()
-        c    = conn.cursor()
-
-        c.execute("""
-            CREATE TABLE IF NOT EXISTS users (
-                id         SERIAL PRIMARY KEY,
-                google_id  TEXT UNIQUE NOT NULL,
-                name       TEXT,
-                email      TEXT,
-                avatar_url TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-
-        c.execute("""
-            CREATE TABLE IF NOT EXISTS designs (
-                id           SERIAL PRIMARY KEY,
-                user_id      INTEGER REFERENCES users(id) ON DELETE CASCADE,
-                prompt       TEXT,
-                style        TEXT,
-                image_url    TEXT NOT NULL,
-                created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-
-        c.execute("""
-            CREATE TABLE IF NOT EXISTS reviews (
-                id         SERIAL PRIMARY KEY,
-                name       TEXT    NOT NULL,
-                rating     INTEGER NOT NULL,
-                comment    TEXT    NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-
+        c = conn.cursor()
+        c.execute("""CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            google_id TEXT UNIQUE NOT NULL,
+            name TEXT, email TEXT, avatar_url TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )""")
+        c.execute("""CREATE TABLE IF NOT EXISTS designs (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+            prompt TEXT, style TEXT, image_url TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )""")
+        c.execute("""CREATE TABLE IF NOT EXISTS reviews (
+            id SERIAL PRIMARY KEY,
+            name TEXT NOT NULL, rating INTEGER NOT NULL,
+            comment TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )""")
         conn.commit()
         conn.close()
-        print("[DB] All tables ready.", flush=True)
+        print("DB: All tables ready.", flush=True)
     except Exception as e:
-        print(f"[DB ERROR] {e}", flush=True)
+        print(f"DB ERROR: {e}", flush=True)
 
 init_db()
 
-
-# ── AUTH HELPERS ──────────────────────────────────────────────
+# ── AUTH HELPERS ────────────────────────────────────────────────
 def get_current_user():
     return session.get('user')
 
@@ -105,20 +87,18 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated
 
-
-# ── ROOM DECORATOR ────────────────────────────────────────────
+# ── ROOM DECORATOR ──────────────────────────────────────────────
 def get_decorator():
     api_key = os.getenv("BFL_API_KEY")
     if not api_key:
         return None
     return RoomDecoratorApp(api_key)
 
-
 def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio, user_id=None):
     try:
         decorator = get_decorator()
         if not decorator:
-            jobs[job_id] = {"status": "error", "error": "BFL_API_KEY not configured"}
+            jobs[job_id].update({"status": "error", "error": "BFL_API_KEY not configured"})
             return
 
         result_url = decorator.decorate_room(
@@ -126,7 +106,6 @@ def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio, user_id
             decoration_prompt=decoration_prompt,
             aspect_ratio=aspect_ratio
         )
-
         response = requests.get(result_url, timeout=120)
         response.raise_for_status()
         result_bytes = response.content
@@ -141,36 +120,34 @@ def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio, user_id
                     resource_type="image"
                 )
                 cloudinary_url = upload.get("secure_url")
-
                 conn = get_db()
-                cur  = conn.cursor()
+                cur = conn.cursor()
                 cur.execute(
                     "INSERT INTO designs (user_id, prompt, image_url) VALUES (%s, %s, %s)",
                     (user_id, decoration_prompt, cloudinary_url)
                 )
                 conn.commit()
                 conn.close()
-                print(f"[DB] Design saved for user {user_id}", flush=True)
+                print(f"DB: Design saved for user {user_id}", flush=True)
             except Exception as ce:
-                print(f"[CLOUDINARY ERROR] {ce}", flush=True)
+                print(f"CLOUDINARY ERROR: {ce}", flush=True)
 
-        jobs[job_id] = {
-            "status":         "done",
-            "result_bytes":   result_bytes,
+        # ✅ USE UPDATE NOT REPLACE — preserves before_bytes!
+        jobs[job_id].update({
+            "status": "done",
+            "result_bytes": result_bytes,
             "cloudinary_url": cloudinary_url
-        }
+        })
 
     except Exception as e:
-        print(f"[ERROR] Job {job_id} failed: {e}", flush=True)
-        jobs[job_id] = {"status": "error", "error": str(e)}
+        print(f"ERROR: Job {job_id} failed: {e}", flush=True)
+        jobs[job_id].update({"status": "error", "error": str(e)})
 
-
-# ── MAIN ROUTES ───────────────────────────────────────────────
+# ── ROUTES ──────────────────────────────────────────────────────
 @app.route("/")
 def index():
     user = get_current_user()
     return render_template("index.html", user=user)
-
 
 @app.route("/decorate-room", methods=["POST"])
 def decorate_room():
@@ -197,6 +174,7 @@ def decorate_room():
         user_id = user.get('db_id') if user else None
 
         job_id = str(uuid.uuid4())
+        # ✅ Store before_bytes from the start
         jobs[job_id] = {"status": "processing", "before_bytes": image_bytes}
 
         thread = threading.Thread(
@@ -209,9 +187,8 @@ def decorate_room():
         return jsonify({"job_id": job_id}), 202
 
     except Exception as e:
-        print(f"[ERROR] /decorate-room crashed: {e}", flush=True)
+        print(f"ERROR: /decorate-room crashed: {e}", flush=True)
         return jsonify({"error": f"Server error: {str(e)}"}), 500
-
 
 @app.route("/status/<job_id>")
 def check_status(job_id):
@@ -223,7 +200,6 @@ def check_status(job_id):
     if job["status"] == "error":
         return jsonify({"status": "error", "error": job.get("error")}), 200
     return jsonify({"status": "done"}), 200
-
 
 @app.route("/result/<job_id>")
 def get_result(job_id):
@@ -237,7 +213,6 @@ def get_result(job_id):
         download_name="decogen-result.jpg"
     )
 
-
 @app.route("/before/<job_id>")
 def get_before(job_id):
     job = jobs.get(job_id)
@@ -250,179 +225,131 @@ def get_before(job_id):
         download_name="decogen-original.jpg"
     )
 
-
-# ── AUTH ROUTES ───────────────────────────────────────────────
+# ── AUTH ─────────────────────────────────────────────────────────
 @app.route("/auth/login")
 def auth_login():
     redirect_uri = url_for('auth_callback', _external=True)
     return google.authorize_redirect(redirect_uri)
 
-
 @app.route("/auth/callback")
 def auth_callback():
     try:
-        token    = google.authorize_access_token()
+        token = google.authorize_access_token()
         userinfo = token.get('userinfo')
         if not userinfo:
             return redirect('/')
-
         google_id  = userinfo['sub']
-        name       = userinfo.get('name', '')
-        email      = userinfo.get('email', '')
-        avatar_url = userinfo.get('picture', '')
-
+        name       = userinfo.get('name')
+        email      = userinfo.get('email')
+        avatar_url = userinfo.get('picture')
         conn = get_db()
-        cur  = conn.cursor(cursor_factory=RealDictCursor)
-
+        cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute("""
             INSERT INTO users (google_id, name, email, avatar_url)
             VALUES (%s, %s, %s, %s)
             ON CONFLICT (google_id) DO UPDATE
-            SET name = EXCLUDED.name,
-                email = EXCLUDED.email,
-                avatar_url = EXCLUDED.avatar_url
-            RETURNING id
+            SET name=EXCLUDED.name, email=EXCLUDED.email, avatar_url=EXCLUDED.avatar_url
+            RETURNING id, google_id, name, email, avatar_url
         """, (google_id, name, email, avatar_url))
-
         row = cur.fetchone()
         conn.commit()
         conn.close()
-
         session['user'] = {
-            'db_id':  row['id'],
-            'name':   name,
-            'email':  email,
+            'db_id': row['id'],
+            'name': name,
+            'email': email,
             'avatar': avatar_url
         }
-
         return redirect('/')
-
     except Exception as e:
-        print(f"[AUTH ERROR] {e}", flush=True)
+        print(f"AUTH ERROR: {e}", flush=True)
         return redirect('/')
-
 
 @app.route("/auth/logout")
 def auth_logout():
     session.clear()
     return redirect('/')
 
-
 @app.route("/auth/me")
 def auth_me():
     user = get_current_user()
     if not user:
-        return jsonify({"logged_in": False}), 200
+        return jsonify({"loggedin": False}), 200
     return jsonify({
-        "logged_in": True,
-        "name":      user['name'],
-        "email":     user['email'],
-        "avatar":    user['avatar']
+        "loggedin": True,
+        "name": user['name'],
+        "email": user['email'],
+        "avatar": user['avatar']
     }), 200
 
-
-# ── DESIGNS PAGE ──────────────────────────────────────────────
+# ── DESIGNS PAGE ─────────────────────────────────────────────────
 @app.route("/designs")
 @login_required
 def designs_page():
     user    = get_current_user()
     user_id = user['db_id']
-    conn    = get_db()
-    cur     = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute("""
-        SELECT id, prompt, image_url, created_at
-        FROM designs
-        WHERE user_id = %s
-        ORDER BY created_at DESC
-    """, (user_id,))
+    conn = get_db()
+    cur  = conn.cursor(cursor_factory=RealDictCursor)
+    cur.execute(
+        "SELECT id, prompt, image_url, created_at FROM designs WHERE user_id=%s ORDER BY created_at DESC",
+        (user_id,)
+    )
     rows = cur.fetchall()
     conn.close()
-    designs = [
-        {
-            "id":         r["id"],
-            "prompt":     r["prompt"],
-            "image_url":  r["image_url"],
-            "created_at": str(r["created_at"])
-        }
-        for r in rows
-    ]
+    designs = [{"id": r['id'], "prompt": r['prompt'], "image_url": r['image_url'], "created_at": str(r['created_at'])} for r in rows]
     return render_template("designs.html", user=user, designs=designs)
-
 
 @app.route("/designs/delete/<int:design_id>", methods=["DELETE"])
 @login_required
 def delete_design(design_id):
     user    = get_current_user()
     user_id = user['db_id']
-    conn    = get_db()
-    cur     = conn.cursor()
-    cur.execute(
-        "DELETE FROM designs WHERE id = %s AND user_id = %s",
-        (design_id, user_id)
-    )
+    conn = get_db()
+    cur  = conn.cursor()
+    cur.execute("DELETE FROM designs WHERE id=%s AND user_id=%s", (design_id, user_id))
     conn.commit()
     conn.close()
     return jsonify({"success": True}), 200
 
-
-# ── REVIEWS ───────────────────────────────────────────────────
+# ── REVIEWS ──────────────────────────────────────────────────────
 @app.route("/submit-review", methods=["POST"])
 def submit_review():
     try:
         data    = request.get_json()
-        name    = data.get("name", "").strip()
-        rating  = int(data.get("rating", 0))
-        comment = data.get("comment", "").strip()
-
+        name    = data.get('name', '').strip()
+        rating  = int(data.get('rating', 0))
+        comment = data.get('comment', '').strip()
         if not name or not comment:
             return jsonify({"error": "Name and comment are required"}), 400
         if rating < 1 or rating > 5:
             return jsonify({"error": "Rating must be between 1 and 5"}), 400
         if len(comment) > 500:
             return jsonify({"error": "Comment too long (max 500 chars)"}), 400
-
         conn = get_db()
         c    = conn.cursor()
-        c.execute(
-            "INSERT INTO reviews (name, rating, comment) VALUES (%s, %s, %s)",
-            (name, rating, comment)
-        )
+        c.execute("INSERT INTO reviews (name, rating, comment) VALUES (%s, %s, %s)", (name, rating, comment))
         conn.commit()
         conn.close()
         return jsonify({"success": True}), 201
-
     except Exception as e:
-        print(f"[ERROR] /submit-review: {e}", flush=True)
+        print(f"ERROR: submit-review: {e}", flush=True)
         return jsonify({"error": "Failed to save review"}), 500
-
 
 @app.route("/get-reviews")
 def get_reviews():
     try:
         conn = get_db()
         c    = conn.cursor(cursor_factory=RealDictCursor)
-        c.execute(
-            "SELECT name, rating, comment, created_at FROM reviews ORDER BY created_at DESC LIMIT 20"
-        )
+        c.execute("SELECT name, rating, comment, created_at FROM reviews ORDER BY created_at DESC LIMIT 20")
         rows = c.fetchall()
         conn.close()
-        reviews = [
-            {
-                "name":       r["name"],
-                "rating":     r["rating"],
-                "comment":    r["comment"],
-                "created_at": str(r["created_at"])
-            }
-            for r in rows
-        ]
+        reviews = [{"name": r['name'], "rating": r['rating'], "comment": r['comment'], "created_at": str(r['created_at'])} for r in rows]
         return jsonify({"reviews": reviews}), 200
-
     except Exception as e:
-        print(f"[ERROR] /get-reviews: {e}", flush=True)
+        print(f"ERROR: get-reviews: {e}", flush=True)
         return jsonify({"error": "Failed to fetch reviews"}), 500
 
-
-# ── ERROR HANDLERS ────────────────────────────────────────────
+# ── ERROR HANDLERS ───────────────────────────────────────────────
 @app.errorhandler(404)
 def not_found(e):
     return jsonify({"error": "Route not found"}), 404
@@ -430,7 +357,6 @@ def not_found(e):
 @app.errorhandler(500)
 def server_error(e):
     return jsonify({"error": "Internal server error"}), 500
-
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))
