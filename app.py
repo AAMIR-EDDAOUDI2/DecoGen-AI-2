@@ -13,14 +13,13 @@ from flask import (Flask, request, jsonify, send_file,
 from authlib.integrations.flask_client import OAuth
 from room_decorator import RoomDecoratorApp
 from dotenv import load_dotenv
+from deep_translator import GoogleTranslator   # ← NEW
 
 load_dotenv()
 
 app = Flask(__name__, static_folder="static", static_url_path="/static")
 app.secret_key = os.getenv("SECRET_KEY", "dev-secret-change-this")
 
-
-# ADD THESE 3 LINES:
 app.config['SESSION_COOKIE_SECURE'] = os.getenv('FLASK_ENV') == 'production'
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['SESSION_COOKIE_HTTPONLY'] = True
@@ -56,7 +55,6 @@ def init_db():
     try:
         conn = get_db()
         c    = conn.cursor()
-
         c.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 id         SERIAL PRIMARY KEY,
@@ -67,7 +65,6 @@ def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
-
         c.execute("""
             CREATE TABLE IF NOT EXISTS designs (
                 id         SERIAL PRIMARY KEY,
@@ -78,7 +75,6 @@ def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
-
         c.execute("""
             CREATE TABLE IF NOT EXISTS reviews (
                 id         SERIAL PRIMARY KEY,
@@ -88,7 +84,6 @@ def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
-
         conn.commit()
         conn.close()
         print("[DB] All tables ready.", flush=True)
@@ -110,6 +105,16 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated
 
+# ── TRANSLATION HELPER ────────────────────────────────────────  ← NEW SECTION
+def translate_to_english(text):
+    try:
+        translated = GoogleTranslator(source='auto', target='en').translate(text)
+        print(f"[TRANSLATE] '{text[:60]}' → '{translated[:60]}'", flush=True)
+        return translated
+    except Exception as e:
+        print(f"[TRANSLATE ERROR] {e}", flush=True)
+        return text  # fallback: send original if translation fails
+
 # ── ROOM DECORATOR ────────────────────────────────────────────
 def get_decorator():
     api_key = os.getenv("BFL_API_KEY")
@@ -129,7 +134,6 @@ def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio, user_id
             decoration_prompt=decoration_prompt,
             aspect_ratio=aspect_ratio
         )
-
         response = requests.get(result_url, timeout=120)
         response.raise_for_status()
         result_bytes = response.content
@@ -158,8 +162,8 @@ def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio, user_id
                 print(f"[CLOUDINARY ERROR] {ce}", flush=True)
 
         jobs[job_id].update({
-            "status":         "done",
-            "result_bytes":   result_bytes,
+            "status":        "done",
+            "result_bytes":  result_bytes,
             "cloudinary_url": cloudinary_url
         })
 
@@ -167,13 +171,11 @@ def run_generation(job_id, image_bytes, decoration_prompt, aspect_ratio, user_id
         print(f"[ERROR] Job {job_id} failed: {e}", flush=True)
         jobs[job_id].update({"status": "error", "error": str(e)})
 
-
 # ── MAIN ROUTES ───────────────────────────────────────────────
 @app.route("/")
 def index():
     user = get_current_user()
     return render_template("index.html", user=user)
-
 
 @app.route("/decorate-room", methods=["POST"])
 def decorate_room():
@@ -196,11 +198,14 @@ def decorate_room():
         if len(image_bytes) == 0:
             return jsonify({"error": "Uploaded file is empty"}), 400
 
+        # ── TRANSLATE PROMPT TO ENGLISH ──────────────────────  ← NEW LINE
+        decoration_prompt = translate_to_english(decoration_prompt)
+
         user    = get_current_user()
         user_id = user.get('db_id') if user else None
 
-        job_id = str(uuid.uuid4())
-        jobs[job_id] = {"status": "processing", "before_bytes": image_bytes}
+        job_id         = str(uuid.uuid4())
+        jobs[job_id]   = {"status": "processing", "before_bytes": image_bytes}
 
         thread = threading.Thread(
             target=run_generation,
@@ -215,7 +220,6 @@ def decorate_room():
         print(f"[ERROR] /decorate-room crashed: {e}", flush=True)
         return jsonify({"error": f"Server error: {str(e)}"}), 500
 
-
 @app.route("/status/<job_id>")
 def check_status(job_id):
     job = jobs.get(job_id)
@@ -226,7 +230,6 @@ def check_status(job_id):
     if job["status"] == "error":
         return jsonify({"status": "error", "error": job.get("error")}), 200
     return jsonify({"status": "done"}), 200
-
 
 @app.route("/result/<job_id>")
 def get_result(job_id):
@@ -240,7 +243,6 @@ def get_result(job_id):
         download_name="decogen-result.jpg"
     )
 
-
 @app.route("/before/<job_id>")
 def get_before(job_id):
     job = jobs.get(job_id)
@@ -253,13 +255,11 @@ def get_before(job_id):
         download_name="decogen-original.jpg"
     )
 
-
 # ── AUTH ROUTES ───────────────────────────────────────────────
 @app.route("/auth/login")
 def auth_login():
     redirect_uri = url_for('auth_callback', _external=True)
     return google.authorize_redirect(redirect_uri)
-
 
 @app.route("/auth/callback")
 def auth_callback():
@@ -276,7 +276,6 @@ def auth_callback():
 
         conn = get_db()
         cur  = conn.cursor(cursor_factory=RealDictCursor)
-
         cur.execute("""
             INSERT INTO users (google_id, name, email, avatar_url)
             VALUES (%s, %s, %s, %s)
@@ -286,7 +285,6 @@ def auth_callback():
                 avatar_url = EXCLUDED.avatar_url
             RETURNING id
         """, (google_id, name, email, avatar_url))
-
         row = cur.fetchone()
         conn.commit()
         conn.close()
@@ -303,12 +301,10 @@ def auth_callback():
         print(f"[AUTH ERROR] {e}", flush=True)
         return redirect('/')
 
-
 @app.route("/auth/logout")
 def auth_logout():
     session.clear()
     return redirect('/')
-
 
 @app.route("/auth/me")
 def auth_me():
@@ -322,15 +318,14 @@ def auth_me():
         "avatar"  : user['avatar']
     }), 200
 
-
 # ── DESIGNS PAGE ──────────────────────────────────────────────
 @app.route("/designs")
 @login_required
 def designs_page():
     user    = get_current_user()
     user_id = user['db_id']
-    conn = get_db()
-    cur  = conn.cursor(cursor_factory=RealDictCursor)
+    conn    = get_db()
+    cur     = conn.cursor(cursor_factory=RealDictCursor)
     cur.execute("""
         SELECT id, prompt, image_url, created_at
         FROM designs
@@ -350,14 +345,13 @@ def designs_page():
     ]
     return render_template("designs.html", user=user, designs=designs)
 
-
 @app.route("/designs/delete/<int:design_id>", methods=["DELETE"])
 @login_required
 def delete_design(design_id):
     user    = get_current_user()
     user_id = user['db_id']
-    conn = get_db()
-    cur  = conn.cursor()
+    conn    = get_db()
+    cur     = conn.cursor()
     cur.execute(
         "DELETE FROM designs WHERE id = %s AND user_id = %s",
         (design_id, user_id)
@@ -365,7 +359,6 @@ def delete_design(design_id):
     conn.commit()
     conn.close()
     return jsonify({"success": True}), 200
-
 
 # ── REVIEWS ───────────────────────────────────────────────────
 @app.route("/submit-review", methods=["POST"])
@@ -397,7 +390,6 @@ def submit_review():
         print(f"[ERROR] /submit-review: {e}", flush=True)
         return jsonify({"error": "Failed to save review"}), 500
 
-
 @app.route("/get-reviews")
 def get_reviews():
     try:
@@ -423,7 +415,6 @@ def get_reviews():
         print(f"[ERROR] /get-reviews: {e}", flush=True)
         return jsonify({"error": "Failed to fetch reviews"}), 500
 
-
 # ── ERROR HANDLERS ────────────────────────────────────────────
 @app.errorhandler(404)
 def not_found(e):
@@ -432,7 +423,6 @@ def not_found(e):
 @app.errorhandler(500)
 def server_error(e):
     return jsonify({"error": "Internal server error"}), 500
-
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))
