@@ -6,3 +6,4 @@ authlib
 cloudinary
 gunicorn
 Pillow
+deep-translator
