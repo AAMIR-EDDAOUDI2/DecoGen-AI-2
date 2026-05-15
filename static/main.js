@@ -11,9 +11,11 @@ const translations = {
     'hero.desc': 'Upload a photo of your room and let our AI reimagine it in seconds — any style, any mood.',
     'hero.cta': 'Start Designing',
     'auth.signin': 'Sign In', 'auth.signout': 'Sign Out',
-    'generate.eyebrow': 'Transform', 'generate.heading': 'Design Your Room',
+    'generate.eyebrow': 'Transform',
+    'generate.heading': 'Design Your Room',
     'generate.subhead': 'Upload a photo and describe the style — our AI handles the rest.',
-    'generate.step1': 'Upload Room Photo', 'generate.step2': 'Choose a Style',
+    'generate.step1': 'Upload Room Photo',
+    'generate.step2': 'Choose a Style',
     'generate.step3': 'Aspect Ratio',
     'generate.placeholder': 'Or describe your own style… e.g. Scandinavian with warm oak and linen.',
     'generate.submit': 'Generate Design',
@@ -52,9 +54,11 @@ const translations = {
     'hero.desc': 'Téléchargez une photo de votre pièce et laissez notre IA la réimaginer en quelques secondes.',
     'hero.cta': 'Commencer',
     'auth.signin': 'Se connecter', 'auth.signout': 'Déconnexion',
-    'generate.eyebrow': 'Transformer', 'generate.heading': 'Concevez votre pièce',
+    'generate.eyebrow': 'Transformer',
+    'generate.heading': 'Concevez votre pièce',
     'generate.subhead': 'Téléchargez une photo et décrivez le style — notre IA fait le reste.',
-    'generate.step1': 'Photo de la pièce', 'generate.step2': 'Choisir un style',
+    'generate.step1': 'Photo de la pièce',
+    'generate.step2': 'Choisir un style',
     'generate.step3': "Format d'image",
     'generate.placeholder': 'Décrivez votre style… ex : Scandinave avec chêne et lin.',
     'generate.submit': 'Générer le design',
@@ -93,9 +97,11 @@ const translations = {
     'hero.desc': 'ارفع صورة غرفتك ودع الذكاء الاصطناعي يعيد تخيّلها في ثوانٍ — أي أسلوب، أي مزاج.',
     'hero.cta': 'ابدأ التصميم',
     'auth.signin': 'تسجيل الدخول', 'auth.signout': 'تسجيل الخروج',
-    'generate.eyebrow': 'حوّل', 'generate.heading': 'صمّم غرفتك',
+    'generate.eyebrow': 'حوّل',
+    'generate.heading': 'صمّم غرفتك',
     'generate.subhead': 'ارفع صورة وصف الأسلوب — الذكاء الاصطناعي يتولى الباقي.',
-    'generate.step1': 'رفع صورة الغرفة', 'generate.step2': 'اختر أسلوباً',
+    'generate.step1': 'رفع صورة الغرفة',
+    'generate.step2': 'اختر أسلوباً',
     'generate.step3': 'نسبة الأبعاد',
     'generate.placeholder': 'صف أسلوبك الخاص… مثلاً: نمط اسكندنافي بخشب البلوط.',
     'generate.submit': 'توليد التصميم',
@@ -133,7 +139,6 @@ function applyLang(lang) {
   document.documentElement.setAttribute('data-lang', lang);
   document.documentElement.setAttribute('lang', lang);
   document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (t[key] !== undefined) el.textContent = t[key];
@@ -146,11 +151,9 @@ function applyLang(lang) {
     const key = el.getAttribute('data-i18n-placeholder');
     if (t[key] !== undefined) el.setAttribute('placeholder', t[key]);
   });
-
   document.querySelectorAll('.lang-opt').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
   });
-
   const current = document.querySelector('.lang-current');
   if (current) current.textContent = lang.toUpperCase();
 }
@@ -159,15 +162,12 @@ function applyLang(lang) {
 (function () {
   let currentLang = localStorage.getItem('lang') || 'en';
   applyLang(currentLang);
-
   const toggle   = document.getElementById('langToggle');
   const dropdown = document.getElementById('langDropdown');
-
   toggle && toggle.addEventListener('click', e => {
     e.stopPropagation();
     dropdown.classList.toggle('open');
   });
-
   document.querySelectorAll('.lang-opt').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
@@ -179,28 +179,22 @@ function applyLang(lang) {
       dropdown && dropdown.classList.remove('open');
     });
   });
-
   document.addEventListener('click', () => {
     dropdown && dropdown.classList.remove('open');
   });
 })();
 
 // ── THEME TOGGLE ──────────────────────────────────────────────
-// FIX 1: uses id="input" to match your HTML exactly
-// FIX 2: checked = dark (moon/night), unchecked = light (sun/day)
 (function () {
   const input = document.getElementById('input');
   const root  = document.documentElement;
-
-  let theme = localStorage.getItem('theme');
+  let theme   = localStorage.getItem('theme');
   if (!theme || (theme !== 'dark' && theme !== 'light')) {
     theme = 'dark';
     localStorage.setItem('theme', 'dark');
   }
-
   root.setAttribute('data-theme', theme);
   if (input) input.checked = (theme === 'light');
-
   input && input.addEventListener('change', () => {
     const next = input.checked ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
@@ -222,13 +216,11 @@ function applyLang(lang) {
   const toggle = document.getElementById('menuToggle');
   const nav    = document.getElementById('mobileNav');
   if (!toggle || !nav) return;
-
   toggle.addEventListener('click', () => {
     const open = nav.classList.toggle('open');
     toggle.classList.toggle('open', open);
     toggle.setAttribute('aria-expanded', open);
   });
-
   nav.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       nav.classList.remove('open');
@@ -243,7 +235,6 @@ function applyLang(lang) {
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link');
   if (!sections.length || !navLinks.length) return;
-
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -253,59 +244,60 @@ function applyLang(lang) {
       }
     });
   }, { threshold: 0.4 });
-
   sections.forEach(s => observer.observe(s));
 })();
 
 // ── FILE UPLOAD PREVIEW ───────────────────────────────────────
 (function () {
-  const input = document.getElementById('roomimage');
-  const label = document.getElementById('uploadLabel');
+  const input      = document.getElementById('roomimage');
+  const label      = document.getElementById('uploadLabel');
   const uploadText = document.getElementById('uploadText');
   if (!input || !label) return;
   input.addEventListener('change', () => {
     const file = input.files[0];
     if (!file) return;
     const lang = document.documentElement.getAttribute('data-lang') || 'en';
-    const t = translations[lang] || translations['en'];
+    const t    = translations[lang] || translations['en'];
     if (uploadText) uploadText.textContent = t['upload.done'] || '✓ Image uploaded — ready to generate!';
     const reader = new FileReader();
     reader.onload = ev => {
       label.querySelectorAll('div').forEach(d => d.style.display = 'none');
       const oldPreview = label.querySelector('img.preview-img');
       if (oldPreview) oldPreview.remove();
-      const img = document.createElement('img');
-      img.src = ev.target.result;
-      img.className = 'preview-img';
-      img.alt = 'Room preview';
+      const img        = document.createElement('img');
+      img.src          = ev.target.result;
+      img.className    = 'preview-img';
+      img.alt          = 'Room preview';
       img.style.cssText = 'width:100%;height:auto;max-height:240px;object-fit:cover;border-radius:calc(var(--radius-lg) - 2px);display:block;pointer-events:none;';
-      label.style.height = 'auto'; label.style.minHeight = '160px'; label.style.padding = '0'; label.style.borderStyle = 'solid'; label.style.borderColor = 'var(--color-accent)';
+      label.style.height      = 'auto';
+      label.style.minHeight   = '160px';
+      label.style.padding     = '0';
+      label.style.borderStyle = 'solid';
+      label.style.borderColor = 'var(--color-accent)';
       const fileInput = label.querySelector('input[type="file"]');
       fileInput ? label.insertBefore(img, fileInput) : label.appendChild(img);
     };
     reader.readAsDataURL(file);
   });
 })();
+
 // ── STYLE CARDS ───────────────────────────────────────────────
 (function () {
   const grid     = document.getElementById('styleGrid');
   const textarea = document.getElementById('decorationprompt');
   const hint     = document.getElementById('promptHint');
   if (!grid || !textarea) return;
-
   grid.addEventListener('click', e => {
     const card = e.target.closest('.style-card');
     if (!card) return;
-
     grid.querySelectorAll('.style-card').forEach(c => c.classList.remove('active'));
     card.classList.add('active');
-
     const prompt = card.getAttribute('data-prompt');
     if (prompt) {
       textarea.value = prompt;
       if (hint) {
-        hint.textContent   = `Style selected: ${card.textContent.trim()}`;
-        hint.style.display = 'block';
+        hint.textContent    = `Style selected: ${card.textContent.trim()}`;
+        hint.style.display  = 'block';
       }
     }
   });
@@ -316,7 +308,6 @@ function applyLang(lang) {
   const tabs   = document.querySelectorAll('.ba-tab');
   const panels = document.querySelectorAll('.ba-panel');
   if (!tabs.length) return;
-
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
@@ -330,20 +321,15 @@ function applyLang(lang) {
 })();
 
 // ── BEFORE / AFTER SLIDER ─────────────────────────────────────
-// FIX 3: re-initialises on every tab switch so it works when Compare tab is revealed
 (function () {
   function initSlider() {
     const wrap    = document.getElementById('baSliderWrap');
     const divider = document.getElementById('baDivider');
     const clip    = document.getElementById('baClip');
     if (!wrap || !divider || !clip) return;
-
     let dragging = false;
-
-    // Start at 50 %
     divider.style.left = '50%';
     clip.style.width   = '50%';
-
     function setPosition(x) {
       const rect = wrap.getBoundingClientRect();
       let pct = ((x - rect.left) / rect.width) * 100;
@@ -352,16 +338,14 @@ function applyLang(lang) {
       clip.style.width   = pct + '%';
       divider.setAttribute('aria-valuenow', Math.round(pct));
     }
-
     divider.addEventListener('mousedown',  () => dragging = true);
     divider.addEventListener('touchstart', () => dragging = true, { passive: true });
-    window.addEventListener('mouseup',   () => dragging = false);
-    window.addEventListener('touchend',  () => dragging = false);
+    window.addEventListener('mouseup',  () => dragging = false);
+    window.addEventListener('touchend', () => dragging = false);
     window.addEventListener('mousemove', e => { if (dragging) setPosition(e.clientX); });
     window.addEventListener('touchmove', e => {
       if (dragging && e.touches[0]) setPosition(e.touches[0].clientX);
     }, { passive: true });
-
     divider.addEventListener('keydown', e => {
       const rect = wrap.getBoundingClientRect();
       const cur  = parseFloat(divider.style.left) || 50;
@@ -369,33 +353,26 @@ function applyLang(lang) {
       if (e.key === 'ArrowRight') setPosition(rect.left + (cur + 5) / 100 * rect.width);
     });
   }
-
-  // Init on load
   initSlider();
-
-  // Re-init when Compare tab is clicked
   document.addEventListener('click', e => {
     const tab = e.target.closest('.ba-tab');
-    if (tab && tab.getAttribute('aria-controls') === 'panelSlider') {
-      setTimeout(initSlider, 50);
-    }
+    if (tab && tab.getAttribute('aria-controls') === 'panelSlider') setTimeout(initSlider, 50);
   });
 })();
 
 // ── GENERATE FORM ─────────────────────────────────────────────
 (function () {
-  const form          = document.getElementById('aiDesignForm');
-  const submitBtn     = document.getElementById('submitBtn');
-  const placeholder   = document.getElementById('resultPlaceholder');
-  const loadingPanel  = document.getElementById('loadingPanel');
-  const resultArea    = document.getElementById('resultArea');
-  const resultImage   = document.getElementById('resultImage');
-  const beforeImage   = document.getElementById('beforeImage');
-  const sliderBefore  = document.getElementById('sliderBefore');
-  const sliderAfter   = document.getElementById('sliderAfter');
-  const loadingBar    = document.getElementById('loadingBar');
+  const form         = document.getElementById('aiDesignForm');
+  const submitBtn    = document.getElementById('submitBtn');
+  const placeholder  = document.getElementById('resultPlaceholder');
+  const loadingPanel = document.getElementById('loadingPanel');
+  const resultArea   = document.getElementById('resultArea');
+  const resultImage  = document.getElementById('resultImage');
+  const beforeImage  = document.getElementById('beforeImage');
+  const sliderBefore = document.getElementById('sliderBefore');
+  const sliderAfter  = document.getElementById('sliderAfter');
+  const loadingBar   = document.getElementById('loadingBar');
   if (!form) return;
-
   let downloadCheck = document.getElementById('downloadCheck');
   let progressTimer = null;
 
@@ -421,37 +398,25 @@ function applyLang(lang) {
     if (placeholder)  placeholder.style.display  = 'none';
     if (resultArea)   resultArea.style.display    = 'none';
     if (loadingPanel) loadingPanel.style.display  = 'block';
-    if (submitBtn) {
-      submitBtn.classList.add('is-generating');
-      submitBtn.disabled = true;
-    }
+    if (submitBtn)    { submitBtn.classList.add('is-generating'); submitBtn.disabled = true; }
   }
 
   function showResult(resultUrl, beforeUrl) {
     if (loadingPanel) loadingPanel.style.display = 'none';
     if (resultArea)   resultArea.style.display   = 'block';
-
     if (resultImage)  resultImage.src  = resultUrl;
     if (beforeImage)  beforeImage.src  = beforeUrl;
     if (sliderBefore) sliderBefore.src = beforeUrl;
     if (sliderAfter)  sliderAfter.src  = resultUrl;
-
     document.querySelectorAll('.ba-tab').forEach(t => {
-      t.classList.remove('active');
-      t.setAttribute('aria-selected', 'false');
+      t.classList.remove('active'); t.setAttribute('aria-selected', 'false');
     });
     document.querySelectorAll('.ba-panel').forEach(p => p.classList.remove('active'));
     const tabAfter   = document.getElementById('tabAfter');
     const panelAfter = document.getElementById('panelAfter');
-    if (tabAfter)   { tabAfter.classList.add('active');   tabAfter.setAttribute('aria-selected', 'true'); }
+    if (tabAfter)   { tabAfter.classList.add('active'); tabAfter.setAttribute('aria-selected', 'true'); }
     if (panelAfter)   panelAfter.classList.add('active');
-
-    if (submitBtn) {
-      submitBtn.classList.remove('is-generating');
-      submitBtn.disabled = false;
-    }
-
-    // Re-query downloadCheck in case it was replaced by a previous cloneNode
+    if (submitBtn)  { submitBtn.classList.remove('is-generating'); submitBtn.disabled = false; }
     downloadCheck = document.getElementById('downloadCheck');
     if (downloadCheck) {
       downloadCheck.checked = false;
@@ -460,24 +425,20 @@ function applyLang(lang) {
       downloadCheck = newCheck;
       newCheck.addEventListener('change', function () {
         if (this.checked) {
-          const a    = document.createElement('a');
+          const a = document.createElement('a');
           a.href     = resultUrl;
           a.download = 'decogen-design.jpg';
           a.click();
         }
       });
     }
-
     resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   function showError(msg) {
     if (loadingPanel) loadingPanel.style.display = 'none';
     if (placeholder)  placeholder.style.display  = 'flex';
-    if (submitBtn) {
-      submitBtn.classList.remove('is-generating');
-      submitBtn.disabled = false;
-    }
+    if (submitBtn)    { submitBtn.classList.remove('is-generating'); submitBtn.disabled = false; }
     showToast(msg || 'Something went wrong. Please try again.', 'error');
   }
 
@@ -487,17 +448,14 @@ function applyLang(lang) {
         const res  = await fetch(`/status/${jobId}`);
         const data = await res.json();
         if (data.status === 'done') {
-          clearInterval(interval);
-          finishProgress();
+          clearInterval(interval); finishProgress();
           showResult(`/result/${jobId}`, beforeUrl);
         } else if (data.status === 'error') {
-          clearInterval(interval);
-          finishProgress();
+          clearInterval(interval); finishProgress();
           showError(data.error || 'Generation failed.');
         }
       } catch (e) {
-        clearInterval(interval);
-        finishProgress();
+        clearInterval(interval); finishProgress();
         showError('Network error. Please try again.');
       }
     }, 2500);
@@ -505,27 +463,16 @@ function applyLang(lang) {
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
-
     const imageInput  = document.getElementById('roomimage');
     const promptInput = document.getElementById('decorationprompt');
-
-    if (!imageInput?.files[0]) {
-      showToast('Please upload a room photo first.', 'error'); return;
-    }
-    if (!promptInput?.value.trim()) {
-      showToast('Please describe a style or select one above.', 'error'); return;
-    }
-
+    if (!imageInput?.files[0]) { showToast('Please upload a room photo first.', 'error'); return; }
+    if (!promptInput?.value.trim()) { showToast('Please describe a style or select one above.', 'error'); return; }
     const formData = new FormData(form);
-    showLoading();
-    startProgress();
-
+    showLoading(); startProgress();
     try {
       const res  = await fetch('/decorate-room', { method: 'POST', body: formData });
       const data = await res.json();
-      if (!res.ok || data.error) {
-        showError(data.error || 'Server error.'); return;
-      }
+      if (!res.ok || data.error) { showError(data.error || 'Server error.'); return; }
       pollStatus(data.job_id, `/before/${data.job_id}`);
     } catch (err) {
       showError('Could not reach server. Check your connection.');
@@ -549,10 +496,8 @@ function showToast(msg, type = 'info') {
     if (!btn) return;
     const emoji = btn.getAttribute('data-emoji');
     btn.classList.toggle('reacted');
-
-    // Burst animation
-    const burst     = document.createElement('span');
-    burst.className = 'emoji-burst';
+    const burst       = document.createElement('span');
+    burst.className   = 'emoji-burst';
     burst.textContent = emoji;
     burst.style.cssText = `left:${e.clientX - 12}px;top:${e.clientY - 12}px;`;
     document.body.appendChild(burst);
@@ -578,32 +523,26 @@ function showToast(msg, type = 'info') {
         s.classList.toggle('active', i < selectedRating);
       });
     });
-    star.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') star.click();
-    });
+    star.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') star.click(); });
   });
 
   function renderReviews(reviews) {
     if (!grid) return;
     grid.querySelectorAll('.review-card').forEach(c => c.remove());
-    if (!reviews.length) {
-      if (empty) empty.style.display = 'block';
-      return;
-    }
+    if (!reviews.length) { if (empty) empty.style.display = 'block'; return; }
     if (empty) empty.style.display = 'none';
     reviews.forEach(r => {
-      const card     = document.createElement('div');
+      const card    = document.createElement('div');
       card.className = 'review-card';
-      const stars    = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
-      const date     = r.created_at ? r.created_at.slice(0, 10) : '';
+      const stars   = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+      const date    = r.created_at ? r.created_at.slice(0, 10) : '';
       card.innerHTML = `
         <div class="review-header">
           <span class="review-name">${escapeHtml(r.name)}</span>
           <span class="review-stars">${stars}</span>
         </div>
         <p class="review-comment">${escapeHtml(r.comment)}</p>
-        <span class="review-date">${date}</span>
-      `;
+        <span class="review-date">${date}</span>`;
       grid.appendChild(card);
     });
   }
@@ -626,13 +565,10 @@ function showToast(msg, type = 'info') {
     e.preventDefault();
     const name    = nameEl?.value.trim();
     const comment = commEl?.value.trim();
-
     if (!selectedRating) { showToast('Please select a star rating.', 'error'); return; }
     if (!name)            { showToast('Please enter your name.', 'error'); return; }
     if (!comment)         { showToast('Please write a comment.', 'error'); return; }
-
     if (submitBtn) { submitBtn.disabled = true; submitBtn.style.opacity = '.6'; }
-
     try {
       const res  = await fetch('/submit-review', {
         method: 'POST',
@@ -640,28 +576,20 @@ function showToast(msg, type = 'info') {
         body: JSON.stringify({ name, rating: selectedRating, comment })
       });
       const data = await res.json();
-
       if (data.success) {
         showToast('Review submitted — thank you! 🎉', 'success');
-        form.reset();
-        selectedRating = 0;
+        form.reset(); selectedRating = 0;
         starInput && starInput.querySelectorAll('.star-btn').forEach(s => s.classList.remove('active'));
         await loadReviews();
-      } else {
-        showToast(data.error || 'Could not submit review.', 'error');
-      }
-    } catch (err) {
-      showToast('Network error. Please try again.', 'error');
-    } finally {
-      if (submitBtn) { submitBtn.disabled = false; submitBtn.style.opacity = '1'; }
-    }
+      } else { showToast(data.error || 'Could not submit review.', 'error'); }
+    } catch (err) { showToast('Network error. Please try again.', 'error'); }
+    finally { if (submitBtn) { submitBtn.disabled = false; submitBtn.style.opacity = '1'; } }
   });
 
   loadReviews();
 })();
 
 // ── VOICE INPUT ───────────────────────────────────────────────
-// FIX 4: voice orb animation driven purely by CSS — no broken SVG injection needed
 (function () {
   const micBtn     = document.getElementById('micBtn');
   const overlay    = document.getElementById('voiceOverlay');
@@ -679,10 +607,23 @@ function showToast(msg, type = 'info') {
   recognition.continuous     = false;
   recognition.interimResults = true;
 
-  // Use the current page language for recognition
+  // Maps UI language to speech recognition locale
   function getRecognitionLang() {
     const lang = localStorage.getItem('lang') || 'en';
-    return lang === 'ar' ? 'ar-MA' : lang === 'fr' ? 'fr-FR' : 'en-US';
+    if (lang === 'ar') return 'ar-MA';   // Moroccan Arabic / Darija
+    if (lang === 'fr') return 'fr-FR';
+    return 'en-US';
+  }
+
+  // ── NEW: UI label messages in the current language ──────────
+  function getVoiceLabels() {
+    const lang = localStorage.getItem('lang') || 'en';
+    return {
+      listening: lang === 'ar' ? 'جاري الاستماع…'            : lang === 'fr' ? 'Écoute en cours…'          : 'Listening…',
+      done:      lang === 'ar' ? 'تم! هل تستخدم هذا النص؟'   : lang === 'fr' ? 'Terminé ! Utiliser ce texte ?' : 'Done! Use this text?',
+      nothing:   lang === 'ar' ? 'لم يُسمع شيء. حاول مجددًا.' : lang === 'fr' ? 'Rien entendu. Réessayez.'     : 'Nothing heard. Try again.',
+      error:     lang === 'ar' ? 'خطأ. حاول مجددًا.'          : lang === 'fr' ? 'Erreur. Réessayez.'           : 'Error. Please try again.'
+    };
   }
 
   let finalText = '';
@@ -691,7 +632,7 @@ function showToast(msg, type = 'info') {
     finalText = '';
     recognition.lang = getRecognitionLang();
     if (transcript) transcript.textContent = '';
-    if (label)      label.textContent      = 'Listening…';
+    if (label)      label.textContent = getVoiceLabels().listening;
     overlay.classList.add('active');
     micBtn.classList.add('listening');
     try { recognition.start(); } catch (err) { /* already started */ }
@@ -709,12 +650,13 @@ function showToast(msg, type = 'info') {
 
   recognition.onend = () => {
     micBtn.classList.remove('listening');
-    if (label) label.textContent = finalText ? 'Done! Use this text?' : 'Nothing heard. Try again.';
+    const msgs = getVoiceLabels();
+    if (label) label.textContent = finalText ? msgs.done : msgs.nothing;
   };
 
   recognition.onerror = () => {
     micBtn.classList.remove('listening');
-    if (label) label.textContent = 'Error. Please try again.';
+    if (label) label.textContent = getVoiceLabels().error;
   };
 
   confirm && confirm.addEventListener('click', () => {
@@ -744,7 +686,6 @@ function showToast(msg, type = 'info') {
       const mobileDesigns = document.getElementById('mobileDesignsLink');
       const mobileSignIn  = document.getElementById('mobileSignIn');
       const viewSavedBtn  = document.getElementById('viewSavedBtn');
-
       if (data.loggedin) {
         if (authIconBtn)   authIconBtn.style.display   = 'none';
         if (authAvatar)    authAvatar.style.display     = 'flex';
@@ -769,22 +710,16 @@ function showToast(msg, type = 'info') {
 
   const avatarImg = document.getElementById('authAvatarImg');
   const dropdown  = document.getElementById('authDropdown');
-
   avatarImg && avatarImg.addEventListener('click', () => {
     dropdown && dropdown.classList.toggle('open');
   });
-
   document.getElementById('authSignOut')?.addEventListener('click', () => {
     window.location.href = '/auth/logout';
   });
-
   document.addEventListener('click', e => {
     const avatar = document.getElementById('authAvatar');
-    if (avatar && !avatar.contains(e.target)) {
-      dropdown && dropdown.classList.remove('open');
-    }
+    if (avatar && !avatar.contains(e.target)) dropdown && dropdown.classList.remove('open');
   });
-
   document.getElementById('authIconBtn')?.addEventListener('click', () => {
     window.location.href = '/auth/login';
   });
