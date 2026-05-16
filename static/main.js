@@ -24,6 +24,7 @@ const translations = {
     'result.placeholder': 'Your transformed room appears here',
     'result.loading': 'AI is reimagining your room — usually 10–25 seconds…',
     'result.before': 'Before', 'result.after': 'After', 'result.compare': 'Compare',
+    'result.saveImage': 'Save Image', 'result.saved': 'Saved ✓',
     'upload.idle': 'Click to upload image',
     'upload.done': '✓ Image uploaded — ready to generate!',
     'gallery.eyebrow': 'Showcase', 'gallery.heading': 'AI Design Gallery',
@@ -67,6 +68,7 @@ const translations = {
     'result.placeholder': 'Votre pièce transformée apparaît ici',
     'result.loading': "L'IA réimagine votre pièce — environ 10–25 secondes…",
     'result.before': 'Avant', 'result.after': 'Après', 'result.compare': 'Comparer',
+    'result.saveImage': "Enregistrer l'image", 'result.saved': 'Enregistré ✓',
     'upload.idle': 'Cliquez pour uploader une image',
     'upload.done': '✓ Image chargée — prête à générer !',
     'gallery.eyebrow': 'Vitrine', 'gallery.heading': 'Galerie IA',
@@ -110,6 +112,7 @@ const translations = {
     'result.placeholder': 'غرفتك المحوّلة ستظهر هنا',
     'result.loading': 'الذكاء الاصطناعي يعيد تخيّل غرفتك — عادةً 10–25 ثانية…',
     'result.before': 'قبل', 'result.after': 'بعد', 'result.compare': 'مقارنة',
+    'result.saveImage': 'حفظ الصورة', 'result.saved': 'تم الحفظ ✓',
     'upload.idle': 'انقر لرفع صورة',
     'upload.done': '✓ تم رفع الصورة — جاهز للتوليد!',
     'gallery.eyebrow': 'معرض الأعمال', 'gallery.heading': 'معرض تصاميم الذكاء الاصطناعي',
@@ -136,9 +139,11 @@ const translations = {
 // ── APPLY LANGUAGE ────────────────────────────────────────────
 function applyLang(lang) {
   const t = translations[lang] || translations['en'];
-  document.documentElement.setAttribute('data-lang', lang);
-  document.documentElement.setAttribute('lang', lang);
-  document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+  const root = document.documentElement;
+  root.setAttribute('data-lang', lang);
+  root.setAttribute('lang', lang);
+  root.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (t[key] !== undefined) el.textContent = t[key];
@@ -154,20 +159,37 @@ function applyLang(lang) {
   document.querySelectorAll('.lang-opt').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
   });
+
   const current = document.querySelector('.lang-current');
   if (current) current.textContent = lang.toUpperCase();
+
+  // Update Save Image label text dynamically
+  const dlTitles = document.querySelectorAll('.dl-title');
+  if (dlTitles[0]) dlTitles[0].textContent = t['result.saveImage'] || 'Save Image';
+  if (dlTitles[1]) dlTitles[1].textContent = t['result.saved']    || 'Saved ✓';
+
+  // Update BA tabs (Before / After / Compare) if result is visible
+  const tabBefore = document.getElementById('tabBefore');
+  const tabAfter  = document.getElementById('tabAfter');
+  const tabSlider = document.getElementById('tabSlider');
+  if (tabBefore) tabBefore.textContent = t['result.before'] || 'Before';
+  if (tabAfter)  tabAfter.textContent  = t['result.after']  || 'After';
+  if (tabSlider) tabSlider.textContent = t['result.compare'] || 'Compare';
 }
 
 // ── LANG SWITCHER ─────────────────────────────────────────────
 (function () {
   let currentLang = localStorage.getItem('lang') || 'en';
   applyLang(currentLang);
+
   const toggle   = document.getElementById('langToggle');
   const dropdown = document.getElementById('langDropdown');
+
   toggle && toggle.addEventListener('click', e => {
     e.stopPropagation();
     dropdown.classList.toggle('open');
   });
+
   document.querySelectorAll('.lang-opt').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
@@ -179,6 +201,7 @@ function applyLang(lang) {
       dropdown && dropdown.classList.remove('open');
     });
   });
+
   document.addEventListener('click', () => {
     dropdown && dropdown.classList.remove('open');
   });
@@ -264,10 +287,10 @@ function applyLang(lang) {
       label.querySelectorAll('div').forEach(d => d.style.display = 'none');
       const oldPreview = label.querySelector('img.preview-img');
       if (oldPreview) oldPreview.remove();
-      const img        = document.createElement('img');
-      img.src          = ev.target.result;
-      img.className    = 'preview-img';
-      img.alt          = 'Room preview';
+      const img         = document.createElement('img');
+      img.src           = ev.target.result;
+      img.className     = 'preview-img';
+      img.alt           = 'Room preview';
       img.style.cssText = 'width:100%;height:auto;max-height:240px;object-fit:cover;border-radius:calc(var(--radius-lg) - 2px);display:block;pointer-events:none;';
       label.style.height      = 'auto';
       label.style.minHeight   = '160px';
@@ -296,8 +319,8 @@ function applyLang(lang) {
     if (prompt) {
       textarea.value = prompt;
       if (hint) {
-        hint.textContent    = `Style selected: ${card.textContent.trim()}`;
-        hint.style.display  = 'block';
+        hint.textContent   = `Style selected: ${card.textContent.trim()}`;
+        hint.style.display = 'block';
       }
     }
   });
@@ -327,17 +350,23 @@ function applyLang(lang) {
     const divider = document.getElementById('baDivider');
     const clip    = document.getElementById('baClip');
     if (!wrap || !divider || !clip) return;
+
     let dragging = false;
+    const isRTL = () => document.documentElement.getAttribute('dir') === 'rtl';
+
     divider.style.left = '50%';
     clip.style.width   = '50%';
+
     function setPosition(x) {
       const rect = wrap.getBoundingClientRect();
       let pct = ((x - rect.left) / rect.width) * 100;
       pct = Math.max(2, Math.min(98, pct));
+      if (isRTL()) pct = 100 - pct;
       divider.style.left = pct + '%';
       clip.style.width   = pct + '%';
       divider.setAttribute('aria-valuenow', Math.round(pct));
     }
+
     divider.addEventListener('mousedown',  () => dragging = true);
     divider.addEventListener('touchstart', () => dragging = true, { passive: true });
     window.addEventListener('mouseup',  () => dragging = false);
@@ -346,6 +375,7 @@ function applyLang(lang) {
     window.addEventListener('touchmove', e => {
       if (dragging && e.touches[0]) setPosition(e.touches[0].clientX);
     }, { passive: true });
+
     divider.addEventListener('keydown', e => {
       const rect = wrap.getBoundingClientRect();
       const cur  = parseFloat(divider.style.left) || 50;
@@ -353,6 +383,7 @@ function applyLang(lang) {
       if (e.key === 'ArrowRight') setPosition(rect.left + (cur + 5) / 100 * rect.width);
     });
   }
+
   initSlider();
   document.addEventListener('click', e => {
     const tab = e.target.closest('.ba-tab');
@@ -373,6 +404,7 @@ function applyLang(lang) {
   const sliderAfter  = document.getElementById('sliderAfter');
   const loadingBar   = document.getElementById('loadingBar');
   if (!form) return;
+
   let downloadCheck = document.getElementById('downloadCheck');
   let progressTimer = null;
 
@@ -390,7 +422,7 @@ function applyLang(lang) {
     clearInterval(progressTimer);
     if (loadingBar) {
       loadingBar.style.width = '100%';
-      setTimeout(() => { loadingBar.style.width = '0%'; }, 600);
+      setTimeout(() => { if (loadingBar) loadingBar.style.width = '0%'; }, 600);
     }
   }
 
@@ -408,15 +440,21 @@ function applyLang(lang) {
     if (beforeImage)  beforeImage.src  = beforeUrl;
     if (sliderBefore) sliderBefore.src = beforeUrl;
     if (sliderAfter)  sliderAfter.src  = resultUrl;
+
+    // Reset to "After" tab
     document.querySelectorAll('.ba-tab').forEach(t => {
-      t.classList.remove('active'); t.setAttribute('aria-selected', 'false');
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
     });
     document.querySelectorAll('.ba-panel').forEach(p => p.classList.remove('active'));
     const tabAfter   = document.getElementById('tabAfter');
     const panelAfter = document.getElementById('panelAfter');
     if (tabAfter)   { tabAfter.classList.add('active'); tabAfter.setAttribute('aria-selected', 'true'); }
     if (panelAfter)   panelAfter.classList.add('active');
-    if (submitBtn)  { submitBtn.classList.remove('is-generating'); submitBtn.disabled = false; }
+
+    if (submitBtn) { submitBtn.classList.remove('is-generating'); submitBtn.disabled = false; }
+
+    // Download logic — re-bind fresh
     downloadCheck = document.getElementById('downloadCheck');
     if (downloadCheck) {
       downloadCheck.checked = false;
@@ -425,14 +463,21 @@ function applyLang(lang) {
       downloadCheck = newCheck;
       newCheck.addEventListener('change', function () {
         if (this.checked) {
-          const a = document.createElement('a');
+          const a    = document.createElement('a');
           a.href     = resultUrl;
           a.download = 'decogen-design.jpg';
           a.click();
         }
       });
     }
+
+    // Show "View My Saved Designs" button
+    const viewSavedBtn = document.getElementById('viewSavedBtn');
+    if (viewSavedBtn) viewSavedBtn.style.display = 'inline-flex';
+
     resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Re-apply language to update BA tab labels
+    applyLang(localStorage.getItem('lang') || 'en');
   }
 
   function showError(msg) {
@@ -448,14 +493,17 @@ function applyLang(lang) {
         const res  = await fetch(`/status/${jobId}`);
         const data = await res.json();
         if (data.status === 'done') {
-          clearInterval(interval); finishProgress();
+          clearInterval(interval);
+          finishProgress();
           showResult(`/result/${jobId}`, beforeUrl);
         } else if (data.status === 'error') {
-          clearInterval(interval); finishProgress();
+          clearInterval(interval);
+          finishProgress();
           showError(data.error || 'Generation failed.');
         }
       } catch (e) {
-        clearInterval(interval); finishProgress();
+        clearInterval(interval);
+        finishProgress();
         showError('Network error. Please try again.');
       }
     }, 2500);
@@ -465,10 +513,17 @@ function applyLang(lang) {
     e.preventDefault();
     const imageInput  = document.getElementById('roomimage');
     const promptInput = document.getElementById('decorationprompt');
-    if (!imageInput?.files[0]) { showToast('Please upload a room photo first.', 'error'); return; }
-    if (!promptInput?.value.trim()) { showToast('Please describe a style or select one above.', 'error'); return; }
+    if (!imageInput?.files[0]) {
+      showToast('Please upload a room photo first.', 'error');
+      return;
+    }
+    if (!promptInput?.value.trim()) {
+      showToast('Please describe a style or select one above.', 'error');
+      return;
+    }
     const formData = new FormData(form);
-    showLoading(); startProgress();
+    showLoading();
+    startProgress();
     try {
       const res  = await fetch('/decorate-room', { method: 'POST', body: formData });
       const data = await res.json();
@@ -494,12 +549,12 @@ function showToast(msg, type = 'info') {
   document.addEventListener('click', e => {
     const btn = e.target.closest('.reaction-btn');
     if (!btn) return;
-    const emoji = btn.getAttribute('data-emoji');
+    const emoji       = btn.getAttribute('data-emoji');
     btn.classList.toggle('reacted');
     const burst       = document.createElement('span');
     burst.className   = 'emoji-burst';
     burst.textContent = emoji;
-    burst.style.cssText = `left:${e.clientX - 12}px;top:${e.clientY - 12}px;`;
+    burst.style.cssText = `position:fixed;left:${e.clientX - 12}px;top:${e.clientY - 12}px;pointer-events:none;font-size:1.5rem;z-index:9999;`;
     document.body.appendChild(burst);
     burst.addEventListener('animationend', () => burst.remove());
   });
@@ -523,19 +578,30 @@ function showToast(msg, type = 'info') {
         s.classList.toggle('active', i < selectedRating);
       });
     });
-    star.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') star.click(); });
+    star.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') star.click();
+    });
   });
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
 
   function renderReviews(reviews) {
     if (!grid) return;
     grid.querySelectorAll('.review-card').forEach(c => c.remove());
-    if (!reviews.length) { if (empty) empty.style.display = 'block'; return; }
+    if (!reviews.length) {
+      if (empty) empty.style.display = 'block';
+      return;
+    }
     if (empty) empty.style.display = 'none';
     reviews.forEach(r => {
-      const card    = document.createElement('div');
+      const card     = document.createElement('div');
       card.className = 'review-card';
-      const stars   = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
-      const date    = r.created_at ? r.created_at.slice(0, 10) : '';
+      const stars    = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+      const date     = r.created_at ? r.created_at.slice(0, 10) : '';
       card.innerHTML = `
         <div class="review-header">
           <span class="review-name">${escapeHtml(r.name)}</span>
@@ -547,18 +613,14 @@ function showToast(msg, type = 'info') {
     });
   }
 
-  function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  }
-
   async function loadReviews() {
     try {
       const res  = await fetch('/get-reviews');
       const data = await res.json();
       if (data.reviews) renderReviews(data.reviews);
-    } catch (e) { console.warn('Could not load reviews', e); }
+    } catch (e) {
+      console.warn('Could not load reviews', e);
+    }
   }
 
   form && form.addEventListener('submit', async e => {
@@ -578,12 +640,18 @@ function showToast(msg, type = 'info') {
       const data = await res.json();
       if (data.success) {
         showToast('Review submitted — thank you! 🎉', 'success');
-        form.reset(); selectedRating = 0;
+        form.reset();
+        selectedRating = 0;
         starInput && starInput.querySelectorAll('.star-btn').forEach(s => s.classList.remove('active'));
         await loadReviews();
-      } else { showToast(data.error || 'Could not submit review.', 'error'); }
-    } catch (err) { showToast('Network error. Please try again.', 'error'); }
-    finally { if (submitBtn) { submitBtn.disabled = false; submitBtn.style.opacity = '1'; } }
+      } else {
+        showToast(data.error || 'Could not submit review.', 'error');
+      }
+    } catch (err) {
+      showToast('Network error. Please try again.', 'error');
+    } finally {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.style.opacity = '1'; }
+    }
   });
 
   loadReviews();
@@ -607,22 +675,20 @@ function showToast(msg, type = 'info') {
   recognition.continuous     = false;
   recognition.interimResults = true;
 
-  // Maps UI language to speech recognition locale
   function getRecognitionLang() {
     const lang = localStorage.getItem('lang') || 'en';
-    if (lang === 'ar') return 'ar-MA';   // Moroccan Arabic / Darija
+    if (lang === 'ar') return 'ar-MA';
     if (lang === 'fr') return 'fr-FR';
     return 'en-US';
   }
 
-  // ── NEW: UI label messages in the current language ──────────
   function getVoiceLabels() {
     const lang = localStorage.getItem('lang') || 'en';
     return {
-      listening: lang === 'ar' ? 'جاري الاستماع…'            : lang === 'fr' ? 'Écoute en cours…'          : 'Listening…',
-      done:      lang === 'ar' ? 'تم! هل تستخدم هذا النص؟'   : lang === 'fr' ? 'Terminé ! Utiliser ce texte ?' : 'Done! Use this text?',
-      nothing:   lang === 'ar' ? 'لم يُسمع شيء. حاول مجددًا.' : lang === 'fr' ? 'Rien entendu. Réessayez.'     : 'Nothing heard. Try again.',
-      error:     lang === 'ar' ? 'خطأ. حاول مجددًا.'          : lang === 'fr' ? 'Erreur. Réessayez.'           : 'Error. Please try again.'
+      listening: lang === 'ar' ? 'جاري الاستماع…'             : lang === 'fr' ? 'Écoute en cours…'            : 'Listening…',
+      done:      lang === 'ar' ? 'تم! هل تستخدم هذا النص؟'    : lang === 'fr' ? 'Terminé ! Utiliser ce texte ?' : 'Done! Use this text?',
+      nothing:   lang === 'ar' ? 'لم يُسمع شيء. حاول مجددًا.' : lang === 'fr' ? 'Rien entendu. Réessayez.'      : 'Nothing heard. Try again.',
+      error:     lang === 'ar' ? 'خطأ. حاول مجددًا.'           : lang === 'fr' ? 'Erreur. Réessayez.'            : 'Error. Please try again.'
     };
   }
 
@@ -632,7 +698,7 @@ function showToast(msg, type = 'info') {
     finalText = '';
     recognition.lang = getRecognitionLang();
     if (transcript) transcript.textContent = '';
-    if (label)      label.textContent = getVoiceLabels().listening;
+    if (label)      label.textContent      = getVoiceLabels().listening;
     overlay.classList.add('active');
     micBtn.classList.add('listening');
     try { recognition.start(); } catch (err) { /* already started */ }
@@ -641,17 +707,16 @@ function showToast(msg, type = 'info') {
   recognition.onresult = e => {
     let interim = '';
     for (let i = e.resultIndex; i < e.results.length; i++) {
-      const t = e.results[i][0].transcript;
-      if (e.results[i].isFinal) finalText += t;
-      else interim += t;
+      const txt = e.results[i][0].transcript;
+      if (e.results[i].isFinal) finalText += txt;
+      else interim += txt;
     }
     if (transcript) transcript.textContent = finalText + interim;
   };
 
   recognition.onend = () => {
     micBtn.classList.remove('listening');
-    const msgs = getVoiceLabels();
-    if (label) label.textContent = finalText ? msgs.done : msgs.nothing;
+    if (label) label.textContent = finalText ? getVoiceLabels().done : getVoiceLabels().nothing;
   };
 
   recognition.onerror = () => {
@@ -686,6 +751,7 @@ function showToast(msg, type = 'info') {
       const mobileDesigns = document.getElementById('mobileDesignsLink');
       const mobileSignIn  = document.getElementById('mobileSignIn');
       const viewSavedBtn  = document.getElementById('viewSavedBtn');
+
       if (data.loggedin) {
         if (authIconBtn)   authIconBtn.style.display   = 'none';
         if (authAvatar)    authAvatar.style.display     = 'flex';
@@ -710,16 +776,20 @@ function showToast(msg, type = 'info') {
 
   const avatarImg = document.getElementById('authAvatarImg');
   const dropdown  = document.getElementById('authDropdown');
+
   avatarImg && avatarImg.addEventListener('click', () => {
     dropdown && dropdown.classList.toggle('open');
   });
+
   document.getElementById('authSignOut')?.addEventListener('click', () => {
     window.location.href = '/auth/logout';
   });
+
   document.addEventListener('click', e => {
     const avatar = document.getElementById('authAvatar');
     if (avatar && !avatar.contains(e.target)) dropdown && dropdown.classList.remove('open');
   });
+
   document.getElementById('authIconBtn')?.addEventListener('click', () => {
     window.location.href = '/auth/login';
   });
