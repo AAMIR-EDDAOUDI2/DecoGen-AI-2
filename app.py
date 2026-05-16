@@ -2,6 +2,7 @@ import os
 import io
 import uuid
 import threading
+from datetime import timedelta
 import requests
 import psycopg2
 import cloudinary
@@ -18,6 +19,7 @@ from deep_translator import GoogleTranslator   # ← NEW
 load_dotenv()
 
 app = Flask(__name__, static_folder="static", static_url_path="/static")
+app.permanent_session_lifetime = timedelta(days=30)
 app.secret_key = os.getenv("SECRET_KEY", "dev-secret-change-this")
 
 app.config['SESSION_COOKIE_SECURE'] = os.getenv('FLASK_ENV') == 'production'
@@ -264,39 +266,40 @@ def auth_login():
 @app.route("/auth/callback")
 def auth_callback():
     try:
-        token    = google.authorize_access_token()
-        userinfo = token.get('userinfo')
+        token = google.authorize_access_token()
+        userinfo = token.get("userinfo")
         if not userinfo:
-            return redirect('/')
+            return redirect("/")
 
-        google_id  = userinfo['sub']
-        name       = userinfo.get('name', '')
-        email      = userinfo.get('email', '')
-        avatar_url = userinfo.get('picture', '')
+        google_id = userinfo.get("sub")
+        name = userinfo.get("name")
+        email = userinfo.get("email")
+        avatar_url = userinfo.get("picture")
 
         conn = get_db()
-        cur  = conn.cursor(cursor_factory=RealDictCursor)
+        cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute("""
             INSERT INTO users (google_id, name, email, avatar_url)
             VALUES (%s, %s, %s, %s)
             ON CONFLICT (google_id) DO UPDATE
-            SET name       = EXCLUDED.name,
-                email      = EXCLUDED.email,
+            SET name = EXCLUDED.name,
+                email = EXCLUDED.email,
                 avatar_url = EXCLUDED.avatar_url
-            RETURNING id
+            RETURNING id, google_id, name, email, avatar_url
         """, (google_id, name, email, avatar_url))
         row = cur.fetchone()
         conn.commit()
         conn.close()
 
+        session.permanent = True
         session['user'] = {
-            'db_id' : row['id'],
-            'name'  : name,
-            'email' : email,
-            'avatar': avatar_url
+            'db_id': row['id'],
+            'name': row['name'],
+            'email': row['email'],
+            'avatar': row['avatar_url']
         }
-        return redirect('/')
 
+        return redirect('/')
     except Exception as e:
         print(f"[AUTH ERROR] {e}", flush=True)
         return redirect('/')
