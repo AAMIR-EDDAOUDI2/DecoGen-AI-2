@@ -436,6 +436,29 @@ def get_reviews():
         print(f"[ERROR] /get-reviews: {e}", flush=True)
         return jsonify({"error": "Failed to fetch reviews"}), 500
 
+
+# ── APP STATS ────────────────────────────────────────────────
+@app.route("/stats")
+def stats():
+    conn = get_db()
+    cur = conn.cursor()
+    try:
+        cur.execute("SELECT COUNT(*) FROM designs")
+        generated_rooms = cur.fetchone()[0]
+        cur.execute("SELECT COUNT(*) FROM designs WHERE image_url IS NOT NULL")
+        saved_designs = cur.fetchone()[0]
+        cur.execute("SELECT MAX(created_at) FROM designs")
+        last_activity = cur.fetchone()[0]
+        return jsonify({
+            "loggedin": bool(get_current_user()),
+            "generated_rooms": generated_rooms,
+            "saved_designs": saved_designs,
+            "last_activity": last_activity.isoformat() if last_activity else None
+        }), 200
+    finally:
+        cur.close()
+        conn.close()
+
 # ── ERROR HANDLERS ────────────────────────────────────────────
 @app.errorhandler(404)
 def not_found(e):
