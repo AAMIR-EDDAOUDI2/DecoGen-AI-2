@@ -757,9 +757,9 @@ function loadStats() {
       const statusEl = document.getElementById('statStatus');
       if (!sec) return;
       if (genEl) genEl.textContent = data.generated_rooms || 0;
-      if (savedEl) savedEl.textContent = data.saved_designs || 0;
-      if (activityEl) activityEl.textContent = data.last_activity ? new Date(data.last_activity).toLocaleDateString() : '—';
-      if (statusEl) statusEl.textContent = data.loggedin ? 'Live' : 'Offline';
+      if (savedEl) savedEl.textContent = data.signed_in_users || 0;
+      if (activityEl) activityEl.textContent = data.activity_text || 'Live app stats';
+      if (statusEl) statusEl.textContent = 'Live';
       sec.style.display = 'block';
     })
     .catch(() => {});
