@@ -426,31 +426,38 @@
   </div>
 </section>
 
+<!-- STATS -->
 <section id="statsSection" aria-labelledby="stats-heading">
   <div class="stats-inner">
+    <div class="stats-copy">
+      <p class="eyebrow">Project Stats</p>
+      <h2 id="stats-heading">A live snapshot of <em>DecoGen AI</em></h2>
+      <p>These numbers update for signed-in users and reflect generation activity, saved designs, and the latest activity date.</p>
+    </div>
     <div class="stats-panel" id="statsPanel">
-      <div class="stat-card">
-        <span class="stat-num" id="statGenerated">0</span>
-        <span class="stat-label">Rooms generated</span>
+      <div class="stat-box">
+        <span class="num" id="statGenerated">0</span>
+        <span class="label">Rooms generated</span>
+        <span class="meta">Total rooms created with AI.</span>
       </div>
-
-      <div class="stat-card">
-        <span class="stat-num" id="statSaved">0</span>
-        <span class="stat-label">Users signed in</span>
+      <div class="stat-box">
+        <span class="num" id="statSaved">0</span>
+        <span class="label">Saved designs</span>
+        <span class="meta">Items saved to your account.</span>
       </div>
-
-      <div class="stat-card">
-        <span class="stat-num" id="statActivity">—</span>
-        <span class="stat-label">Last activity</span>
+      <div class="stat-box">
+        <span class="num" id="statActivity">—</span>
+        <span class="label">Last activity</span>
+        <span class="meta">Most recent generation or save.</span>
       </div>
-
-      <div class="stat-card">
-        <span class="stat-num" id="statStatus">Live</span>
-        <span class="stat-label">Status</span>
+      <div class="stat-box">
+        <span class="num" id="statStatus">Live</span>
+        <span class="label">Status</span>
+        <span class="meta">Visible only when you’re signed in.</span>
       </div>
     </div>
   </div>
-</section>
+</section>                
 
 <!-- ABOUT -->
 <section id="about" aria-labelledby="about-heading">
