@@ -445,10 +445,13 @@ def stats():
     try:
         cur.execute("SELECT COUNT(*) FROM designs")
         generated_rooms = cur.fetchone()[0]
-        cur.execute("SELECT COUNT(*) FROM users WHERE created_at IS NOT NULL")
+
+        cur.execute("SELECT COUNT(*) FROM users")
         signed_in_users = cur.fetchone()[0]
+
         cur.execute("SELECT MAX(created_at) FROM designs")
         last_activity = cur.fetchone()[0]
+
         return jsonify({
             "generated_rooms": generated_rooms,
             "signed_in_users": signed_in_users,
@@ -456,8 +459,8 @@ def stats():
             "last_activity": last_activity.isoformat() if last_activity else None
         }), 200
     finally:
-        cur.close(); conn.close()
-
+        cur.close()
+        conn.close()
 # ── ERROR HANDLERS ────────────────────────────────────────────
 @app.errorhandler(404)
 def not_found(e):
