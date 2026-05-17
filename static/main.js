@@ -750,18 +750,17 @@ function loadStats() {
   fetch('/stats')
     .then(r => r.json())
     .then(data => {
-      const bar       = document.getElementById('statsBar');
-      const genEl     = document.getElementById('statGenerated');
-      const savedEl   = document.getElementById('statSaved');
-      const activityEl= document.getElementById('statActivity');
-      if (!bar) return;
-      if (!data.loggedin) { bar.style.display = 'none'; return; }
-      bar.style.display = 'flex';
-      if (genEl)      genEl.textContent      = data.generated_rooms || 0;
-      if (savedEl)    savedEl.textContent    = data.saved_designs   || 0;
-      if (activityEl) activityEl.textContent = data.last_activity
-        ? new Date(data.last_activity).toLocaleDateString()
-        : '—';
+      const sec = document.getElementById('statsSection');
+      const genEl = document.getElementById('statGenerated');
+      const savedEl = document.getElementById('statSaved');
+      const activityEl = document.getElementById('statActivity');
+      const statusEl = document.getElementById('statStatus');
+      if (!sec) return;
+      if (genEl) genEl.textContent = data.generated_rooms || 0;
+      if (savedEl) savedEl.textContent = data.saved_designs || 0;
+      if (activityEl) activityEl.textContent = data.last_activity ? new Date(data.last_activity).toLocaleDateString() : '—';
+      if (statusEl) statusEl.textContent = data.loggedin ? 'Live' : 'Offline';
+      sec.style.display = 'block';
     })
     .catch(() => {});
 }
@@ -791,8 +790,6 @@ function loadStats() {
         if (heroSignInBtn) heroSignInBtn.style.display  = 'none';
         if (mobileSignIn)  mobileSignIn.style.display   = 'none';
         if (viewSavedBtn)  viewSavedBtn.style.display   = 'inline-flex';
-        // Load stats only when signed in
-        loadStats();
       } else {
         if (authIconBtn)   authIconBtn.style.display   = 'flex';
         if (authAvatar)    authAvatar.style.display     = 'none';
@@ -802,6 +799,7 @@ function loadStats() {
         if (mobileSignIn)  mobileSignIn.style.display   = 'block';
         if (viewSavedBtn)  viewSavedBtn.style.display   = 'none';
       }
+      loadStats();
     })
     .catch(() => {});
 
