@@ -445,19 +445,18 @@ def stats():
     try:
         cur.execute("SELECT COUNT(*) FROM designs")
         generated_rooms = cur.fetchone()[0]
-        cur.execute("SELECT COUNT(*) FROM designs WHERE image_url IS NOT NULL")
-        saved_designs = cur.fetchone()[0]
+        cur.execute("SELECT COUNT(*) FROM users WHERE created_at IS NOT NULL")
+        signed_in_users = cur.fetchone()[0]
         cur.execute("SELECT MAX(created_at) FROM designs")
         last_activity = cur.fetchone()[0]
         return jsonify({
-            "loggedin": bool(get_current_user()),
             "generated_rooms": generated_rooms,
-            "saved_designs": saved_designs,
+            "signed_in_users": signed_in_users,
+            "activity_text": f"{generated_rooms} rooms created • {signed_in_users} users signed in",
             "last_activity": last_activity.isoformat() if last_activity else None
         }), 200
     finally:
-        cur.close()
-        conn.close()
+        cur.close(); conn.close()
 
 # ── ERROR HANDLERS ────────────────────────────────────────────
 @app.errorhandler(404)
