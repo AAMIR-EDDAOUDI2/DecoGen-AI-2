@@ -145,21 +145,6 @@
         <p data-i18n="generate.subhead">Upload a photo and describe the style — our AI handles the rest.</p>
       </div>
 
-      <!-- STATS BAR -->
-      <div class="stats-bar" id="statsBar" style="display:none">
-  <div class="stat-pill">
-    <span id="statGenerated">0</span>
-    <small>Rooms generated</small>
-  </div>
-  <div class="stat-pill">
-    <span id="statSaved">0</span>
-    <small>Saved designs</small>
-  </div>
-  <div class="stat-pill">
-    <span id="statActivity">—</span>
-    <small>Last activity</small>
-  </div>
-</div>
 
       <div class="form-card">
         <form id="aiDesignForm" novalidate>
@@ -440,6 +425,39 @@
     </div>
   </div>
 </section>
+
+<!-- STATS -->
+<section id="statsSection" aria-labelledby="stats-heading">
+  <div class="stats-inner">
+    <div class="stats-copy">
+      <p class="eyebrow">Project Stats</p>
+      <h2 id="stats-heading">A live snapshot of <em>DecoGen AI</em></h2>
+      <p>These numbers update for signed-in users and reflect generation activity, saved designs, and the latest activity date.</p>
+    </div>
+    <div class="stats-panel" id="statsPanel">
+      <div class="stat-box">
+        <span class="num" id="statGenerated">0</span>
+        <span class="label">Rooms generated</span>
+        <span class="meta">Total rooms created with AI.</span>
+      </div>
+      <div class="stat-box">
+        <span class="num" id="statSaved">0</span>
+        <span class="label">Saved designs</span>
+        <span class="meta">Items saved to your account.</span>
+      </div>
+      <div class="stat-box">
+        <span class="num" id="statActivity">—</span>
+        <span class="label">Last activity</span>
+        <span class="meta">Most recent generation or save.</span>
+      </div>
+      <div class="stat-box">
+        <span class="num" id="statStatus">Live</span>
+        <span class="label">Status</span>
+        <span class="meta">Visible only when you’re signed in.</span>
+      </div>
+    </div>
+  </div>
+</section>  
 
 <!-- ABOUT -->
 <section id="about" aria-labelledby="about-heading">
