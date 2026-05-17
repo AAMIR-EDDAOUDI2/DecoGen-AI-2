@@ -905,45 +905,35 @@ footer a:hover{opacity:.75}
   .btn-loader-word{animation:none}
 }
 
-/* Stats card fix: replace the old date card styling with a compact activity card */
+/* Replace the old stats block styling only */
 #statsSection .stats-panel {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.5rem;
-  align-content: start;
+  gap: 24px;
+  align-items: start;
 }
 
 #statsSection .stat-box {
-  min-height: 240px;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  overflow: hidden;
+  min-height: 230px;
+  padding: 32px;
 }
 
-#statsSection .stat-box .num {
+#statsSection .stat-box .stat-num {
   font-size: clamp(2rem, 4vw, 3.5rem);
-  line-height: 1.05;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1;
 }
 
-#statsSection .stat-box .label {
+#statsSection .stat-box .stat-label {
   display: block;
+  margin-top: 10px;
   letter-spacing: .14em;
-  line-height: 1.35;
-  margin-top: .35rem;
 }
 
-#statsSection .stat-box .meta {
-  display: block;
-  margin-top: 1rem;
+#statsSection .stat-box .stat-desc {
+  margin-top: 18px;
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.7;
   white-space: normal;
-  word-break: break-word;
 }
 
 #statsSection .stat-box:nth-child(3) {
