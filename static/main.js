@@ -163,12 +163,10 @@ function applyLang(lang) {
   const current = document.querySelector('.lang-current');
   if (current) current.textContent = lang.toUpperCase();
 
-  // Update Save Image label text dynamically
   const dlTitles = document.querySelectorAll('.dl-title');
   if (dlTitles[0]) dlTitles[0].textContent = t['result.saveImage'] || 'Save Image';
   if (dlTitles[1]) dlTitles[1].textContent = t['result.saved']    || 'Saved ✓';
 
-  // Update BA tabs (Before / After / Compare) if result is visible
   const tabBefore = document.getElementById('tabBefore');
   const tabAfter  = document.getElementById('tabAfter');
   const tabSlider = document.getElementById('tabSlider');
@@ -441,7 +439,6 @@ function applyLang(lang) {
     if (sliderBefore) sliderBefore.src = beforeUrl;
     if (sliderAfter)  sliderAfter.src  = resultUrl;
 
-    // Reset to "After" tab
     document.querySelectorAll('.ba-tab').forEach(t => {
       t.classList.remove('active');
       t.setAttribute('aria-selected', 'false');
@@ -454,7 +451,6 @@ function applyLang(lang) {
 
     if (submitBtn) { submitBtn.classList.remove('is-generating'); submitBtn.disabled = false; }
 
-    // Download logic — re-bind fresh
     downloadCheck = document.getElementById('downloadCheck');
     if (downloadCheck) {
       downloadCheck.checked = false;
@@ -471,12 +467,13 @@ function applyLang(lang) {
       });
     }
 
-    // Show "View My Saved Designs" button
     const viewSavedBtn = document.getElementById('viewSavedBtn');
     if (viewSavedBtn) viewSavedBtn.style.display = 'inline-flex';
 
+    // Refresh stats after a new generation
+    loadStats();
+
     resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    // Re-apply language to update BA tab labels
     applyLang(localStorage.getItem('lang') || 'en');
   }
 
@@ -695,6 +692,17 @@ function showToast(msg, type = 'info') {
   let finalText = '';
 
   micBtn.addEventListener('click', () => {
+    // Only request mic permission when user explicitly clicks the mic button
+    navigator.permissions && navigator.permissions.query({ name: 'microphone' }).then(result => {
+      if (result.state === 'denied') {
+        showToast('Microphone access is blocked. Please allow it in your browser settings.', 'error');
+        return;
+      }
+      startListening();
+    }).catch(() => startListening()); // fallback if permissions API not supported
+  });
+
+  function startListening() {
     finalText = '';
     recognition.lang = getRecognitionLang();
     if (transcript) transcript.textContent = '';
@@ -702,7 +710,7 @@ function showToast(msg, type = 'info') {
     overlay.classList.add('active');
     micBtn.classList.add('listening');
     try { recognition.start(); } catch (err) { /* already started */ }
-  });
+  }
 
   recognition.onresult = e => {
     let interim = '';
@@ -737,6 +745,27 @@ function showToast(msg, type = 'info') {
   });
 })();
 
+// ── STATS BAR ─────────────────────────────────────────────────
+function loadStats() {
+  fetch('/stats')
+    .then(r => r.json())
+    .then(data => {
+      const bar       = document.getElementById('statsBar');
+      const genEl     = document.getElementById('statGenerated');
+      const savedEl   = document.getElementById('statSaved');
+      const activityEl= document.getElementById('statActivity');
+      if (!bar) return;
+      if (!data.loggedin) { bar.style.display = 'none'; return; }
+      bar.style.display = 'flex';
+      if (genEl)      genEl.textContent      = data.generated_rooms || 0;
+      if (savedEl)    savedEl.textContent    = data.saved_designs   || 0;
+      if (activityEl) activityEl.textContent = data.last_activity
+        ? new Date(data.last_activity).toLocaleDateString()
+        : '—';
+    })
+    .catch(() => {});
+}
+
 // ── AUTH STATE ────────────────────────────────────────────────
 (function () {
   fetch('/auth/me')
@@ -762,6 +791,8 @@ function showToast(msg, type = 'info') {
         if (heroSignInBtn) heroSignInBtn.style.display  = 'none';
         if (mobileSignIn)  mobileSignIn.style.display   = 'none';
         if (viewSavedBtn)  viewSavedBtn.style.display   = 'inline-flex';
+        // Load stats only when signed in
+        loadStats();
       } else {
         if (authIconBtn)   authIconBtn.style.display   = 'flex';
         if (authAvatar)    authAvatar.style.display     = 'none';
