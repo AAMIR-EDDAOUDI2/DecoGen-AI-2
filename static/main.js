@@ -404,6 +404,9 @@ function applyLang(lang) {
   if (!form) return;
 
   let downloadCheck = document.getElementById('downloadCheck');
+  let _lastPrompt = '';
+  let _lastImageFile = null;
+  const regenBtn = document.getElementById('regenerateBtn');
   let progressTimer = null;
 
   function startProgress() {
@@ -469,6 +472,7 @@ function applyLang(lang) {
 
     const viewSavedBtn = document.getElementById('viewSavedBtn');
     if (viewSavedBtn) viewSavedBtn.style.display = 'inline-flex';
+    if (regenBtn) regenBtn.style.display = 'inline-flex';
 
     // Refresh stats after a new generation
     loadStats();
@@ -506,6 +510,31 @@ function applyLang(lang) {
     }, 2500);
   }
 
+
+  // ── REGENERATE BUTTON ─────────────────────────────────────────
+  if (regenBtn) {
+    regenBtn.addEventListener('click', () => {
+      if (!_lastPrompt && !_lastImageFile) return;
+      // Pre-fill the prompt textarea with the last used prompt
+      const promptInput = document.getElementById('decorationprompt');
+      if (promptInput && _lastPrompt) {
+        promptInput.value = _lastPrompt;
+        const hint = document.getElementById('promptHint');
+        if (hint) {
+          hint.textContent = 'Edit the prompt below, then generate again.';
+          hint.style.display = 'block';
+        }
+      }
+      // Scroll up to the generate section smoothly
+      const generateSection = document.getElementById('generate');
+      if (generateSection) {
+        generateSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      // Focus the prompt textarea so user can start editing immediately
+      setTimeout(() => { if (promptInput) promptInput.focus(); }, 600);
+    });
+  }
+
   form.addEventListener('submit', async e => {
     e.preventDefault();
     const imageInput  = document.getElementById('roomimage');
@@ -519,6 +548,8 @@ function applyLang(lang) {
       return;
     }
     const formData = new FormData(form);
+    _lastPrompt = promptInput.value.trim();
+    _lastImageFile = imageInput.files[0];
     showLoading();
     startProgress();
     try {
