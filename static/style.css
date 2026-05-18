@@ -604,6 +604,35 @@ textarea.form-input{resize:vertical;min-height:90px}
 .btn-view-saved{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:var(--radius-full);border:1.5px solid var(--color-accent);color:var(--color-accent);font-size:var(--text-sm);font-weight:500;text-decoration:none;transition:background .2s,color .2s;width:100%;justify-content:center}
 .btn-view-saved:hover{background:var(--color-accent);color:#fff}
 
+/* ── REGENERATE BUTTON ── */
+.btn-regen {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 10px var(--space-5);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-accent);
+  background: transparent;
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  font-family: var(--font-body);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+.btn-regen:hover {
+  background: var(--color-accent);
+  color: #fff;
+}
+.btn-regen svg {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+.btn-regen:hover svg {
+  transform: rotate(180deg);
+}
+
+
 /* ── REACTION PANEL ── */
 .reaction-panel{display:flex;justify-content:center;padding:var(--space-4) 0 var(--space-2)}
 .reaction-bar{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2);background:var(--color-surface-offset);border:1px solid var(--color-border);border-radius:var(--radius-full);box-shadow:var(--shadow-md);transition:transform var(--transition)}
