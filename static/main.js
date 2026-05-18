@@ -405,9 +405,25 @@ function applyLang(lang) {
 
   let downloadCheck = document.getElementById('downloadCheck');
   let _lastPrompt = '';
-  let _lastImageFile = null;
+  let _currentSourceFile = null;
+  let _currentSourceName = 'decogen-regenerated.jpg';
   const regenBtn = document.getElementById('regenerateBtn');
+  const regenSourceImage = document.getElementById('regenSourceImage');
   let progressTimer = null;
+
+
+  async function urlToFile(url, filename) {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    return new File([blob], filename, { type: blob.type || 'image/jpeg' });
+  }
+
+  function setFileInputFile(input, file) {
+    if (!input || !file) return;
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    input.files = dt.files;
+  }
 
   function startProgress() {
     let pct = 0;
@@ -473,6 +489,14 @@ function applyLang(lang) {
     const viewSavedBtn = document.getElementById('viewSavedBtn');
     if (viewSavedBtn) viewSavedBtn.style.display = 'inline-flex';
     if (regenBtn) regenBtn.style.display = 'inline-flex';
+    urlToFile(resultUrl, 'decogen-regenerated.jpg')
+      .then(file => {
+        _currentSourceFile = file;
+        _currentSourceName = file.name;
+        const imageInput = document.getElementById('roomimage');
+        setFileInputFile(imageInput, file);
+      })
+      .catch(() => {});
 
     // Refresh stats after a new generation
     loadStats();
@@ -509,28 +533,30 @@ function applyLang(lang) {
       }
     }, 2500);
   }
-
-
   // ── REGENERATE BUTTON ─────────────────────────────────────────
   if (regenBtn) {
     regenBtn.addEventListener('click', () => {
-      if (!_lastPrompt && !_lastImageFile) return;
-      // Pre-fill the prompt textarea with the last used prompt
+      if (!_lastPrompt && !_currentSourceFile) return;
       const promptInput = document.getElementById('decorationprompt');
+      const imageInput = document.getElementById('roomimage');
       if (promptInput && _lastPrompt) {
         promptInput.value = _lastPrompt;
         const hint = document.getElementById('promptHint');
         if (hint) {
-          hint.textContent = 'Edit the prompt below, then generate again.';
+          hint.textContent = 'Last prompt loaded. Edit it, then generate again from the latest result.';
           hint.style.display = 'block';
         }
       }
-      // Scroll up to the generate section smoothly
+      if (imageInput && _currentSourceFile) {
+        setFileInputFile(imageInput, _currentSourceFile);
+        const uploadText = document.getElementById('uploadText');
+        if (uploadText) uploadText.textContent = '✓ Latest generated image ready for regeneration!';
+      }
       const generateSection = document.getElementById('generate');
       if (generateSection) {
         generateSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-      // Focus the prompt textarea so user can start editing immediately
+      showToast('Last prompt loaded — editing the latest generated image.', 'success');
       setTimeout(() => { if (promptInput) promptInput.focus(); }, 600);
     });
   }
@@ -549,7 +575,10 @@ function applyLang(lang) {
     }
     const formData = new FormData(form);
     _lastPrompt = promptInput.value.trim();
-    _lastImageFile = imageInput.files[0];
+    if (!_currentSourceFile) {
+      _currentSourceFile = imageInput.files[0];
+      _currentSourceName = imageInput.files[0]?.name || 'decogen-source.jpg';
+    }
     showLoading();
     startProgress();
     try {
