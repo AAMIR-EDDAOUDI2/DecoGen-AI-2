@@ -1,199 +1,206 @@
 <div align="center">
 
 # DecoGen AI
-**Transform your room with AI-powered interior design using the FLUX API**
+**Transform your room with AI-powered interior design using FLUX Kontext**
 
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/downloads/)
+[![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
 [![FLUX API](https://img.shields.io/badge/FLUX_API-000000?style=for-the-badge&logo=artificial-intelligence&logoColor=white)](https://docs.bfl.ai/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
+![DecoGen AI Screenshot](assets/image.png)
 
-![Room Decorator AI Screenshot](assets/image.png)
-
-*Upload a room photo, choose a style, and watch AI transform your space!*
+*Upload a room photo, choose a style, and let AI reimagine your space in seconds.*
 
 </div>
 
 ---
 
-## ✨ Features
+## Overview
 
-- 🖼️ **Smart Image Upload** - Drag & drop room photos (PNG, JPG, JPEG up to 20MB)
-- 🎨 **8 Preset Styles** - From Modern Minimalist to Bohemian, or create custom prompts
-- ⚡ **Real-time Processing** - Watch your room transform in real-time
-- 📱 **Responsive Design** - Works beautifully on desktop and mobile
-- 📥 **Instant Download** - Get your decorated room image immediately
-- ⚙️ **Flexible Aspect Ratios** - Choose from multiple output formats
+DecoGen AI is a web application that transforms room photos into AI-generated interior design concepts. It combines a modern Flask backend, PostgreSQL storage, Cloudinary image hosting, Google OAuth login, multilingual support, and FLUX Kontext image generation. [file:178][file:180][file:138]
+
+The app is built for a smooth user experience with preset styles, custom prompts, aspect ratio selection, before/after comparison, saved designs, reviews, and live project stats. [file:180][file:138][file:181]
 
 ---
 
-## 🚀 Quick Start
+## Features
 
-### 1. Installation
+- 🖼️ **Room Photo Upload** - Upload PNG, JPG, or JPEG room images.
+- 🎨 **40+ Style Presets** - From Scandinavian and Japandi to Moroccan Modern and Cyberpunk.
+- ✍️ **Custom Prompts** - Describe any interior style in your own words.
+- 🌍 **Multilingual UI** - English, French, and Arabic support.
+- ⚡ **Async Generation** - Image generation runs in the background with status polling.
+- 🧩 **Before / After View** - Compare the original room and the AI result.
+- 💾 **Saved Designs** - Logged-in users can store generated designs.
+- 👤 **Google Login** - Authenticate with Google to unlock personal features.
+- ⭐ **Reviews System** - Users can leave ratings and comments.
+- 📊 **Live Stats** - Displays generated rooms, signed-in users, and latest activity.
+- 📱 **Responsive Design** - Works well on desktop and mobile.
+- 🔊 **Voice Input** - Optional speech-to-text prompt entry. [file:178][file:180][file:138]
+
+---
+
+## How It Works
+
+1. Upload a room photo.
+2. Choose a preset style or write a custom prompt.
+3. Pick an aspect ratio.
+4. Send the request to FLUX Kontext.
+5. Preview the transformed room and save it if you are signed in. [file:178][file:180][file:138]
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | HTML, CSS, JavaScript |
+| Backend | Flask |
+| AI Model | FLUX Kontext image generation |
+| Auth | Google OAuth |
+| Database | PostgreSQL |
+| Storage | Cloudinary |
+| Translation | Google Translator |
+| Hosting-ready | Environment-based configuration | [file:178][file:180]
+
+---
+
+## Project Structure
 
 ```bash
+room-decorator-ai/
+├── app.py
+├── app-10.py
+├── static/
+│   ├── style.css
+│   ├── main.js
+│   └── images/
+├── templates/
+│   ├── index.html
+│   └── designs.html
+├── assets/
+│   └── image.png
+├── requirements.txt
+└── README.md
+```
 
-# Install dependencies
+---
+
+## Installation
+
+```bash
+git clone https://github.com/AAMIR-EDDAOUDI2/DecoGen-AI-2.git
+cd DecoGen-AI-2
 pip install -r requirements.txt
 ```
 
-### 2. Setup API Key
+---
 
-**For Local Development:**
-```toml
-# .streamlit/secrets.toml (optional)
-BFL_API_KEY = "your_flux_api_key_here"
+## Environment Variables
+
+Create a `.env` file with:
+
+```env
+SECRET_KEY=your_secret_key
+BFL_API_KEY=your_flux_api_key
+DATABASE_URL=your_postgres_url
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+PORT=5000
 ```
 
-**For Public Deployment:**
-- The app will prompt users to enter their own API key
-- No setup required - users provide their own keys
+---
 
-> 💡 Get your API key from [Black Forest Labs](https://docs.bfl.ai/)
+## Run the App
 
-### 3. Run the App
-
-**Clean, Minimal UI (Recommended):**
 ```bash
-streamlit run streamlit_app_clean.py
+python app.py
 ```
 
-**Feature-Rich UI:**
+Then open:
+
 ```bash
-streamlit run streamlit_app.py
-```
-
-Open your browser to `http://localhost:8501` and start decorating! 🎉
-
----
-
-## 🎨 Decoration Styles
-
-<table>
-<tr>
-<td align="center"><strong>🏢 Modern Minimalist</strong><br><em>Sleek furniture with clean lines</em></td>
-<td align="center"><strong>🛋️ Cozy Living</strong><br><em>Warm lighting and comfort</em></td>
-<td align="center"><strong>👑 Victorian Elegant</strong><br><em>Ornate details and rich fabrics</em></td>
-<td align="center"><strong>💼 Modern Office</strong><br><em>Professional workspace setup</em></td>
-</tr>
-<tr>
-<td align="center"><strong>🌈 Bohemian</strong><br><em>Colorful and artistic vibes</em></td>
-<td align="center"><strong>🌲 Scandinavian</strong><br><em>Light wood and minimalism</em></td>
-<td align="center"><strong>⚙️ Industrial</strong><br><em>Exposed elements and metal</em></td>
-<td align="center"><strong>🏖️ Mediterranean</strong><br><em>Warm colors and rustic charm</em></td>
-</tr>
-</table>
-
----
-
-## 🔧 How It Works
-
-1. **📤 Upload** your room photo
-2. **🎯 Choose** a decoration style or write custom prompts
-3. **⚡ Process** with FLUX.1 Kontext [pro] AI model
-4. **📱 Preview** your transformed space
-5. **💾 Download** the decorated image
-
----
-
-## 🎨 Design Philosophy
-
-This app comes in two versions:
-
-### **Clean UI** (`streamlit_app_clean.py`) - *Recommended*
-- **Jony Ive-inspired minimalism** - Only essential elements
-- **Step-by-step flow** - Upload → Style → Generate  
-- **Zero cognitive overload** - One task at a time
-- **Elegant simplicity** - Clean typography and subtle animations
-- **Centered layout** - Focused, distraction-free design
-
-### **Feature-Rich UI** (`streamlit_app.py`)
-- **Advanced options** - Multiple controls and settings
-- **Power user features** - Style intensity, quality options
-- **Comprehensive feedback** - Detailed metrics and info
-- **Sidebar controls** - All options accessible
-
----
-
-## 📁 Project Structure
-
-```
-room-decorator-ai/
-├── 🎯 streamlit_app_clean.py    # Clean, minimal UI (recommended)
-├── 🎛️ streamlit_app.py          # Feature-rich UI with advanced options
-├── 🔧 room_decorator.py         # FLUX API wrapper class
-├── 🧪 test_room_decorator.py    # Comprehensive test suite
-├── 📋 requirements.txt          # Python dependencies
-├── ⚙️ .streamlit/
-│   ├── config.toml              # Clean theme configuration
-│   └── secrets.toml             # API keys (gitignored)
-├── 🖼️ assets/
-│   └── image.png                # App screenshot
-├── 📚 docs.md                   # Comprehensive documentation
-├── 🚫 .gitignore                # Git ignore rules
-└── 📖 README.md                 # This file
+http://localhost:5000
 ```
 
 ---
 
-## ⚙️ Technical Specifications
+## API Routes
 
-| Feature | Specification |
-|---------|---------------|
-| **AI Model** | FLUX.1 Kontext [pro] |
-| **Max File Size** | 20MB |
-| **Supported Formats** | PNG, JPG, JPEG |
-| **Processing Time** | 30-60 seconds |
-| **Aspect Ratios** | 16:9, 4:3, 1:1, 3:4, 9:16 |
-| **Concurrent Requests** | Up to 24 |
-| **Image Expiration** | 10 minutes |
-
----
-
-## 🎯 Usage Tips
-
-### 📸 **Best Photo Practices**
-- Use well-lit, clear room photos
-- Ensure the room is the main focus
-- Avoid cluttered or dark images
-- Include architectural features for context
-
-### ✍️ **Prompt Writing**
-- Be specific about furniture and colors
-- Mention lighting preferences
-- Include style keywords (modern, vintage, etc.)
-- Describe the room's intended use
-
-### 🎨 **Style Combinations**
-- Mix styles: "Scandinavian with industrial accents"
-- Specify colors: "Add warm earth tones"
-- Include textures: "Incorporate natural wood and metal"
+| Route | Method | Description |
+|---|---|---|
+| `/` | GET | Home page |
+| `/decorate-room` | POST | Start image generation |
+| `/status/<job_id>` | GET | Check job status |
+| `/result/<job_id>` | GET | Download generated result |
+| `/before/<job_id>` | GET | View original uploaded image |
+| `/auth/login` | GET | Google login |
+| `/auth/callback` | GET | OAuth callback |
+| `/auth/logout` | GET | Log out |
+| `/auth/me` | GET | Current user info |
+| `/designs` | GET | Saved designs page |
+| `/designs/delete/<id>` | DELETE | Delete a saved design |
+| `/submit-review` | POST | Submit a review |
+| `/get-reviews` | GET | Fetch reviews |
+| `/stats` | GET | App statistics | [file:178][file:180]
 
 ---
 
-## 🤝 Contributing
+## Style Presets
 
-We welcome contributions! Here's how you can help:
+The app includes many style prompts such as:
 
-1. 🍴 Fork the repository
-2. 🌿 Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. 💾 Commit your changes (`git commit -m 'Add amazing feature'`)
-4. 📤 Push to the branch (`git push origin feature/amazing-feature`)
-5. 🔄 Open a Pull Request
+- Scandinavian
+- Japandi
+- Modern Luxury
+- Industrial
+- Bohemian
+- Moroccan Modern
+- Mediterranean
+- Futuristic
+- Cyberpunk
+- Gaming Room
+- Nature Inspired
+- Hotel Luxury Suite
+- Parisian Style
+- Smart Home
+- Earth Tone Interior
+- Soft Girl Aesthetic [file:180][file:138]
 
 ---
+
+## Usage Tips
+
+### Best results
+- Use a clear, well-lit room photo.
+- Keep the room as centered and visible as possible.
+- Choose a style that matches the room type.
+- Write specific prompts for better results, such as colors, materials, and lighting.
+
+### Prompt examples
+- “Scandinavian living room with warm oak, linen sofa, and soft natural light.”
+- “Modern luxury bedroom with marble accents, gold details, and ambient lighting.”
+- “Moroccan modern interior with geometric tile patterns and warm jewel tones.” [file:138][file:180]
+
+
+
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-- **[Black Forest Labs](https://blackforestlabs.ai/)** for the powerful FLUX API
-- **[Streamlit](https://streamlit.io/)** for the amazing web framework
-- **Community contributors** for feedback and improvements
+- **Black Forest Labs** for FLUX Kontext image generation. [file:180]
+- **Google OAuth** for authentication. [file:178]
+- **Cloudinary** for image hosting. [file:178]
+- **PostgreSQL** for data storage. [file:178]
 
 ---
 
-<div align="center">
+## License
 
-**Made with ❤️ and AI**
-
+This project was created for educational purposes as a BTS PFE project.
 
 </div>
